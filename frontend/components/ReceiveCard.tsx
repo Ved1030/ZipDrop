@@ -8,7 +8,7 @@ interface ReceivedFile {
   file_url: string;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL;
+const API = process.env.NEXT_PUBLIC_API_URL || "https://zipdrop.onrender.com";
 
 /* ─── Icons ─────────────────────────────────── */
 
@@ -21,8 +21,6 @@ function ReceiveArrow() {
     </svg>
   );
 }
-
-/* --- OTHER ICONS (unchanged) --- */
 
 function SearchIcon() {
   return (
@@ -92,8 +90,9 @@ export default function ReceiveCard() {
 
       setFetched(true);
 
-    } catch {
+    } catch (err) {
 
+      console.error(err);
       setError("No data found for this code. Double check and retry.");
 
     } finally {

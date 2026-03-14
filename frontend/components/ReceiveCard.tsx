@@ -75,7 +75,7 @@ export default function ReceiveCard() {
 
     try {
 
-      const res = await fetch(`${API}/receive/${code}`);
+      const res = await fetch(`https://zipdrop.onrender.com/receive/${code}`);
 
       if (!res.ok) {
         throw new Error("Invalid code");
@@ -114,7 +114,7 @@ export default function ReceiveCard() {
 
     const link = document.createElement("a");
 
-    link.href = `${API}/download-zip/${code}`;
+    link.href = `https://zipdrop.onrender.com/download-zip/${code}`;
     link.download = `zipdrop-${code}.zip`;
 
     document.body.appendChild(link);
@@ -145,7 +145,7 @@ export default function ReceiveCard() {
         onKeyDown={handleKeyDown}
       />
 
-      {error && <p style={{color:"#ff6b6b"}}>{error}</p>}
+      {error && <p style={{ color: "#ff6b6b" }}>{error}</p>}
 
       <button onClick={receiveFiles} disabled={loading || code.length < 4}>
         {loading ? "Retrieving..." : "Receive"}

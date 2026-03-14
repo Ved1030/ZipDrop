@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { receiveData } from "@/utils/api";
 
 interface ReceivedFile {
   file_name: string;
@@ -76,7 +75,13 @@ export default function ReceiveCard() {
 
     try {
 
-      const data = await receiveData(code);
+      const res = await fetch(`${API}/receive/${code}`);
+
+      if (!res.ok) {
+        throw new Error("Invalid code");
+      }
+
+      const data = await res.json();
 
       if (data.type === "files") {
         setFiles(data.files);

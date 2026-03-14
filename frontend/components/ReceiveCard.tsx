@@ -32,7 +32,7 @@ function DownloadIcon({ size = 13 }: { size?: number }) {
   );
 }
 
-function FileIcon({ size = 14 }: { size?: number }) {
+function FileIcon({ size = 15 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
@@ -55,6 +55,7 @@ function ZipIcon() {
 
 export default function ReceiveCard() {
   const [digits, setDigits] = useState<string[]>(["", "", "", ""]);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [files, setFiles] = useState<ReceivedFile[]>([]);
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -65,7 +66,7 @@ export default function ReceiveCard() {
 
   const code = digits.join("");
 
-  /* DIGIT INPUT HANDLERS */
+  /* ── DIGIT INPUT HANDLERS ── */
 
   const handleDigitChange = (index: number, value: string) => {
     const digit = value.replace(/\D/g, "").slice(-1);
@@ -73,7 +74,6 @@ export default function ReceiveCard() {
     newDigits[index] = digit;
     setDigits(newDigits);
     setError("");
-
     if (digit && index < 3) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -83,46 +83,39 @@ export default function ReceiveCard() {
     if (e.key === "Backspace" && !digits[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
-    if (e.key === "Enter" && code.length === 4) {
-      receiveFiles();
-    }
+    if (e.key === "Enter" && code.length === 4) receiveFiles();
   };
 
   const handleDigitPaste = (e: React.ClipboardEvent) => {
     const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 4);
-    if (pasted.length === 4) {
-      setDigits(pasted.split(""));
-      inputRefs.current[3]?.focus();
+    if (pasted.length > 0) {
+      const newDigits = ["", "", "", ""];
+      for (let i = 0; i < pasted.length && i < 4; i++) {
+        newDigits[i] = pasted[i];
+      }
+      setDigits(newDigits);
+      const nextFocus = Math.min(pasted.length, 3);
+      inputRefs.current[nextFocus]?.focus();
     }
     e.preventDefault();
   };
 
-  /* RECEIVE DATA */
+  /* ── RECEIVE DATA ── */
 
   const receiveFiles = async () => {
     if (code.length !== 4) {
       setError("Please fill in all 4 digits.");
       return;
     }
-
     setLoading(true);
     setError("");
     setFetched(false);
-
     try {
       const res = await fetch(`${API}/receive/${code}`);
       if (!res.ok) throw new Error("Invalid code");
-
       const data = await res.json();
-
-      if (data.type === "files") {
-        setFiles(data.files);
-        setText("");
-      } else if (data.type === "text") {
-        setText(data.text);
-        setFiles([]);
-      }
-
+      if (data.type === "files") { setFiles(data.files); setText(""); }
+      else if (data.type === "text") { setText(data.text); setFiles([]); }
       setFetched(true);
     } catch (err) {
       console.error(err);
@@ -132,7 +125,7 @@ export default function ReceiveCard() {
     }
   };
 
-  /* ZIP DOWNLOAD */
+  /* ── ZIP DOWNLOAD ── */
 
   const downloadZip = () => {
     const link = document.createElement("a");
@@ -149,10 +142,10 @@ export default function ReceiveCard() {
       style={{
         width: "100%",
         maxWidth: "420px",
-        padding: "24px",
+        padding: "28px",
         display: "flex",
         flexDirection: "column",
-        gap: "18px",
+        gap: "20px",
         animation: "fadeInUp 0.6s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both",
       }}
     >
@@ -161,56 +154,112 @@ export default function ReceiveCard() {
         fontSize: "13px",
         color: "var(--text-secondary)",
         textAlign: "center",
-        lineHeight: 1.5,
+        lineHeight: 1.6,
       }}>
-        Enter the <strong style={{ color: "var(--text-primary)", fontWeight: 700 }}>4-digit code</strong> from the sender
+        Enter the{" "}
+        <strong style={{ color: "var(--text-primary)", fontWeight: 700 }}>
+          4-digit code
+        </strong>{" "}
+        from the sender
       </p>
 
-      {/* ── DIGIT BOXES ── */}
-      <div style={{
-        display: "flex",
-        gap: "10px",
-        justifyContent: "center",
-      }}>
-        {digits.map((digit, i) => (
-          <input
-            key={i}
-            id={`receive-digit-${i}`}
-            ref={(el) => { inputRefs.current[i] = el; }}
-            type="text"
-            inputMode="numeric"
-            maxLength={1}
-            value={digit}
-            onChange={(e) => handleDigitChange(i, e.target.value)}
-            onKeyDown={(e) => handleDigitKeyDown(i, e)}
-            onPaste={handleDigitPaste}
-            onFocus={(e) => e.target.select()}
-            style={{
-              width: "64px",
-              height: "72px",
-              background: digit
-                ? "rgba(0, 245, 255, 0.08)"
-                : "rgba(0, 0, 0, 0.45)",
-              border: digit
-                ? "1px solid rgba(0, 245, 255, 0.55)"
-                : "1px solid rgba(0, 245, 255, 0.18)",
-              borderRadius: "12px",
-              color: "var(--cyan)",
-              fontFamily: "var(--font-mono)",
-              fontSize: "32px",
-              fontWeight: 700,
-              textAlign: "center",
-              outline: "none",
-              cursor: "text",
-              transition: "all 0.2s ease",
-              boxShadow: digit
-                ? "0 0 16px rgba(0, 245, 255, 0.25), inset 0 0 12px rgba(0, 245, 255, 0.06)"
-                : "none",
-              textShadow: digit ? "0 0 14px rgba(0, 245, 255, 0.9)" : "none",
-              caretColor: "var(--cyan)",
-            }}
-          />
-        ))}
+      {/* ── GLASSMORPHISM DIGIT BOXES ── */}
+      <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+        {digits.map((digit, i) => {
+          const isFocused = focusedIndex === i;
+          const isFilled  = digit !== "";
+          return (
+            /* Wrapper: visible glass box */
+            <div
+              key={i}
+              onClick={() => inputRefs.current[i]?.focus()}
+              style={{
+                position: "relative",
+                width: "68px",
+                height: "76px",
+                borderRadius: "14px",
+                background: isFilled
+                  ? "rgba(0, 245, 255, 0.10)"
+                  : "rgba(0, 0, 0, 0.45)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                border: isFocused
+                  ? "1.5px solid rgba(0, 245, 255, 0.75)"
+                  : isFilled
+                  ? "1.5px solid rgba(0, 245, 255, 0.45)"
+                  : "1.5px solid rgba(0, 245, 255, 0.18)",
+                boxShadow: isFocused
+                  ? "0 0 0 3px rgba(0,245,255,0.10), 0 0 24px rgba(0,245,255,0.30), inset 0 0 16px rgba(0,245,255,0.06)"
+                  : isFilled
+                  ? "0 0 16px rgba(0,245,255,0.18), inset 0 0 10px rgba(0,245,255,0.05)"
+                  : "inset 0 1px 0 rgba(255,255,255,0.04)",
+                cursor: "text",
+                transition: "all 0.2s ease",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "hidden",
+              }}
+            >
+              {/* Subtle top-gloss shine */}
+              <span style={{
+                position: "absolute",
+                top: 0, left: "10%",
+                width: "80%", height: "40%",
+                background: "linear-gradient(180deg, rgba(255,255,255,0.07) 0%, transparent 100%)",
+                borderRadius: "0 0 50% 50%",
+                pointerEvents: "none",
+              }} />
+
+              {/* Actual invisible input — sits on top */}
+              <input
+                ref={(el) => { inputRefs.current[i] = el; }}
+                id={`receive-digit-${i}`}
+                type="text"
+                inputMode="numeric"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleDigitChange(i, e.target.value)}
+                onKeyDown={(e) => handleDigitKeyDown(i, e)}
+                onPaste={handleDigitPaste}
+                onFocus={() => setFocusedIndex(i)}
+                onBlur={() => setFocusedIndex(null)}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  opacity: 0,
+                  cursor: "text",
+                  zIndex: 2,
+                  border: "none",
+                  outline: "none",
+                  background: "transparent",
+                }}
+              />
+
+              {/* Visible digit display */}
+              <span style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "34px",
+                fontWeight: 700,
+                color: isFilled ? "var(--cyan)" : "rgba(0,245,255,0.2)",
+                textShadow: isFilled
+                  ? "0 0 20px rgba(0,245,255,0.95), 0 0 40px rgba(0,245,255,0.4)"
+                  : "none",
+                letterSpacing: 0,
+                userSelect: "none",
+                pointerEvents: "none",
+                position: "relative",
+                zIndex: 1,
+                transition: "all 0.15s ease",
+                animation: isFilled ? "codeReveal 0.25s ease forwards" : "none",
+              }}>
+                {isFilled ? digit : (isFocused ? "┃" : "—")}
+              </span>
+            </div>
+          );
+        })}
       </div>
 
       {/* ERROR */}
@@ -223,6 +272,10 @@ export default function ReceiveCard() {
           alignItems: "center",
           justifyContent: "center",
           gap: "5px",
+          padding: "8px 12px",
+          background: "rgba(255,107,107,0.07)",
+          border: "1px solid rgba(255,107,107,0.2)",
+          borderRadius: "8px",
         }}>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="10" />
@@ -241,13 +294,13 @@ export default function ReceiveCard() {
         disabled={loading || code.length !== 4}
         style={{
           width: "100%",
-          padding: "13px",
+          padding: "14px",
           fontSize: "15px",
           fontWeight: 700,
           letterSpacing: "0.04em",
-          opacity: loading || code.length !== 4 ? 0.5 : 1,
+          opacity: loading || code.length !== 4 ? 0.45 : 1,
           cursor: loading || code.length !== 4 ? "not-allowed" : "pointer",
-          background: "linear-gradient(135deg, rgba(0,245,255,0.18) 0%, rgba(34,211,238,0.12) 100%)",
+          background: "linear-gradient(135deg, rgba(0,245,255,0.2) 0%, rgba(34,211,238,0.13) 100%)",
         }}
       >
         <span className="shimmer" />
@@ -280,7 +333,7 @@ export default function ReceiveCard() {
         <div className="animate-fadeIn" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <div className="divider" />
 
-          {/* Files header row */}
+          {/* Header row */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span className="section-label">
               {files.length} file{files.length !== 1 ? "s" : ""} received
@@ -303,7 +356,7 @@ export default function ReceiveCard() {
             {files.map((file, index) => (
               <div key={index} className="file-item">
                 <span style={{ color: "var(--cyan)", flexShrink: 0 }}>
-                  <FileIcon size={15} />
+                  <FileIcon />
                 </span>
                 <span style={{
                   flex: 1,
@@ -338,10 +391,10 @@ export default function ReceiveCard() {
               onClick={downloadZip}
               style={{
                 width: "100%",
-                padding: "12px",
+                padding: "13px",
                 fontSize: "14px",
                 fontWeight: 600,
-                background: "linear-gradient(135deg, rgba(0,245,255,0.15) 0%, rgba(34,211,238,0.10) 100%)",
+                background: "linear-gradient(135deg, rgba(0,245,255,0.18) 0%, rgba(34,211,238,0.12) 100%)",
               }}
             >
               <span className="shimmer" />

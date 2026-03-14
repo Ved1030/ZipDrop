@@ -68,6 +68,23 @@ function ShieldIcon() {
   );
 }
 
+function CopyIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
 /* ─── MAIN COMPONENT ─────────────────────────── */
 
 export default function ReceiveCard() {
@@ -78,6 +95,7 @@ export default function ReceiveCard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fetched, setFetched] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -127,6 +145,7 @@ export default function ReceiveCard() {
     setLoading(true);
     setError("");
     setFetched(false);
+    setCopied(false);
     try {
       const res = await fetch(`${API}/receive/${code}`);
       if (!res.ok) throw new Error("Invalid code");
@@ -139,6 +158,26 @@ export default function ReceiveCard() {
       setError("No data found for this code. Double-check and retry.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  /* ── COPY TEXT ── */
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      const el = document.createElement("textarea");
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -170,7 +209,6 @@ export default function ReceiveCard() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         {/* Left: icon + title + subtitle */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          {/* Icon container */}
           <div style={{
             width: "40px",
             height: "40px",
@@ -185,7 +223,6 @@ export default function ReceiveCard() {
           }}>
             <ReceiveHeaderIcon />
           </div>
-          {/* Title + subtitle */}
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             <span style={{
               fontSize: "16px",
@@ -219,7 +256,7 @@ export default function ReceiveCard() {
           fontSize: "11px",
           fontWeight: 600,
           letterSpacing: "0.05em",
-          textTransform: "uppercase",
+          textTransform: "uppercase" as const,
         }}>
           <ShieldIcon />
           Secure
@@ -244,7 +281,7 @@ export default function ReceiveCard() {
         from the sender
       </p>
 
-      {/* ── GLASSMORPHISM DIGIT BOXES ── */}
+      {/* ── DIGIT BOXES ── */}
       <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
         {digits.map((digit, i) => {
           const isFocused = focusedIndex === i;
@@ -402,9 +439,35 @@ export default function ReceiveCard() {
       {fetched && text && (
         <div className="animate-fadeIn" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <div className="divider" />
-          <span className="section-label">Received text</span>
+
+          {/* Section header with copy button */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span className="section-label">Received text</span>
+            <button
+              id="btn-copy-text"
+              className="btn-ghost"
+              onClick={handleCopy}
+              style={{
+                padding: "4px 10px",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                fontSize: "12px",
+                fontWeight: 600,
+                color: copied ? "var(--cyan)" : undefined,
+                border: copied ? "1px solid rgba(0,245,255,0.35)" : undefined,
+                background: copied ? "rgba(0,245,255,0.08)" : undefined,
+                transition: "all 0.2s ease",
+              }}
+            >
+              {copied ? <CheckIcon /> : <CopyIcon />}
+              {copied ? "Copied!" : "Copy"}
+            </button>
+          </div>
+
+          {/* Text block */}
           <div className="code-block">
-            <pre>{text}</pre>
+            <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{text}</pre>
           </div>
         </div>
       )}

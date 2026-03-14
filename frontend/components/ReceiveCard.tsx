@@ -75,7 +75,16 @@ export default function ReceiveCard() {
 
     try {
 
-      const res = await fetch(`https://zipdrop.onrender.com/receive/${code}`);
+      let res = await fetch(`https://zipdrop.onrender.com/receive/${code}`);
+
+      if (!res.ok) {
+        await new Promise(r => setTimeout(r, 2000));
+        res = await fetch(`https://zipdrop.onrender.com/receive/${code}`);
+      }
+
+      if (!res.ok) {
+        throw new Error("Invalid code");
+      }
 
       if (!res.ok) {
         throw new Error("Invalid code");

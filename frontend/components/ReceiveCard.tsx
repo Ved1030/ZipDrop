@@ -440,14 +440,18 @@ export default function ReceiveCard() {
         <div className="animate-fadeIn" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <div className="divider" />
 
-          {/* Section header with copy button */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span className="section-label">Received text</span>
+          <span className="section-label">RECEIVED TEXT</span>
+
+          {/* Text block */}
+          <div className="code-block" style={{ position: "relative" }}>
             <button
               id="btn-copy-text"
               className="btn-ghost"
               onClick={handleCopy}
               style={{
+                position: "absolute",
+                top: "12px",
+                right: "12px",
                 padding: "4px 10px",
                 display: "flex",
                 alignItems: "center",
@@ -456,18 +460,15 @@ export default function ReceiveCard() {
                 fontWeight: 600,
                 color: copied ? "var(--cyan)" : undefined,
                 border: copied ? "1px solid rgba(0,245,255,0.35)" : undefined,
-                background: copied ? "rgba(0,245,255,0.08)" : undefined,
+                background: copied ? "rgba(0,245,255,0.08)" : "rgba(0,0,0,0.4)",
                 transition: "all 0.2s ease",
+                zIndex: 10,
               }}
             >
               {copied ? <CheckIcon /> : <CopyIcon />}
               {copied ? "Copied!" : "Copy"}
             </button>
-          </div>
-
-          {/* Text block */}
-          <div className="code-block">
-            <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{text}</pre>
+            <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word", paddingRight: "80px" }}>{text}</pre>
           </div>
         </div>
       )}

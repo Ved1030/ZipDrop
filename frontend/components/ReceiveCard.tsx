@@ -7,7 +7,9 @@ interface ReceivedFile {
   file_url: string;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://zipdrop.onrender.com";
+const API =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://zipdrop-backend-production.up.railway.app";
 
 /* ─── Icons ─────────────────────────────────── */
 
@@ -52,7 +54,6 @@ function FileIcon({ size = 14 }: { size?: number }) {
 /* ─── MAIN COMPONENT ─────────────────────────── */
 
 export default function ReceiveCard() {
-
   const [code, setCode] = useState("");
   const [files, setFiles] = useState<ReceivedFile[]>([]);
   const [text, setText] = useState("");
@@ -63,9 +64,8 @@ export default function ReceiveCard() {
   /* RECEIVE DATA */
 
   const receiveFiles = async () => {
-
-    if (code.length < 4) {
-      setError("Please enter all 4 digits.");
+    if (code.length !== 4) {
+      setError("Please enter a valid 4 digit code.");
       return;
     }
 
@@ -74,150 +74,134 @@ export default function ReceiveCard() {
     setFetched(false);
 
     try {
+      const res = await fetch(`${API}/receive/${code}`);
 
-      let res = await fetch(`https://zipdrop.onrender.com/receive/${code}`);
-
-      if (!res.ok) {
-        await new Promise(r => setTimeout(r, 2000));
-        res = await fetch(`https://zipdrop.onrender.com/receive/${code}`);
-      }
-
-      if (!res.ok) {
-        throw new Error("Invalid code");
-      }
-
-      if (!res.ok) {
-        throw new Error("Invalid code");
-      }
+      if (!res.ok) throw new Error("Invalid code");
 
       const data = await res.json();
 
       if (data.type === "files") {
         setFiles(data.files);
         setText("");
-      }
-
-      if (data.type === "text") {
+      } else if (data.type === "text") {
         setText(data.text);
         setFiles([]);
       }
 
       setFetched(true);
-
     } catch (err) {
-
       console.error(err);
       setError("No data found for this code. Double check and retry.");
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
-  /* DOWNLOAD ZIP */
+  /* ZIP DOWNLOAD */
 
   const downloadZip = () => {
-
     const link = document.createElement("a");
 
-    link.href = `https://zipdrop.onrender.com/download-zip/${code}`;
+    link.href = `${API}/download-zip/${code}`;
     link.download = `zipdrop-${code}.zip`;
 
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && code.length === 4) {
-      receiveFiles();
-    }
+    if (e.key === "Enter" && code.length === 4) receiveFiles();
   };
 
   return (
-
     <div className="glass-card">
 
       <h2>Receive</h2>
-
       <p>Enter the 4-digit code from sender</p>
 
       <input
         type="text"
+        inputMode="numeric"
         maxLength={4}
         value={code}
-        onChange={(e) => setCode(e.target.value)}
+        onChange={(e) =>
+          setCode(e.target.value.replace(/\D/g, ""))
+        }
         onKeyDown={handleKeyDown}
+        style={{
+          padding: "10px",
+          borderRadius: "8px",
+          border: "1px solid #00f5ff33",
+          background: "transparent",
+          color: "white",
+          marginBottom: "10px"
+        }}
       />
 
-      {error && <p style={{ color: "#ff6b6b" }}>{error}</p>}
+      {error && (
+        <p style={{ color: "#ff6b6b", marginBottom: "10px" }}>
+          {error}
+        </p>
+      )}
 
-      <button onClick={receiveFiles} disabled={loading || code.length < 4}>
+      <button
+        onClick={receiveFiles}
+        disabled={loading || code.length !== 4}
+      >
         {loading ? "Retrieving..." : "Receive"}
       </button>
 
       {/* TEXT RESULT */}
 
       {text && (
-
-        <div>
-
+        <div style={{ marginTop: "20px" }}>
           <h3>Received Text</h3>
-
           <pre>{text}</pre>
-
         </div>
-
       )}
 
       {/* FILE RESULT */}
 
       {files.length > 0 && (
-
-        <div>
-
+        <div style={{ marginTop: "20px" }}>
           <h3>{files.length} file(s) received</h3>
 
           {files.map((file, index) => (
-
-            <div key={index}>
-
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                marginTop: "8px"
+              }}
+            >
               <FileIcon />
-
-              {file.file_name}
+              <span>{file.file_name}</span>
 
               <a
                 href={file.file_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 download
+                style={{ color: "#00f5ff" }}
               >
-                <DownloadIcon />
-                Download
+                <DownloadIcon /> Download
               </a>
-
             </div>
-
           ))}
 
           {files.length > 1 && (
-
-            <button onClick={downloadZip}>
+            <button
+              onClick={downloadZip}
+              style={{ marginTop: "12px" }}
+            >
               Download All (ZIP)
             </button>
-
           )}
-
         </div>
-
       )}
-
     </div>
-
   );
-
 }

@@ -23,15 +23,6 @@ function ReceiveArrow() {
   );
 }
 
-function SearchIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-  );
-}
-
 function DownloadIcon({ size = 14 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -51,6 +42,16 @@ function FileIcon({ size = 14 }: { size?: number }) {
   );
 }
 
+function ZipIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <polyline points="21 8 21 21 3 21 3 8" />
+      <rect x="1" y="3" width="22" height="5" />
+      <line x1="10" y1="12" x2="14" y2="12" />
+    </svg>
+  );
+}
+
 /* ─── MAIN COMPONENT ─────────────────────────── */
 
 export default function ReceiveCard() {
@@ -65,7 +66,7 @@ export default function ReceiveCard() {
 
   const receiveFiles = async () => {
     if (code.length !== 4) {
-      setError("Please enter a valid 4 digit code.");
+      setError("Please enter a valid 4-digit code.");
       return;
     }
 
@@ -91,7 +92,7 @@ export default function ReceiveCard() {
       setFetched(true);
     } catch (err) {
       console.error(err);
-      setError("No data found for this code. Double check and retry.");
+      setError("No data found for this code. Double-check and retry.");
     } finally {
       setLoading(false);
     }
@@ -101,10 +102,8 @@ export default function ReceiveCard() {
 
   const downloadZip = () => {
     const link = document.createElement("a");
-
     link.href = `${API}/download-zip/${code}`;
     link.download = `zipdrop-${code}.zip`;
-
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -115,91 +114,185 @@ export default function ReceiveCard() {
   };
 
   return (
-    <div className="glass-card">
+    <div
+      className="glass-card"
+      style={{
+        width: "100%",
+        maxWidth: "420px",
+        padding: "28px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        animation: "fadeInUp 0.6s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both",
+      }}
+    >
+      {/* CARD HEADER */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{
+            width: 36,
+            height: 36,
+            borderRadius: "10px",
+            background: "var(--cyan-dim)",
+            border: "1px solid rgba(0,245,255,0.3)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "var(--cyan)",
+            boxShadow: "0 0 16px rgba(0,245,255,0.2)",
+          }}>
+            <ReceiveArrow />
+          </div>
+          <div>
+            <h2 style={{ fontSize: "18px", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1 }}>
+              Receive
+            </h2>
+            <p style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "2px" }}>
+              Enter a code to retrieve files
+            </p>
+          </div>
+        </div>
+        <span className="badge">
+          <span className="badge-dot" />
+          Secure
+        </span>
+      </div>
 
-      <h2>Receive</h2>
-      <p>Enter the 4-digit code from sender</p>
+      {/* DIVIDER */}
+      <div className="divider" />
 
-      <input
-        type="text"
-        inputMode="numeric"
-        maxLength={4}
-        value={code}
-        onChange={(e) =>
-          setCode(e.target.value.replace(/\D/g, ""))
-        }
-        onKeyDown={handleKeyDown}
-        style={{
-          padding: "10px",
-          borderRadius: "8px",
-          border: "1px solid #00f5ff33",
-          background: "transparent",
-          color: "white",
-          marginBottom: "10px"
-        }}
-      />
+      {/* CODE INPUT */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <span className="section-label">4-digit code</span>
+        <div style={{ display: "flex", gap: "8px" }}>
+          <input
+            id="receive-code-input"
+            type="text"
+            inputMode="numeric"
+            maxLength={4}
+            placeholder="e.g. 4821"
+            value={code}
+            onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+            onKeyDown={handleKeyDown}
+            className="neon-input"
+            style={{ padding: "10px 14px", flex: 1, letterSpacing: "0.3em", fontSize: "18px", fontFamily: "var(--font-mono)", fontWeight: 600 }}
+          />
+          <button
+            id="btn-receive"
+            className="btn-cyan"
+            onClick={receiveFiles}
+            disabled={loading || code.length !== 4}
+            style={{
+              padding: "10px 20px",
+              flexShrink: 0,
+              opacity: loading || code.length !== 4 ? 0.5 : 1,
+              cursor: loading || code.length !== 4 ? "not-allowed" : "pointer",
+            }}
+          >
+            <span className="shimmer" />
+            {loading ? (
+              <>
+                <span className="spinner" />
+                Fetching…
+              </>
+            ) : (
+              <>
+                <ReceiveArrow />
+                Receive
+              </>
+            )}
+          </button>
+        </div>
 
-      {error && (
-        <p style={{ color: "#ff6b6b", marginBottom: "10px" }}>
-          {error}
-        </p>
-      )}
-
-      <button
-        onClick={receiveFiles}
-        disabled={loading || code.length !== 4}
-      >
-        {loading ? "Retrieving..." : "Receive"}
-      </button>
+        {/* ERROR */}
+        {error && (
+          <p style={{
+            fontSize: "12px",
+            color: "#ff6b6b",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+          }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            {error}
+          </p>
+        )}
+      </div>
 
       {/* TEXT RESULT */}
-
-      {text && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>Received Text</h3>
-          <pre>{text}</pre>
+      {fetched && text && (
+        <div
+          className="animate-fadeIn"
+          style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+        >
+          <div className="divider" />
+          <span className="section-label">Received text</span>
+          <div className="code-block">
+            <pre>{text}</pre>
+          </div>
         </div>
       )}
 
       {/* FILE RESULT */}
-
-      {files.length > 0 && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>{files.length} file(s) received</h3>
-
-          {files.map((file, index) => (
-            <div
-              key={index}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                marginTop: "8px"
-              }}
-            >
-              <FileIcon />
-              <span>{file.file_name}</span>
-
-              <a
-                href={file.file_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                download
-                style={{ color: "#00f5ff" }}
+      {fetched && files.length > 0 && (
+        <div
+          className="animate-fadeIn"
+          style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+        >
+          <div className="divider" />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span className="section-label">
+              {files.length} file{files.length !== 1 ? "s" : ""} received
+            </span>
+            {files.length > 1 && (
+              <button
+                id="btn-download-zip"
+                className="btn-ghost"
+                onClick={downloadZip}
+                style={{ padding: "4px 12px" }}
               >
-                <DownloadIcon /> Download
-              </a>
-            </div>
-          ))}
+                <ZipIcon />
+                Download ZIP
+              </button>
+            )}
+          </div>
 
-          {files.length > 1 && (
-            <button
-              onClick={downloadZip}
-              style={{ marginTop: "12px" }}
-            >
-              Download All (ZIP)
-            </button>
-          )}
+          <div className="file-list">
+            {files.map((file, index) => (
+              <div key={index} className="file-item">
+                <span style={{ color: "var(--cyan)", flexShrink: 0 }}>
+                  <FileIcon size={16} />
+                </span>
+                <span
+                  style={{
+                    flex: 1,
+                    fontSize: "13px",
+                    color: "var(--text-secondary)",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {file.file_name}
+                </span>
+                <a
+                  href={file.file_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className="btn-ghost"
+                  style={{ padding: "4px 10px", flexShrink: 0 }}
+                >
+                  <DownloadIcon size={12} />
+                  Save
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

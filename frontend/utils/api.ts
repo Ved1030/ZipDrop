@@ -1,7 +1,7 @@
-// All requests proxied via next.config.js: /api/* → http://localhost:5000/*
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 export const uploadFile = async (formData: FormData) => {
-  const res = await fetch(`/api/upload`, {
+  const res = await fetch(`${API}/upload`, {
     method: "POST",
     body: formData,
   });
@@ -11,7 +11,7 @@ export const uploadFile = async (formData: FormData) => {
 };
 
 export const shareText = async (text: string) => {
-  const res = await fetch(`/api/share-text`, {
+  const res = await fetch(`${API}/share-text`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

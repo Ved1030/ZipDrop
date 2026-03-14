@@ -7,6 +7,7 @@ export const uploadFile = async (formData: FormData) => {
   });
 
   if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
+
   return res.json();
 };
 
@@ -20,5 +21,14 @@ export const shareText = async (text: string) => {
   });
 
   if (!res.ok) throw new Error(`Share failed: ${res.status}`);
+
+  return res.json();
+};
+
+export const receiveData = async (code: string) => {
+  const res = await fetch(`${API}/receive/${code}`);
+
+  if (!res.ok) throw new Error("Invalid code");
+
   return res.json();
 };

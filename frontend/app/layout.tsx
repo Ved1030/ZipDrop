@@ -4,30 +4,67 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://zip-drop.vercel.app"),
 
-  title: "ZipDrop – Instant File & Text Sharing",
+  title: {
+    default: "ZipDrop – Instant File & Text Sharing",
+    template: "%s | ZipDrop",
+  },
 
   description:
-    "Share files or text securely with a 4-digit code. No sign-up required. Futuristic file sharing SaaS.",
+    "ZipDrop lets you instantly share files and text using a secure 4-digit code. No sign-up required. Fast, simple and secure file sharing across devices.",
 
   keywords: [
+    "ZipDrop",
     "file sharing",
     "text sharing",
-    "4-digit code",
-    "ZipDrop",
-    "secure transfer"
+    "instant file transfer",
+    "secure file sharing",
+    "4 digit code sharing",
+    "share files online",
+    "upload and share files",
+    "send files instantly",
   ],
+
+  authors: [{ name: "ZipDrop" }],
+  creator: "ZipDrop",
+  publisher: "ZipDrop",
 
   robots: {
     index: true,
-    follow: true
+    follow: true,
+    nocache: false,
+  },
+
+  icons: {
+    icon: "/favicon.ico",
   },
 
   openGraph: {
     title: "ZipDrop – Instant File & Text Sharing",
-    description: "Share files or text securely with a 4-digit code.",
+    description:
+      "Share files or text instantly with a secure 4-digit code. No accounts required.",
     url: "https://zip-drop.vercel.app",
-    type: "website"
-  }
+    siteName: "ZipDrop",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ZipDrop File Sharing",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "ZipDrop – Instant File & Text Sharing",
+    description:
+      "Upload files, get a code, and share instantly across devices.",
+    images: ["/og-image.png"],
+  },
+
+  category: "technology",
 };
 
 export default function RootLayout({

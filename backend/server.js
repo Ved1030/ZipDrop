@@ -27,9 +27,11 @@ const supabase = createClient(
    Middleware
 -------------------------------- */
 
+const cors = require("cors");
+
 app.use(
   cors({
-    origin: "*",
+    origin: ["https://zip-drop.vercel.app"],
     methods: ["GET", "POST"],
   })
 );

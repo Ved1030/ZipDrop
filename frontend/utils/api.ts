@@ -1,4 +1,4 @@
-const API = process.env.NEXT_PUBLIC_API_URL || "https://zipdrop.onrender.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://zipdrop-backend-production.up.railway.app";
 
 /* Upload Files */
 

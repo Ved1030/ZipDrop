@@ -79,17 +79,62 @@ export const metadata: Metadata = {
 
   category: "technology",
 };
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "ZipDrop",
+    url: "https://zip-drop.vercel.app",
+    applicationCategory: "FileSharingApplication",
+    operatingSystem: "Web",
+    description:
+      "ZipDrop is a fast and secure file and text sharing platform using a 4-digit code.",
+    creator: [
+      {
+        "@type": "Person",
+        name: "Ved Mehta",
+        affiliation: {
+          "@type": "CollegeOrUniversity",
+          name: "DJ Sanghvi College of Engineering",
+        },
+      },
+      {
+        "@type": "Person",
+        name: "Virti Panchamia",
+        affiliation: {
+          "@type": "CollegeOrUniversity",
+          name: "DJ Sanghvi College of Engineering",
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="en">
       <head>
+        {/* Google Fonts Performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+
+        {/* Structured Data for Google */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
       </head>
+
       <body>{children}</body>
     </html>
   );

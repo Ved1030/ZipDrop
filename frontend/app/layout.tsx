@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "ZipDrop lets you instantly share files and text using a secure 4-digit code. No sign-up required. Fast, simple and secure file sharing across devices.",
+    "ZipDrop is a fast and secure file and text sharing platform that lets you instantly share files or text using a 4-digit code. Built by Ved Mehta and Virti Panchamia, second-year engineering students at DJ Sanghvi College of Engineering.",
 
   keywords: [
     "ZipDrop",
@@ -22,16 +22,29 @@ export const metadata: Metadata = {
     "share files online",
     "upload and share files",
     "send files instantly",
+    "Ved Mehta",
+    "Virti Panchamia",
+    "DJ Sanghvi College of Engineering",
   ],
 
-  authors: [{ name: "ZipDrop" }],
-  creator: "ZipDrop",
+  authors: [
+    { name: "Ved Mehta" },
+    { name: "Virti Panchamia" },
+  ],
+
+  creator: "Ved Mehta, Virti Panchamia",
   publisher: "ZipDrop",
 
   robots: {
     index: true,
     follow: true,
     nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 
   icons: {
@@ -41,7 +54,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ZipDrop – Instant File & Text Sharing",
     description:
-      "Share files or text instantly with a secure 4-digit code. No accounts required.",
+      "Share files or text instantly with a secure 4-digit code. Built by Ved Mehta and Virti Panchamia from DJ Sanghvi College of Engineering.",
     url: "https://zip-drop.vercel.app",
     siteName: "ZipDrop",
     images: [
@@ -49,7 +62,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "ZipDrop File Sharing",
+        alt: "ZipDrop File and Text Sharing",
       },
     ],
     locale: "en_US",
@@ -60,13 +73,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ZipDrop – Instant File & Text Sharing",
     description:
-      "Upload files, get a code, and share instantly across devices.",
+      "Share files and text instantly using a secure 4-digit code. Built by Ved Mehta and Virti Panchamia.",
     images: ["/og-image.png"],
   },
 
   category: "technology",
 };
-
 export default function RootLayout({
   children,
 }: {

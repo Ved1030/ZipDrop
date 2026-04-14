@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZipDrop — Live Edit Demo</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #050D0B;
+      --bg2: #08120F;
+      --bg3: #0D1A16;
+      --bg4: #112218;
+      --border: #1A3028;
+      --border2: #24473A;
+      --accent: #00E5C0;
+      --accent2: #00B4E5;
+      --accent3: #FFB830;
+      --text1: #E8FFF9;
+      --text2: #A0C8BE;
+      --text3: #5A8A7A;
+      --danger: #FF5A5A;
+      --success: #3DFFA0;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text1);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 2px;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      border-bottom: 0.5px solid var(--border);
+      background: rgba(5, 13, 11, 0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--accent);
+      text-shadow: 0 0 20px rgba(0, 229, 192, 0.4);
+    }
+
+    .header-pills {
+      display: flex;
+      gap: 8px;
+    }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+    }
+
+    .pill-green {
+      background: rgba(0, 229, 192, 0.1);
+      color: var(--accent);
+      border: 0.5px solid rgba(0, 229, 192, 0.25);
+    }
+
+    .pill-blue {
+      background: rgba(0, 180, 229, 0.1);
+      color: var(--accent2);
+      border: 0.5px solid rgba(0, 180, 229, 0.25);
+    }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 28px 24px;
+      gap: 20px;
+    }
+
+    /* ── PANEL ── */
+    .panel {
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      padding: 16px 18px;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text1);
+    }
+
+    .panel-sub {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 1px;
+    }
+
+    /* ── LEFT PANEL — SEND ── */
+    .send-body {
+      padding: 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tab-row {
+      display: flex;
+      background: var(--bg3);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 7px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text3);
+      transition: all 0.2s;
+      border: none;
+      background: none;
+      font-family: var(--font-body);
+    }
+
+    .tab-btn.active {
+      background: var(--bg4);
+      color: var(--accent);
+      border: 0.5px solid var(--border2);
+    }
+
+    .drop-zone {
+      border: 1.5px dashed var(--border2);
+      border-radius: 12px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.dragover {
+      border-color: var(--accent);
+      background: rgba(0, 229, 192, 0.04);
+    }
+
+    .drop-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .drop-text {
+      font-size: 13px;
+      color: var(--text2);
+      font-weight: 500;
+    }
+
+    .drop-sub {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 4px;
+    }
+
+    .format-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+      justify-content: center;
+    }
+
+    .fmt-chip {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+
+    .text-input {
+      background: var(--bg3);
+      border: 0.5px solid var(--border2);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 13px;
+      color: var(--text1);
+      font-family: var(--font-body);
+      resize: none;
+      width: 100%;
+      outline: none;
+      min-height: 100px;
+    }
+
+    .text-input::placeholder {
+      color: var(--text3);
+    }
+
+    .text-input:focus {
+      border-color: var(--accent);
+    }
+
+    .file-preview {
+      background: var(--bg3);
+      border: 0.5px solid var(--border2);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .file-type-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      flex-shrink: 0;
+    }
+
+    .file-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text1);
+    }
+
+    .file-size {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 2px;
+    }
+
+    .remove-btn {
+      margin-left: auto;
+      font-size: 16px;
+      color: var(--text3);
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .remove-btn:hover {
+      color: var(--danger);
+    }
+
+    .send-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: var(--accent);
+      color: #030E10;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font-display);
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .send-btn:hover {
+      background: #00ffD6;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0, 229, 192, 0.3);
+    }
+
+    .send-btn:active {
+      transform: translateY(0);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ── CODE DISPLAY ── */
+    .code-display {
+      background: var(--bg4);
+      border: 0.5px solid var(--border2);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .code-label {
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+
+    .code-digits {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .code-digit {
+      width: 48px;
+      height: 52px;
+      background: var(--bg2);
+      border: 1.5px solid var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--accent);
+      animation: digitPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes digitPop {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .code-hint {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 10px;
+    }
+
+    .copy-link {
+      font-size: 11px;
+      color: var(--accent2);
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    /* ── RECEIVE SECTION ── */
+    .receive-inputs {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .recv-digit {
+      width: 52px;
+      height: 56px;
+      background: var(--bg3);
+      border: 0.5px solid var(--border2);
+      border-radius: 10px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 22px;
+      color: var(--text1);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .recv-digit:focus {
+      border-color: var(--accent);
+    }
+
+    .recv-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: var(--bg4);
+      color: var(--accent2);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font-display);
+      cursor: pointer;
+      border: 0.5px solid var(--border2);
+      transition: all 0.2s;
+    }
+
+    .recv-btn:hover {
+      border-color: var(--accent2);
+      background: rgba(0, 180, 229, 0.08);
+    }
+
+    /* ── RIGHT PANEL — EDITOR ── */
+    .editor-panel {
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .editor-topbar {
+      padding: 10px 16px;
+      background: var(--bg3);
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .traffic-lights {
+      display: flex;
+      gap: 5px;
+    }
+
+    .tl {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .editor-filename {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text2);
+      margin-left: 4px;
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--success);
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8)
+      }
+    }
+
+    .editor-tabs {
+      display: flex;
+      background: var(--bg3);
+      border-bottom: 0.5px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .editor-tab {
+      padding: 9px 16px;
+      font-size: 12px;
+      color: var(--text3);
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .editor-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(0, 229, 192, 0.04);
+    }
+
+    .editor-tab:hover:not(.active) {
+      color: var(--text2);
+    }
+
+    .tab-fmt {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    .editor-content {
+      flex: 1;
+      overflow: auto;
+      position: relative;
+    }
+
+    .editor-view {
+      display: none;
+      height: 100%;
+      flex-direction: column;
+    }
+
+    .editor-view.active {
+      display: flex;
+    }
+
+    /* DOC EDITOR */
+    .doc-editor {
+      flex: 1;
+      padding: 24px 32px;
+      overflow-y: auto;
+    }
+
+    .doc-toolbar {
+      display: flex;
+      gap: 4px;
+      padding: 8px 12px;
+      background: var(--bg3);
+      border-bottom: 0.5px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .doc-tool {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--text2);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: var(--font-body);
+      transition: all 0.15s;
+    }
+
+    .doc-tool:hover {
+      background: var(--bg4);
+      color: var(--text1);
+    }
+
+    .doc-tool.active {
+      background: var(--bg4);
+      color: var(--accent);
+    }
+
+    .doc-tool-sep {
+      width: 0.5px;
+      background: var(--border);
+      margin: 2px 4px;
+    }
+
+    [contenteditable] {
+      outline: none;
+    }
+
+    .doc-h1 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text1);
+      margin-bottom: 8px;
+    }
+
+    .doc-h1[contenteditable]:focus {
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .doc-body {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.9;
+    }
+
+    .doc-body[contenteditable]:focus {}
+
+    .doc-meta {
+      font-size: 11px;
+      color: var(--text3);
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+    }
+
+    /* SHEET EDITOR */
+    .sheet-editor {
+      flex: 1;
+      overflow: auto;
+    }
+
+    .sheet-table {
+      border-collapse: collapse;
+      min-width: 100%;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .sheet-cell-th {
+      background: var(--bg3);
+      padding: 7px 12px;
+      color: var(--text3);
+      font-weight: 500;
+      border: 0.5px solid var(--border);
+      text-align: left;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .sheet-cell-td {
+      padding: 6px 12px;
+      color: var(--text2);
+      border: 0.5px solid var(--border);
+      outline: none;
+      min-width: 100px;
+    }
+
+    .sheet-cell-td:focus {
+      background: rgba(0, 229, 192, 0.06);
+      color: var(--text1);
+      box-shadow: inset 0 0 0 1.5px var(--accent);
+    }
+
+    .sheet-row-num {
+      background: var(--bg3);
+      color: var(--text3);
+      font-size: 10px;
+      padding: 6px 8px;
+      border: 0.5px solid var(--border);
+      text-align: center;
+      user-select: none;
+    }
+
+    .sheet-formula {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      background: var(--bg3);
+      border-bottom: 0.5px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .fx-label {
+      color: var(--accent3);
+      font-size: 11px;
+    }
+
+    /* CODE EDITOR */
+    .code-editor-wrap {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .line-nums {
+      padding: 16px 8px 16px 12px;
+      background: var(--bg3);
+      color: var(--text3);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: right;
+      user-select: none;
+      border-right: 0.5px solid var(--border);
+      min-width: 40px;
+    }
+
+    .code-content {
+      flex: 1;
+      padding: 16px;
+      overflow: auto;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text2);
+    }
+
+    .code-content[contenteditable] {
+      outline: none;
+    }
+
+    .kw {
+      color: #7ECFFF;
+    }
+
+    .fn {
+      color: #FFD580;
+    }
+
+    .str {
+      color: var(--success);
+    }
+
+    .cmt {
+      color: var(--text3);
+      font-style: italic;
+    }
+
+    .num {
+      color: #FF9AAD;
+    }
+
+    .cls {
+      color: #C9A7FF;
+    }
+
+    /* IMAGE VIEWER */
+    .img-editor {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      gap: 16px;
+    }
+
+    .img-canvas {
+      width: 100%;
+      max-width: 360px;
+      border-radius: 12px;
+      border: 0.5px solid var(--border2);
+      overflow: hidden;
+    }
+
+    .img-tools {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .img-tool-btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 0.5px solid var(--border2);
+      background: var(--bg3);
+      color: var(--text2);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .img-tool-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .img-tool-btn.active-tool {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0, 229, 192, 0.08);
+    }
+
+    /* COLLAB + VERSIONS SIDEBAR */
+    .right-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-left: 0.5px solid var(--border);
+      width: 200px;
+      flex-shrink: 0;
+      background: var(--bg3);
+    }
+
+    .sidebar-section {
+      padding: 12px 14px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .sidebar-title {
+      font-size: 10px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+
+    .collab-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .collab-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      font-family: var(--font-display);
+      flex-shrink: 0;
+    }
+
+    .collab-name {
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .collab-status {
+      font-size: 10px;
+      color: var(--text3);
+    }
+
+    .online-ring {
+      box-shadow: 0 0 0 2px var(--bg3), 0 0 0 3.5px var(--success);
+    }
+
+    .version-item {
+      padding: 8px 0;
+      border-bottom: 0.5px solid var(--border);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .version-item:last-child {
+      border-bottom: none;
+    }
+
+    .version-item:hover {
+      opacity: 0.8;
+    }
+
+    .version-item.current {}
+
+    .v-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 3px;
+    }
+
+    .v-time {
+      font-size: 10px;
+      color: var(--text3);
+    }
+
+    .v-author {
+      font-size: 11px;
+      color: var(--text2);
+    }
+
+    /* BOTTOM BAR */
+    .editor-bottom {
+      padding: 10px 16px;
+      background: var(--bg3);
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .resend-btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent);
+      color: #030E10;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--font-display);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .resend-btn:hover {
+      background: #00FFD6;
+      box-shadow: 0 0 12px rgba(0, 229, 192, 0.3);
+    }
+
+    .new-code-display {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .new-code-label {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .new-code-val {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      font-weight: 500;
+    }
+
+    .auto-save-txt {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--text3);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .save-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      opacity: 0.4;
+    }
+
+    .empty-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text2);
+    }
+
+    .empty-desc {
+      font-size: 13px;
+      color: var(--text3);
+      line-height: 1.6;
+      max-width: 280px;
+    }
+
+    .try-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .try-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 0.5px solid var(--border2);
+      background: var(--bg3);
+      color: var(--text2);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .try-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0, 229, 192, 0.06);
+    }
+
+    /* TOASTS */
+    .toast-wrap {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 999;
+    }
+
+    .toast {
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1
+      }
+    }
+
+    .toast-success {
+      background: #071A10;
+      border: 0.5px solid #1A5C30;
+      color: var(--success);
+    }
+
+    .toast-info {
+      background: #07101A;
+      border: 0.5px solid #1A3A5C;
+      color: var(--accent2);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 8, 7, 0.85);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg2);
+      border: 0.5px solid var(--border2);
+      border-radius: 16px;
+      padding: 28px;
+      max-width: 360px;
+      width: 90%;
+      animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes modalIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .modal-sub {
+      font-size: 13px;
+      color: var(--text3);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .modal-code {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-digit {
+      width: 60px;
+      height: 64px;
+      background: var(--bg3);
+      border: 1.5px solid var(--accent);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-display);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .modal-btn-primary {
+      background: var(--accent);
+      color: #030E10;
+    }
+
+    .modal-btn-primary:hover {
+      background: #00FFD6;
+    }
+
+    .modal-btn-sec {
+      background: var(--bg3);
+      color: var(--text2);
+      border: 0.5px solid var(--border2);
+    }
+
+    .modal-btn-sec:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width: 768px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+
+      .right-sidebar {
+        width: 100%;
+        border-left: none;
+        border-top: 0.5px solid var(--border);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <header>
+      <div class="logo">Zip<span>Drop</span></div>
+      <div class="header-pills">
+        <span class="pill pill-green">● Live editing</span>
+        <span class="pill pill-blue">No sign-up</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- LEFT: SEND / RECEIVE -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" style="background:rgba(0,229,192,0.1);">📤</div>
+          <div>
+            <div class="panel-title">Send a file</div>
+            <div class="panel-sub">Upload, get a code, share it</div>
+          </div>
+        </div>
+        <div class="send-body">
+          <div class="tab-row">
+            <button class="tab-btn active" onclick="switchSendTab('file', this)">Upload File</button>
+            <button class="tab-btn" onclick="switchSendTab('text', this)">Share Text</button>
+          </div>
+
+          <!-- FILE TAB -->
+          <div id="fileTab">
+            <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"
+              ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+              <span class="drop-icon">☁️</span>
+              <div class="drop-text">Drag & drop any file here</div>
+              <div class="drop-sub">or click to browse</div>
+              <div class="format-chips" style="margin-top:12px;">
+                <span class="fmt-chip" style="background:rgba(0,229,192,0.12);color:var(--accent);">.docx</span>
+                <span class="fmt-chip" style="background:rgba(0,180,229,0.12);color:var(--accent2);">.xlsx</span>
+                <span class="fmt-chip" style="background:rgba(255,184,48,0.12);color:var(--accent3);">.py</span>
+                <span class="fmt-chip" style="background:rgba(201,167,255,0.12);color:#C9A7FF;">.pdf</span>
+                <span class="fmt-chip" style="background:rgba(255,90,90,0.12);color:#FF9AAD;">image</span>
+              </div>
+            </div>
+            <input type="file" id="fileInput" style="display:none" onchange="handleFileSelect(this.files[0])">
+            <div id="filePreview" style="display:none"></div>
+          </div>
+
+          <!-- TEXT TAB -->
+          <div id="textTab" style="display:none">
+            <textarea class="text-input" id="textInput" placeholder="Type or paste any text, code, notes..."
+              rows="5"></textarea>
+          </div>
+
+          <button class="send-btn" id="sendBtn" onclick="handleSend()">Generate Code & Send ↗</button>
+
+          <!-- CODE DISPLAY -->
+          <div id="codeDisplay" style="display:none">
+            <div class="code-display">
+              <div class="code-label">Your 4-digit drop code</div>
+              <div class="code-digits" id="codeDigits"></div>
+              <div class="code-hint">Share this code with anyone</div>
+              <div class="copy-link" onclick="copyCode()">Copy code to clipboard</div>
+            </div>
+          </div>
+
+          <!-- DIVIDER -->
+          <div style="display:flex;align-items:center;gap:10px;margin:4px 0;">
+            <div style="flex:1;height:0.5px;background:var(--border)"></div>
+            <span style="font-size:11px;color:var(--text3);">or receive</span>
+            <div style="flex:1;height:0.5px;background:var(--border)"></div>
+          </div>
+
+          <!-- RECEIVE -->
+          <div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:10px;text-align:center;">Enter the 4-digit code
+              from sender</div>
+            <div class="receive-inputs">
+              <input class="recv-digit" maxlength="1" id="r0" oninput="digitNext(this,'r1')"
+                onkeydown="digitBack(event,this,null)">
+              <input class="recv-digit" maxlength="1" id="r1" oninput="digitNext(this,'r2')"
+                onkeydown="digitBack(event,this,'r0')">
+              <input class="recv-digit" maxlength="1" id="r2" oninput="digitNext(this,'r3')"
+                onkeydown="digitBack(event,this,'r1')">
+              <input class="recv-digit" maxlength="1" id="r3" oninput="digitNext(this,null)"
+                onkeydown="digitBack(event,this,'r2')">
+            </div>
+          </div>
+          <button class="recv-btn" onclick="handleReceive()">🔍 Receive & Open File</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: EDITOR -->
+      <div class="editor-panel" id="editorPanel">
+        <!-- EMPTY STATE -->
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">✦</div>
+          <div class="empty-title">Nothing open yet</div>
+          <div class="empty-desc">Send or receive a file to open it in the live editor. Try a demo file to see how it
+            works.</div>
+          <div class="try-btns">
+            <button class="try-btn" onclick="loadDemo('doc')">📄 Demo Doc</button>
+            <button class="try-btn" onclick="loadDemo('sheet')">📊 Demo Sheet</button>
+            <button class="try-btn" onclick="loadDemo('code')">💻 Demo Code</button>
+            <button class="try-btn" onclick="loadDemo('image')">🖼 Demo Image</button>
+          </div>
+        </div>
+
+        <!-- EDITOR STATE (hidden until file loaded) -->
+        <div id="editorState" style="display:none;flex:1;display:none;flex-direction:column;">
+          <div class="editor-topbar">
+            <div class="traffic-lights">
+              <div class="tl" style="background:#FF5F57"></div>
+              <div class="tl" style="background:#FEBC2E"></div>
+              <div class="tl" style="background:#28C840"></div>
+            </div>
+            <div class="editor-filename" id="editorFilename">untitled</div>
+            <div class="live-badge">
+              <div class="live-dot"></div>Live
+            </div>
+          </div>
+
+          <div style="display:flex;flex:1;overflow:hidden;">
+            <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+              <!-- DOC TOOLBAR -->
+              <div class="doc-toolbar" id="docToolbar" style="display:none;">
+                <button class="doc-tool active" onclick="this.classList.toggle('active')"
+                  style="font-weight:700;">B</button>
+                <button class="doc-tool" onclick="this.classList.toggle('active')" style="font-style:italic;">I</button>
+                <button class="doc-tool" onclick="this.classList.toggle('active')"
+                  style="text-decoration:underline;">U</button>
+                <div class="doc-tool-sep"></div>
+                <button class="doc-tool">H1</button>
+                <button class="doc-tool">H2</button>
+                <button class="doc-tool">List</button>
+                <div class="doc-tool-sep"></div>
+                <button class="doc-tool">🔗 Link</button>
+                <button class="doc-tool">💬 Comment</button>
+              </div>
+
+              <!-- SHEET FORMULA BAR -->
+              <div class="sheet-formula" id="sheetFormula" style="display:none;">
+                <span class="fx-label">fx</span>
+                <span id="formulaContent" style="color:var(--text1);">Select a cell to edit</span>
+              </div>
+
+              <!-- EDITOR VIEWS -->
+              <div class="editor-content">
+                <!-- DOC -->
+                <div class="editor-view" id="view-doc">
+                  <div class="doc-editor">
+                    <div class="doc-h1" contenteditable="true" id="docTitle">Q4 Performance Report</div>
+                    <div class="doc-meta">
+                      <span>Last edited by you · just now</span>
+                      <span>·</span>
+                      <span style="color:var(--success)">Auto-saved</span>
+                    </div>
+                    <div class="doc-body" contenteditable="true" id="docBody">
+                      Revenue grew by <strong style="color:var(--accent)">34%</strong> year-over-year, surpassing the Q4
+                      target of 28%. Customer retention remained strong at 91%, up from 87% in Q3.<br><br>
+                      New markets in Southeast Asia contributed 12% of total revenue, driven by strong adoption in
+                      Singapore and Indonesia. The enterprise segment saw the highest growth at 52% YoY.<br><br>
+                      Key highlights for the quarter include the successful launch of our self-serve onboarding flow,
+                      which reduced time-to-value by 40%. The sales team closed 3 enterprise deals above $500K
+                      ARR.<br><br>
+                      Looking ahead to Q1, we expect continued growth in the Asia-Pacific region and plan to expand our
+                      sales team by 8 additional reps focused on mid-market accounts.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SHEET -->
+                <div class="editor-view" id="view-sheet">
+                  <div class="sheet-editor">
+                    <table class="sheet-table" id="sheetTable">
+                      <thead>
+                        <tr>
+                          <th class="sheet-cell-th" style="width:40px"></th>
+                          <th class="sheet-cell-th">Category</th>
+                          <th class="sheet-cell-th">Q1 ($)</th>
+                          <th class="sheet-cell-th">Q2 ($)</th>
+                          <th class="sheet-cell-th">Q3 ($)</th>
+                          <th class="sheet-cell-th">Q4 ($)</th>
+                          <th class="sheet-cell-th">Total ($)</th>
+                        </tr>
+                      </thead>
+                      <tbody id="sheetBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- CODE -->
+                <div class="editor-view" id="view-code">
+                  <div class="code-editor-wrap">
+                    <div class="line-nums" id="lineNums"></div>
+                    <div class="code-content" contenteditable="true" spellcheck="false" id="codeContent"></div>
+                  </div>
+                </div>
+
+                <!-- IMAGE -->
+                <div class="editor-view" id="view-image">
+                  <div class="img-editor">
+                    <canvas id="imgCanvas" class="img-canvas" width="400" height="240"></canvas>
+                    <div class="img-tools">
+                      <button class="img-tool-btn active-tool" id="tool-none"
+                        onclick="setImgTool('none',this)">Normal</button>
+                      <button class="img-tool-btn" id="tool-grayscale"
+                        onclick="setImgTool('grayscale',this)">Grayscale</button>
+                      <button class="img-tool-btn" id="tool-sepia" onclick="setImgTool('sepia',this)">Sepia</button>
+                      <button class="img-tool-btn" id="tool-bright"
+                        onclick="setImgTool('bright',this)">Brighten</button>
+                      <button class="img-tool-btn" id="tool-invert" onclick="setImgTool('invert',this)">Invert</button>
+                      <button class="img-tool-btn" id="tool-blur" onclick="setImgTool('blur',this)">Blur</button>
+                    </div>
+                    <div style="font-size:11px;color:var(--text3);">Editing: <span id="imgFilename"
+                        style="color:var(--text2);font-family:var(--font-mono)">demo-image.png</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="right-sidebar">
+              <div class="sidebar-section">
+                <div class="sidebar-title">Collaborators</div>
+                <div id="collabList"></div>
+              </div>
+              <div class="sidebar-section" style="flex:1;overflow-y:auto;">
+                <div class="sidebar-title">Version history</div>
+                <div id="versionList"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="editor-bottom">
+            <button class="resend-btn" onclick="handleResend()">Resend edited ↗</button>
+            <div class="new-code-display" id="newCodeDisplay" style="display:none;">
+              <span class="new-code-label">New code:</span>
+              <span class="new-code-val" id="newCodeVal"></span>
+            </div>
+            <div class="auto-save-txt">
+              <div class="save-dot"></div>Auto-saved
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal">
+      <div class="modal">
+        <div class="modal-title" id="modalTitle">File sent!</div>
+        <div class="modal-sub" id="modalSub">Share this code with anyone to receive and live-edit your file.</div>
+        <div class="modal-code" id="modalCode"></div>
+        <div class="modal-actions">
+          <button class="modal-btn modal-btn-sec" onclick="closeModal()">Close</button>
+          <button class="modal-btn modal-btn-primary" onclick="openEditor(); closeModal()">Open & Edit ↗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── STATE ──
+    let currentFile = null;
+    let currentType = null;
+    let generatedCode = null;
+    let imgFilter = 'none';
+
+    // ── DEMO DATA ──
+    const demos = {
+      doc: { name: 'Q4_Report.gdoc', type: 'doc', label: '.gdoc', color: '#00E5C0', bg: 'rgba(0,229,192,0.12)' },
+      sheet: { name: 'Budget_2025.xlsx', type: 'sheet', label: '.xlsx', color: '#00B4E5', bg: 'rgba(0,180,229,0.12)' },
+      code: { name: 'analytics.py', type: 'code', label: '.py', color: '#FFB830', bg: 'rgba(255,184,48,0.12)' },
+      image: { name: 'product-hero.png', type: 'image', label: '.png', color: '#FF9AAD', bg: 'rgba(255,90,90,0.12)' }
+    };
+
+    const sheetData = [
+      ['Marketing', 42000, 51000, 58500, 63000],
+      ['Engineering', 120000, 134000, 141000, 155000],
+      ['Operations', 28000, 31000, 33000, 36000],
+      ['Sales', 64000, 72000, 89000, 102000],
+      ['Product', 38000, 41000, 45000, 49000],
+    ];
+
+    const codeLines = [
+      '<span class="kw">import</span> pandas <span class="kw">as</span> pd',
+      '<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt',
+      '<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LinearRegression',
+      '',
+      '<span class="cmt"># Load and preprocess Q4 data</span>',
+      '<span class="fn">df</span> = pd.<span class="fn">read_csv</span>(<span class="str">\'q4_revenue.csv\'</span>)',
+      '<span class="fn">df</span>[<span class="str">\'date\'</span>] = pd.<span class="fn">to_datetime</span>(df[<span class="str">\'date\'</span>])',
+      '',
+      '<span class="kw">def</span> <span class="fn">plot_revenue</span>(df, color=<span class="str">\'#00E5C0\'</span>):',
+      '    <span class="fn">fig</span>, <span class="fn">ax</span> = plt.<span class="fn">subplots</span>(figsize=(<span class="num">10</span>, <span class="num">5</span>))',
+      '    ax.<span class="fn">bar</span>(df[<span class="str">\'month\'</span>], df[<span class="str">\'revenue\'</span>], color=color)',
+      '    ax.<span class="fn">set_title</span>(<span class="str">\'Q4 Revenue by Month\'</span>, fontsize=<span class="num">14</span>)',
+      '    ax.<span class="fn">set_xlabel</span>(<span class="str">\'Month\'</span>)',
+      '    ax.<span class="fn">set_ylabel</span>(<span class="str">\'Revenue ($)\'</span>)',
+      '    plt.<span class="fn">tight_layout</span>()',
+      '    <span class="kw">return</span> fig',
+      '',
+      '<span class="cmt"># Run analysis</span>',
+      '<span class="kw">if</span> __name__ == <span class="str">\'__main__\'</span>:',
+      '    <span class="fn">plot_revenue</span>(df)',
+      '    plt.<span class="fn">show</span>()',
+    ];
+
+    const collabUsers = [
+      { initials: 'AK', name: 'Aarav K.', status: 'Editing now', color: '#00E5C0', bg: '#071A10', online: true },
+      { initials: 'RS', name: 'Riya S.', status: 'Viewing', color: '#38C6FF', bg: '#071018', online: true },
+      { initials: 'TM', name: 'Tanvir M.', status: 'Away', color: '#FFB830', bg: '#1A1000', online: false },
+    ];
+
+    const versions = [
+      { tag: 'v4', label: 'Current', author: 'You', time: 'just now', current: true },
+      { tag: 'v3', label: 'Restore', author: 'Riya S.', time: '18 min ago', current: false },
+      { tag: 'v2', label: 'Restore', author: 'You', time: '1 hr ago', current: false },
+      { tag: 'v1', label: 'Restore', author: 'Original', time: '3 hr ago', current: false },
+    ];
+
+    // ── UTILS ──
+    function randCode() {
+      return Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join('');
+    }
+
+    function toast(msg, type = 'success') {
+      const el = document.createElement('div');
+      el.className = `toast toast-${type}`;
+      el.innerHTML = (type === 'success' ? '✓ ' : 'ℹ ') + msg;
+      document.getElementById('toastWrap').appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    // ── SEND TAB ──
+    function switchSendTab(tab, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('fileTab').style.display = tab === 'file' ? 'block' : 'none';
+      document.getElementById('textTab').style.display = tab === 'text' ? 'block' : 'none';
+    }
+
+    // ── FILE HANDLING ──
+    function handleDragOver(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('dragover'); }
+    function handleDragLeave(e) { document.getElementById('dropZone').classList.remove('dragover'); }
+    function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.remove('dragover');
+      if (e.dataTransfer.files[0]) handleFileSelect(e.dataTransfer.files[0]);
+    }
+
+    function handleFileSelect(file) {
+      currentFile = file;
+      const ext = file.name.split('.').pop().toLowerCase();
+      const typeMap = { doc: ['docx', 'doc', 'gdoc', 'txt', 'md'], sheet: ['xlsx', 'xls', 'csv'], code: ['py', 'js', 'ts', 'html', 'css', 'json'], image: ['png', 'jpg', 'jpeg', 'gif', 'webp'] };
+      currentType = 'doc';
+      for (const [t, exts] of Object.entries(typeMap)) { if (exts.includes(ext)) { currentType = t; break; } }
+
+      const colors = { doc: '#00E5C0', sheet: '#00B4E5', code: '#FFB830', image: '#FF9AAD' };
+      const c = colors[currentType];
+      document.getElementById('filePreview').innerHTML = `
+    <div class="file-preview" style="border-color:${c}40;">
+      <div class="file-type-badge" style="background:${c}20;color:${c};">.${ext}</div>
+      <div>
+        <div class="file-name">${file.name}</div>
+        <div class="file-size">${(file.size / 1024).toFixed(1)} KB · ${currentType}</div>
+      </div>
+      <span class="remove-btn" onclick="clearFile()">×</span>
+    </div>`;
+      document.getElementById('filePreview').style.display = 'block';
+      document.getElementById('dropZone').style.display = 'none';
+    }
+
+    function clearFile() {
+      currentFile = null;
+      document.getElementById('filePreview').style.display = 'none';
+      document.getElementById('dropZone').style.display = 'block';
+      document.getElementById('fileInput').value = '';
+    }
+
+    // ── SEND FLOW ──
+    function handleSend() {
+      const code = randCode();
+      generatedCode = code;
+      showModal(code);
+      document.getElementById('codeDisplay').style.display = 'block';
+      const container = document.getElementById('codeDigits');
+      container.innerHTML = '';
+      code.split('').forEach((d, i) => {
+        const el = document.createElement('div');
+        el.className = 'code-digit';
+        el.textContent = d;
+        el.style.animationDelay = `${i * 0.08}s`;
+        container.appendChild(el);
+      });
+
+      // preload demo type if no file
+      if (!currentFile && !currentType) currentType = 'doc';
+    }
+
+    function showModal(code) {
+      document.getElementById('modalCode').innerHTML = code.split('').map(d => `<div class="modal-digit">${d}</div>`).join('');
+      document.getElementById('modal').classList.add('show');
+    }
+
+    function closeModal() { document.getElementById('modal').classList.remove('show'); }
+
+    function openEditor() {
+      if (!currentType) currentType = 'doc';
+      const name = currentFile ? currentFile.name : demos[currentType].name;
+      loadEditorFor(currentType, name);
+    }
+
+    // ── RECEIVE ──
+    function digitNext(el, nextId) { if (el.value && nextId) document.getElementById(nextId).focus(); }
+    function digitBack(e, el, prevId) { if (e.key === 'Backspace' && !el.value && prevId) document.getElementById(prevId).focus(); }
+
+    function handleReceive() {
+      const code = ['r0', 'r1', 'r2', 'r3'].map(id => document.getElementById(id).value).join('');
+      if (code.length < 4) { toast('Enter all 4 digits', 'info'); return; }
+
+      // Demo codes trigger specific types
+      const typeByCode = { '1234': 'doc', '5678': 'sheet', '9999': 'code', '0000': 'image' };
+      const t = typeByCode[code] || 'doc';
+      currentType = t;
+      const name = demos[t].name;
+      toast(`File received! Opening ${name}…`);
+      setTimeout(() => loadEditorFor(t, name), 600);
+    }
+
+    // ── EDITOR LOADER ──
+    function loadEditorFor(type, filename) {
+      currentType = type;
+      document.getElementById('emptyState').style.display = 'none';
+      const es = document.getElementById('editorState');
+      es.style.display = 'flex';
+
+      document.getElementById('editorFilename').textContent = filename;
+
+      // hide all views
+      document.querySelectorAll('.editor-view').forEach(v => v.classList.remove('active'));
+      document.getElementById('docToolbar').style.display = 'none';
+      document.getElementById('sheetFormula').style.display = 'none';
+
+      if (type === 'doc') {
+        document.getElementById('view-doc').classList.add('active');
+        document.getElementById('docToolbar').style.display = 'flex';
+        document.getElementById('docTitle').focus();
+      } else if (type === 'sheet') {
+        document.getElementById('view-sheet').classList.add('active');
+        document.getElementById('sheetFormula').style.display = 'flex';
+        buildSheet();
+      } else if (type === 'code') {
+        document.getElementById('view-code').classList.add('active');
+        buildCode();
+      } else if (type === 'image') {
+        document.getElementById('view-image').classList.add('active');
+        document.getElementById('imgFilename').textContent = filename;
+        drawDemoImage();
+      }
+
+      buildCollabList();
+      buildVersionList();
+      toast(`${filename} opened in live editor`);
+    }
+
+    function loadDemo(type) {
+      currentType = type;
+      loadEditorFor(type, demos[type].name);
+    }
+
+    // ── SHEET ──
+    function buildSheet() {
+      const body = document.getElementById('sheetBody');
+      body.innerHTML = '';
+      sheetData.forEach((row, ri) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="sheet-row-num">${ri + 1}</td>`;
+        const total = row[1] + row[2] + row[3] + row[4];
+        [...row, total].forEach((val, ci) => {
+          const td = document.createElement('td');
+          td.className = 'sheet-cell-td';
+          td.contentEditable = 'true';
+          td.textContent = ci === 0 ? val : '$' + val.toLocaleString();
+          td.addEventListener('focus', () => {
+            document.getElementById('formulaContent').textContent = ci === 0 ? val : '=' + val;
+          });
+          td.addEventListener('blur', () => {
+            document.getElementById('formulaContent').textContent = 'Select a cell to edit';
+            addVersion();
+          });
+          tr.appendChild(td);
+        });
+        body.appendChild(tr);
+      });
+    }
+
+    // ── CODE ──
+    function buildCode() {
+      const nums = document.getElementById('lineNums');
+      const content = document.getElementById('codeContent');
+      nums.innerHTML = codeLines.map((_, i) => i + 1).join('<br>');
+      content.innerHTML = codeLines.map(l => `<div>${l || '&nbsp;'}</div>`).join('');
+      content.addEventListener('input', () => {
+        const lines = content.children.length;
+        nums.innerHTML = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
+        addVersion();
+      });
+    }
+
+    // ── IMAGE ──
+    function drawDemoImage(filter) {
+      const canvas = document.getElementById('imgCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw synthetic gradient scene
+      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      grad.addColorStop(0, '#050D0B');
+      grad.addColorStop(0.5, '#0D2820');
+      grad.addColorStop(1, '#0A1E30');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grid lines
+      ctx.strokeStyle = 'rgba(0,229,192,0.08)';
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+      for (let y = 0; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+
+      // Logo text
+      ctx.font = 'bold 40px Syne, sans-serif';
+      ctx.fillStyle = '#E8FFF9';
+      ctx.textAlign = 'center';
+      ctx.fillText('Zip', 160, 100);
+      ctx.fillStyle = '#00E5C0';
+      ctx.fillText('Drop', 270, 100);
+
+      ctx.font = '14px DM Sans, sans-serif';
+      ctx.fillStyle = '#7CA99A';
+      ctx.fillText('Live file sharing — no accounts', canvas.width / 2, 135);
+
+      // Accent circle
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, 185, 28, 0, Math.PI * 2);
+      ctx.strokeStyle = '#00E5C0';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.font = '22px sans-serif';
+      ctx.fillStyle = '#00E5C0';
+      ctx.fillText('✦', canvas.width / 2 - 10, 195);
+
+      // Apply filter
+      if (filter && filter !== 'none') {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const d = imageData.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const r = d[i], g = d[i + 1], b = d[i + 2];
+          if (filter === 'grayscale') { const v = 0.3 * r + 0.59 * g + 0.11 * b; d[i] = d[i + 1] = d[i + 2] = v; }
+          else if (filter === 'sepia') { d[i] = Math.min(255, r * 0.393 + g * 0.769 + b * 0.189); d[i + 1] = Math.min(255, r * 0.349 + g * 0.686 + b * 0.168); d[i + 2] = Math.min(255, r * 0.272 + g * 0.534 + b * 0.131); }
+          else if (filter === 'bright') { d[i] = Math.min(255, r * 1.4); d[i + 1] = Math.min(255, g * 1.4); d[i + 2] = Math.min(255, b * 1.4); }
+          else if (filter === 'invert') { d[i] = 255 - r; d[i + 1] = 255 - g; d[i + 2] = 255 - b; }
+        }
+        ctx.putImageData(imageData, 0, 0);
+        if (filter === 'blur') { ctx.filter = 'blur(3px)'; ctx.drawImage(canvas, 0, 0); ctx.filter = 'none'; }
+      }
+    }
+
+    function setImgTool(tool, btn) {
+      imgFilter = tool;
+      document.querySelectorAll('.img-tool-btn').forEach(b => b.classList.remove('active-tool'));
+      btn.classList.add('active-tool');
+      drawDemoImage(tool);
+      addVersion();
+    }
+
+    // ── COLLAB ──
+    function buildCollabList() {
+      document.getElementById('collabList').innerHTML = collabUsers.map(u => `
+    <div class="collab-user">
+      <div class="collab-avatar ${u.online ? 'online-ring' : ''}" style="background:${u.bg};color:${u.color};">${u.initials}</div>
+      <div>
+        <div class="collab-name">${u.name}</div>
+        <div class="collab-status">${u.status}</div>
+      </div>
+    </div>`).join('');
+    }
+
+    // ── VERSIONS ──
+    let versionCount = 4;
+    function buildVersionList() {
+      document.getElementById('versionList').innerHTML = versions.map(v => `
+    <div class="version-item ${v.current ? 'current' : ''}">
+      <div class="v-tag" style="background:${v.current ? 'rgba(0,229,192,0.15)' : 'rgba(255,255,255,0.05)'};color:${v.current ? 'var(--accent)' : 'var(--text3)'};">${v.tag}</div>
+      <div class="v-author">${v.author}</div>
+      <div class="v-time">${v.time} · <span style="color:${v.current ? 'var(--success)' : 'var(--accent2)'};cursor:pointer;">${v.label}</span></div>
+    </div>`).join('');
+    }
+
+    function addVersion() {
+      versionCount++;
+      const newV = { tag: `v${versionCount}`, label: 'Current', author: 'You', time: 'just now', current: true };
+      versions[0].current = false; versions[0].label = 'Restore'; versions[0].time = '< 1 min ago';
+      versions.unshift(newV);
+      if (versions.length > 6) versions.pop();
+      buildVersionList();
+    }
+
+    // ── RESEND ──
+    function handleResend() {
+      const code = randCode();
+      document.getElementById('newCodeDisplay').style.display = 'flex';
+      document.getElementById('newCodeVal').textContent = code.split('').join(' ');
+      toast(`Resent with new code: ${code.split('').join(' ')}`);
+      addVersion();
+    }
+
+    // ── COPY ──
+    function copyCode() {
+      if (generatedCode) {
+        navigator.clipboard.writeText(generatedCode).catch(() => { });
+        toast('Code copied to clipboard');
+      }
+    }
+
+    // ── INIT: doc-body autosave ──
+    document.getElementById('docBody').addEventListener('input', () => addVersion());
+    document.getElementById('docTitle').addEventListener('input', () => addVersion());
+  </script>
+</body>
+
+</html>

@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, Suspense, lazy } from "react";
 import UploadCard from "../components/UploadCard";
 import ReceiveCard from "../components/ReceiveCard";
+
+const ZDEditorDrawer = lazy(() => import("../components/ZDEditorDrawer"));
 
 /* ─── Animated Particle Background ──────────── */
 
@@ -168,6 +170,10 @@ function StatsStrip() {
 /* ─── Page ────────────────────────────── */
 
 export default function Home() {
+  const [zd_editorOpen, set_zd_editorOpen] = useState(false);
+  const [zd_currentFile, set_zd_currentFile] = useState<any>(null);
+  const [zd_resendCode, set_zd_resendCode] = useState<string | null>(null);
+
   return (
     <>
       {/* Background layers */}
@@ -286,8 +292,23 @@ export default function Home() {
           }}
         >
           <UploadCard />
-          <ReceiveCard />
+          <ReceiveCard 
+            onFileReceived={(file: any) => set_zd_currentFile(file)}
+            set_zd_editorOpen={set_zd_editorOpen}
+            set_zd_currentFile={set_zd_currentFile}
+          />
         </section>
+
+        {/* Injection Point 2: Editor Drawer */}
+        <Suspense fallback={null}>
+          {zd_editorOpen && (
+            <ZDEditorDrawer 
+              file={zd_currentFile} 
+              onClose={() => set_zd_editorOpen(false)}
+              onResend={(newCode: string) => set_zd_resendCode(newCode)}
+            />
+          )}
+        </Suspense>
 
         {/* ── STATS ── */}
         <section style={{ animation: "fadeInUp 0.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both" }}>

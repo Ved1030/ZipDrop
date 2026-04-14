@@ -1,6 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, Suspense, lazy } from "react";
+import ZDErrorBoundary from "./ZDErrorBoundary";
+
+const ZDOpenEditButton = lazy(() => import("./ZDOpenEditButton"));
+const ZDFormatPreviewCard = lazy(() => import("./ZDFormatPreviewCard"));
 
 interface ReceivedFile {
   file_name: string;
@@ -87,7 +91,15 @@ function CheckIcon() {
 
 /* ─── MAIN COMPONENT ─────────────────────────── */
 
-export default function ReceiveCard() {
+export default function ReceiveCard({ 
+  onFileReceived, 
+  set_zd_editorOpen, 
+  set_zd_currentFile 
+}: { 
+  onFileReceived?: (file: any) => void;
+  set_zd_editorOpen: (open: boolean) => void;
+  set_zd_currentFile: (file: any) => void;
+}) {
   const [digits, setDigits] = useState<string[]>(["", "", "", ""]);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [files, setFiles] = useState<ReceivedFile[]>([]);
@@ -499,7 +511,21 @@ export default function ReceiveCard() {
           {/* File list */}
           <div className="file-list">
             {files.map((file, index) => (
-              <div key={index} className="file-item">
+              <div key={index} style={{ marginBottom: '24px' }}>
+                {/* Injection Point 3: Format Preview Card */}
+                <ZDErrorBoundary>
+                  <Suspense fallback={null}>
+                    <ZDFormatPreviewCard 
+                      file={file} 
+                      onEditClick={() => {
+                        set_zd_currentFile(file);
+                        set_zd_editorOpen(true);
+                      }} 
+                    />
+                  </Suspense>
+                </ZDErrorBoundary>
+
+                <div className="file-item">
                 <span style={{ color: "var(--cyan)", flexShrink: 0 }}>
                   <FileIcon />
                 </span>
@@ -524,9 +550,23 @@ export default function ReceiveCard() {
                   <DownloadIcon size={12} />
                   Save
                 </a>
+
+                {/* Injection Point 1: Open & Edit Button */}
+                <ZDErrorBoundary>
+                  <Suspense fallback={null}>
+                    <ZDOpenEditButton 
+                      file={file} 
+                      onOpen={() => {
+                        set_zd_currentFile(file);
+                        set_zd_editorOpen(true);
+                      }} 
+                    />
+                  </Suspense>
+                </ZDErrorBoundary>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
 
           {/* Full-width Download All ZIP */}
           {files.length > 1 && (

@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, Suspense, lazy } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import UploadCard from "../components/UploadCard";
 import ReceiveCard from "../components/ReceiveCard";
 
-const ZDEditorDrawer = lazy(() => import("../components/ZDEditorDrawer"));
 
 /* ─── Animated Particle Background ──────────── */
 
@@ -299,16 +298,7 @@ export default function Home() {
           />
         </section>
 
-        {/* Injection Point 2: Editor Drawer */}
-        <Suspense fallback={null}>
-          {zd_editorOpen && (
-            <ZDEditorDrawer 
-              file={zd_currentFile} 
-              onClose={() => set_zd_editorOpen(false)}
-              onResend={(newCode: string) => set_zd_resendCode(newCode)}
-            />
-          )}
-        </Suspense>
+        {/* Editor opens in a new tab via ZDOpenEditButton — no drawer */}
 
         {/* ── STATS ── */}
         <section style={{ animation: "fadeInUp 0.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both" }}>

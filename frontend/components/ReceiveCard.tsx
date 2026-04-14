@@ -13,7 +13,7 @@ interface ReceivedFile {
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://zipdrop-backend-production.up.railway.app";
+  "https://zipdrop.onrender.com";
 
 /* ─── Icons ─────────────────────────────────── */
 
@@ -91,11 +91,11 @@ function CheckIcon() {
 
 /* ─── MAIN COMPONENT ─────────────────────────── */
 
-export default function ReceiveCard({ 
-  onFileReceived, 
-  set_zd_editorOpen, 
-  set_zd_currentFile 
-}: { 
+export default function ReceiveCard({
+  onFileReceived,
+  set_zd_editorOpen,
+  set_zd_currentFile
+}: {
   onFileReceived?: (file: any) => void;
   set_zd_editorOpen: (open: boolean) => void;
   set_zd_currentFile: (file: any) => void;
@@ -515,58 +515,58 @@ export default function ReceiveCard({
                 {/* Injection Point 3: Format Preview Card */}
                 <ZDErrorBoundary>
                   <Suspense fallback={null}>
-                    <ZDFormatPreviewCard 
-                      file={file} 
+                    <ZDFormatPreviewCard
+                      file={file}
                       onEditClick={() => {
                         set_zd_currentFile(file);
                         set_zd_editorOpen(true);
-                      }} 
+                      }}
                     />
                   </Suspense>
                 </ZDErrorBoundary>
 
                 <div className="file-item">
-                <span style={{ color: "var(--cyan)", flexShrink: 0 }}>
-                  <FileIcon />
-                </span>
-                <span style={{
-                  flex: 1,
-                  fontSize: "13px",
-                  color: "var(--text-secondary)",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}>
-                  {file.file_name}
-                </span>
-                <a
-                  href={file.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  download
-                  className="btn-ghost"
-                  style={{ padding: "4px 10px", flexShrink: 0, textDecoration: "none" }}
-                >
-                  <DownloadIcon size={12} />
-                  Save
-                </a>
+                  <span style={{ color: "var(--cyan)", flexShrink: 0 }}>
+                    <FileIcon />
+                  </span>
+                  <span style={{
+                    flex: 1,
+                    fontSize: "13px",
+                    color: "var(--text-secondary)",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}>
+                    {file.file_name}
+                  </span>
+                  <a
+                    href={file.file_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    download
+                    className="btn-ghost"
+                    style={{ padding: "4px 10px", flexShrink: 0, textDecoration: "none" }}
+                  >
+                    <DownloadIcon size={12} />
+                    Save
+                  </a>
 
-                {/* Injection Point 1: Open & Edit Button */}
-                <ZDErrorBoundary>
-                  <Suspense fallback={null}>
-                    <ZDOpenEditButton 
-                      file={file} 
-                      onOpen={() => {
-                        set_zd_currentFile(file);
-                        set_zd_editorOpen(true);
-                      }} 
-                    />
-                  </Suspense>
-                </ZDErrorBoundary>
+                  {/* Injection Point 1: Open & Edit Button */}
+                  <ZDErrorBoundary>
+                    <Suspense fallback={null}>
+                      <ZDOpenEditButton
+                        file={file}
+                        onOpen={() => {
+                          set_zd_currentFile(file);
+                          set_zd_editorOpen(true);
+                        }}
+                      />
+                    </Suspense>
+                  </ZDErrorBoundary>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
           {/* Full-width Download All ZIP */}
           {files.length > 1 && (

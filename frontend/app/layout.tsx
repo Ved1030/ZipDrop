@@ -129,16 +129,16 @@ export default function RootLayout({
         />
 
         {/* ✅ Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-N4017QPOHN"
-          strategy="afterInteractive"
-        />
+       <Script
+  src="https://www.googletagmanager.com/gtag/js?id=G-N4017QP0HN"
+  strategy="afterInteractive"
+/>
         <Script id="google-analytics" strategy="afterInteractive">
           {`
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-N4017QPOHN');
+     gtag('config', 'G-N4017QP0HN');
     `}
         </Script>
 

@@ -2,6 +2,14 @@ const API =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://zipdrop.onrender.com";
 
+/* Analytics Helper */
+
+const trackEvent = (eventName: string) => {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", eventName);
+  }
+};
+
 /* Upload Files */
 
 export const uploadFile = async (formData: FormData) => {
@@ -14,6 +22,9 @@ export const uploadFile = async (formData: FormData) => {
     const text = await res.text();
     throw new Error(`Upload failed: ${res.status} ${text}`);
   }
+
+  trackEvent("file_upload");
+  trackEvent("code_generated");
 
   return res.json();
 };
@@ -34,6 +45,9 @@ export const shareText = async (text: string) => {
     throw new Error(`Share failed: ${res.status} ${text}`);
   }
 
+  trackEvent("text_shared");
+  trackEvent("code_generated");
+
   return res.json();
 };
 
@@ -46,6 +60,9 @@ export const receiveData = async (code: string) => {
     const text = await res.text();
     throw new Error(`Receive failed: ${res.status} ${text}`);
   }
+
+  trackEvent("code_entered");
+  trackEvent("file_download");
 
   return res.json();
 };

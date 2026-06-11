@@ -1,26 +1,31 @@
 export default function BlogPage() {
   return (
-    <main style={{ maxWidth: "800px", margin: "50px auto", padding: "20px" }}>
+    <main className="max-w-4xl mx-auto p-8">
       <h1>ZipDrop Blog</h1>
 
       <ul>
         <li>
           <a href="/blog/snapdrop-alternative">
-            Best Snapdrop Alternative in 2026
+            Best Snapdrop Alternative
           </a>
         </li>
 
         <li>
           <a href="/blog/wetransfer-alternative">
-            Free WeTransfer Alternative
+            Best WeTransfer Alternative
           </a>
         </li>
 
         <li>
           <a href="/blog/share-files-between-devices">
-            How to Share Files Between Devices
+            Share Files Between Devices
           </a>
         </li>
+         <li>
+      <a href="/blog/airdrop-alternative">
+        Best AirDrop Alternative
+      </a>
+    </li>
       </ul>
     </main>
   );

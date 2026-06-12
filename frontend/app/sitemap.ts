@@ -30,5 +30,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
      {
       url: "https://zip-drop.vercel.app/blog/airdrop-alternative",
     },
+    {
+      url: "https://zip-drop.vercel.app/blog/airdrop-alternative-windows",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: "https://zip-drop.vercel.app/blog/airdrop-alternative-android",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: "https://zip-drop.vercel.app/blog/how-to-transfer-files-phone-to-laptop",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
 }

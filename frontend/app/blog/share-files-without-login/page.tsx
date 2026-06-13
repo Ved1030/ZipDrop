@@ -1,62 +1,78 @@
-export const metadata = {
-title: "How to Share Files Without Login or Registration",
-description:
-"Learn how to share files instantly without creating an account, installing software, or logging in.",
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "How to Share Files Without Login or Registration",
+  description:
+    "Learn how to share files instantly without creating an account, installing software, or logging in.",
 };
 
 export default function Page() {
-return ( <main className="max-w-4xl mx-auto p-8"> <h1>How to Share Files Without Login or Registration</h1>
+  return (
+    <main className="max-w-4xl mx-auto p-8">
+      <h1>How to Share Files Without Login or Registration</h1>
 
-```
-  <p>
-    Many file-sharing platforms require users to create accounts before they
-    can upload or download files. While this may be useful for some
-    services, it often adds unnecessary steps when you simply want to send a
-    file quickly.
-  </p>
+      <p>
+        Sharing files online should be simple. Unfortunately, many platforms
+        require users to create accounts, verify emails, and remember passwords
+        before they can send or receive files.
+      </p>
 
-  <h2>Why Avoid Login Requirements?</h2>
+      <p>
+        When you only need to transfer a file quickly, these extra steps become
+        frustrating and time-consuming.
+      </p>
 
-  <ul>
-    <li>Faster file sharing</li>
-    <li>No passwords to remember</li>
-    <li>Better convenience for guests</li>
-    <li>No lengthy registration process</li>
-    <li>Works instantly across devices</li>
-  </ul>
+      <h2>Problems With Login-Based File Sharing</h2>
 
-  <h2>Traditional Methods</h2>
+      <ul>
+        <li>Account creation takes time.</li>
+        <li>Passwords can be forgotten.</li>
+        <li>Users must verify emails.</li>
+        <li>Guests cannot access files easily.</li>
+        <li>Additional setup slows down sharing.</li>
+      </ul>
 
-  <p>
-    Email, cloud storage services, and messaging apps often require users to
-    sign in before sharing content. This creates friction when transferring
-    files between devices.
-  </p>
+      <h2>A Faster Approach</h2>
 
-  <h2>Using ZipDrop</h2>
+      <p>
+        Modern users want instant file sharing. Whether you are sending notes,
+        documents, images, or videos, the process should take seconds instead of
+        minutes.
+      </p>
 
-  <p>
-    ZipDrop allows users to share files and text instantly using a simple
-    4-digit code. No login, registration, or software installation is
-    required.
-  </p>
+      <h2>How ZipDrop Helps</h2>
 
-  <ol>
-    <li>Upload your file.</li>
-    <li>Receive a 4-digit code.</li>
-    <li>Open ZipDrop on another device.</li>
-    <li>Enter the code.</li>
-    <li>Download instantly.</li>
-  </ol>
+      <p>
+        ZipDrop allows users to transfer files and text using a simple 4-digit
+        code. No registration is required, and everything works directly in the
+        browser.
+      </p>
 
-  <h2>Conclusion</h2>
+      <ol>
+        <li>Upload a file.</li>
+        <li>Receive a 4-digit code.</li>
+        <li>Open ZipDrop on another device.</li>
+        <li>Enter the code.</li>
+        <li>Download instantly.</li>
+      </ol>
 
-  <p>
-    If you need to share files quickly without creating accounts or logging
-    in, ZipDrop offers a simple and convenient solution.
-  </p>
-</main>
-```
+      <h2>Benefits</h2>
 
-);
+      <ul>
+        <li>No login required</li>
+        <li>No software installation</li>
+        <li>Works across devices</li>
+        <li>Simple user experience</li>
+        <li>Fast transfers</li>
+      </ul>
+
+      <h2>Conclusion</h2>
+
+      <p>
+        If you need a quick and convenient way to share files without creating
+        accounts, ZipDrop provides a simple solution that works on any modern
+        device.
+      </p>
+    </main>
+  );
 }

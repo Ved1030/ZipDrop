@@ -48,5 +48,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       
       priority: 0.8,
     },
+    {
+  url: "https://zip-drop.vercel.app/blog/share-files-without-login",
+  lastModified: new Date(),
+  priority: 0.8,
+},
+{
+  url: "https://zip-drop.vercel.app/blog/send-large-files-online",
+  lastModified: new Date(),
+  priority: 0.8,
+},
+{
+  url: "https://zip-drop.vercel.app/blog/how-to-share-files-between-phone-and-pc",
+  lastModified: new Date(),
+  priority: 0.8,
+},
   ];
 }

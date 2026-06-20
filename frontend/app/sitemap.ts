@@ -78,5 +78,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
   lastModified: new Date(),
   priority: 0.8,
 },
+{
+  url: "https://zip-drop.vercel.app/blog/transfer-files-iphone-to-android",
+  lastModified: new Date(),
+  priority: 0.8,
+},
+{
+  url: "https://zip-drop.vercel.app/blog/send-photos-from-phone-to-laptop",
+  lastModified: new Date(),
+  priority: 0.8,
+},
+{
+  url: "https://zip-drop.vercel.app/blog/file-transfer-without-usb",
+  lastModified: new Date(),
+  priority: 0.8,
+},
   ];
 }

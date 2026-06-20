@@ -71,6 +71,14 @@ export default function Page() {
         ZipDrop provides a quick and user-friendly way to share files between
         phones and PCs without complicated setup or extra software.
       </p>
+      <div className="mt-10">
+  <a
+    href="/"
+    className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700"
+  >
+    Try ZipDrop Now
+  </a>
+</div>
     </main>
   );
 }

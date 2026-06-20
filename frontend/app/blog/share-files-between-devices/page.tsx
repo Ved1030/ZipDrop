@@ -21,6 +21,14 @@ export default function Page() {
       <p>
         No USB cables, no accounts, and no complicated setup required.
       </p>
+      <div className="mt-10">
+  <a
+    href="/"
+    className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700"
+  >
+    Try ZipDrop Now
+  </a>
+</div>
     </main>
   );
 }

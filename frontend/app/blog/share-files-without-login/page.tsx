@@ -73,6 +73,14 @@ export default function Page() {
         accounts, ZipDrop provides a simple solution that works on any modern
         device.
       </p>
+      <div className="mt-10">
+  <a
+    href="/"
+    className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700"
+  >
+    Try ZipDrop Now
+  </a>
+</div>
     </main>
   );
 }

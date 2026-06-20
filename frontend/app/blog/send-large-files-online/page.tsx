@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Best Way to Send Large Files Online",
@@ -72,6 +72,14 @@ export default function Page() {
         Whether you are sharing documents, photos, or project files, ZipDrop
         provides a simple and efficient way to send large files online.
       </p>
+      <div className="mt-10">
+  <a
+    href="/"
+    className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700"
+  >
+    Try ZipDrop Now
+  </a>
+</div>
     </main>
   );
 }

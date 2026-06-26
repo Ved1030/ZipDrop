@@ -93,5 +93,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
   lastModified: new Date(),
   priority: 0.8,
 },
+{
+  url: "https://zip-drop.vercel.app/blog/mobile-to-pc-file-transfer",
+  lastModified: new Date(),
+  changeFrequency: "weekly",
+  priority: 0.8,
+},
+{
+  url: "https://zip-drop.vercel.app/blog/phone-to-pc-file-transfer",
+  lastModified: new Date(),
+  changeFrequency: "weekly",
+  priority: 0.8,
+},
+{
+  url: "https://zip-drop.vercel.app/blog/transfer-files-from-phone-to-pc-wireless",
+  lastModified: new Date(),
+  changeFrequency: "weekly",
+  priority: 0.8,
+},
+{
+  url: "https://zip-drop.vercel.app/blog/transfer-files-from-android-to-pc-wireless",
+  lastModified: new Date(),
+  changeFrequency: "weekly",
+  priority: 0.8,
+},
+{
+  url: "https://zip-drop.vercel.app/blog/android-file-transfer-windows",
+  lastModified: new Date(),
+  changeFrequency: "weekly",
+  priority: 0.8,
+},
   ];
 }

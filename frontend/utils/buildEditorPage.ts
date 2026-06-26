@@ -1,426 +1,298 @@
-/* ─────────────────────────────────────────────────────────
-   buildEditorPage.ts  (v2)
-   Generates the full self-contained HTML for the ZipDrop
-   editor tab. All element IDs are zd-* prefixed.
-   ───────────────────────────────────────────────────────── */
-
 export function buildEditorPage(
   fileName: string,
   fileType: string,
   content: string,
-  fileSize?: number
+  fileSize?: number,
+  recipientCode?: string,
+  fileUrl: string = ""
 ): string {
   const safeJson = (s: string) => JSON.stringify(s);
   const sizeKb = fileSize ? (fileSize / 1024).toFixed(1) + " KB" : "";
+  const isDoc = fileType === "doc";
+  const isPdf = fileType === "pdf";
 
-  /* ─── FORMAT-SPECIFIC EDITOR HTML ─── */
   const editorArea = (() => {
     switch (fileType) {
-
       case "doc":
-        return `
-          <div style="background:rgba(0,229,192,0.05);border:1px solid #1A3028;border-radius:10px;padding:8px 16px;font-size:12px;color:#00E5C0;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Editing as rich text — will resend/download as <strong>.html</strong>
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
-            ${["bold","italic","underline"].map(cmd=>`<button onclick="document.execCommand('${cmd}')" class="tb-btn">${cmd[0].toUpperCase()+cmd.slice(1)}</button>`).join("")}
-            <button onclick="document.execCommand('formatBlock',false,'h1')" class="tb-btn">H1</button>
-            <button onclick="document.execCommand('formatBlock',false,'h2')" class="tb-btn">H2</button>
-            <button onclick="document.execCommand('insertUnorderedList')" class="tb-btn">• List</button>
-            <button onclick="(function(){var u=prompt('URL:');if(u)document.execCommand('createLink',false,u)})()" class="tb-btn">Link</button>
-          </div>
-          <div id="zd-editor" contenteditable="true" spellcheck="true"
-            style="padding:40px 48px;max-width:740px;margin:0 auto;font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.9;color:#E8FFF9;outline:none;min-height:calc(100vh - 260px);border-radius:16px;background:rgba(255,255,255,0.015);border:0.5px solid #1A3028;">
-          </div>
-          <script>document.getElementById('zd-editor').innerHTML = ZD_FILE.content;<\/script>`;
-
+        return `<div id="page-wrapper"><div id="zd-loading-doc" style="display:flex;align-items:center;justify-content:center;min-height:500px;color:#6B6B6B;font-size:14px;">Loading document\u2026</div><div id="zd-doc-canvas" style="display:none;"><div id="zd-editor" contenteditable="true" spellcheck="true" style="outline:none;font-family:Arial,sans-serif;font-size:12pt;line-height:1.6;color:#1A1A1A;min-height:900px;"></div></div></div><script>(function(){var url=ZD_FILE.fileUrl;var mammoth=window.opener&&window.opener.__zdEditorLibs&&window.opener.__zdEditorLibs.mammoth;if(!url){document.getElementById('zd-loading-doc').textContent='No file URL provided.';return;}if(!mammoth){document.getElementById('zd-loading-doc').innerHTML='Could not load document engine.';return;}fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.blob();}).then(function(blob){return mammoth.convertToHtml({arrayBuffer:blob},{convertImage:mammoth.images.imgElement(function(image){return image.read('base64').then(function(data){return{src:'data:'+image.contentType+';base64,'+data};});})});}).then(function(result){var html=result.value;if(!html||html.trim()===''){html='<div style="padding:60px 40px;text-align:center;color:#6B6B6B;"><p style="font-size:16px;font-weight:600;margin-bottom:8px;">Could not load document content</p><p style="font-size:13px;">Try <a href="'+url+'" download style="color:#00C49A;text-decoration:underline;">downloading the original file</a> instead.</p></div>';}document.getElementById('zd-loading-doc').style.display='none';var canvas=document.getElementById('zd-doc-canvas');canvas.style.display='block';document.getElementById('zd-editor').innerHTML=html;}).catch(function(err){console.error('[ZipDrop] Doc load failed:',err);document.getElementById('zd-loading-doc').innerHTML='Failed to load document. <a href="'+url+'" download style="color:#00C49A;">Download original</a>.';});})();<\/script>`;
       case "sheet":
-        return `
-          <div style="display:flex;gap:12px;background:rgba(0,0,0,0.3);padding:10px 16px;border-radius:10px;margin-bottom:14px;align-items:center;border:0.5px solid #1A3028;">
-            <span style="color:#00E5C0;font-weight:800;font-size:14px;">f(x)</span>
-            <span id="zd-cell-ref" style="color:#5A8070;min-width:36px;font-size:13px;">A1</span>
-            <input id="zd-formula-bar" type="text" placeholder="Cell value…"
-              style="flex:1;background:none;border:none;outline:none;color:#E8FFF9;font-family:'DM Mono',monospace;font-size:13px;" />
-          </div>
-          <div style="overflow:auto;border-radius:12px;border:0.5px solid #1A3028;">
-            <table id="zd-sheet-table" style="border-collapse:collapse;font-size:13px;font-family:'DM Mono',monospace;min-width:100%;">
-              <thead id="zd-col-headers"></thead>
-              <tbody id="zd-sheet-body"></tbody>
-            </table>
-          </div>
-          <script>
-            (function(){
-              var rows = ZD_FILE.content ? JSON.parse(ZD_FILE.content) : [[]];
-              var maxCols = rows.reduce(function(m,r){ return Math.max(m, r.length); }, 1);
-              var hRow = '<tr><th style="width:40px;background:#0A1A14;border:0.5px solid #1A3028;"></th>';
-              for(var c=0;c<maxCols;c++) hRow += '<th style="padding:6px 16px;background:#0A1A14;color:#5A8070;border:0.5px solid #1A3028;font-weight:600;letter-spacing:.06em;font-size:11px;">'+ String.fromCharCode(65+c) +'</th>';
-              hRow += '</tr>';
-              document.getElementById('zd-col-headers').innerHTML = hRow;
-              var html = '';
-              rows.forEach(function(r, ri){
-                html += '<tr>';
-                html += '<td style="padding:4px 8px;text-align:center;background:#0A1A14;color:#5A8070;border:0.5px solid #1A3028;font-size:11px;user-select:none;">'+(ri+1)+'</td>';
-                for(var ci=0;ci<maxCols;ci++){
-                  var val = (r[ci]!==undefined&&r[ci]!==null)?r[ci]:'';
-                  html += '<td contenteditable="true" data-r="'+ri+'" data-c="'+ci+'" onfocus="zdCellFocus(this)" oninput="zdCellInput(this)"'
-                    +' style="padding:8px 14px;border:0.5px solid #1A3028;min-width:100px;outline:none;color:#E8FFF9;cursor:text;">'+String(val).replace(/</g,'&lt;')+'</td>';
-                }
-                html += '</tr>';
-              });
-              document.getElementById('zd-sheet-body').innerHTML = html;
-            })();
-            function zdCellFocus(td){
-              var r=parseInt(td.dataset.r),c=parseInt(td.dataset.c);
-              document.getElementById('zd-cell-ref').textContent=String.fromCharCode(65+c)+(r+1);
-              document.getElementById('zd-formula-bar').value=td.innerText;
-            }
-            function zdCellInput(td){
-              document.getElementById('zd-formula-bar').value=td.innerText;
-            }
-            document.getElementById('zd-formula-bar').addEventListener('input',function(){
-              var active=document.querySelector('td[contenteditable]:focus');
-              if(active) active.innerText=this.value;
-            });
-          <\/script>`;
-
+        return `<div style="display:flex;gap:12px;background:#F5F4F0;padding:10px 16px;border-radius:8px;margin-bottom:14px;align-items:center;border:1px solid #E0DED8;"><span style="color:#00C49A;font-weight:800;font-size:14px;">f(x)</span><span id="zd-cell-ref" style="color:#6B6B6B;min-width:36px;font-size:13px;">A1</span><input id="zd-formula-bar" type="text" placeholder="Cell value\u2026" style="flex:1;background:none;border:none;outline:none;color:#1A1A1A;font-family:monospace;font-size:13px;" /></div><div style="overflow:auto;border-radius:8px;border:1px solid #E0DED8;"><table id="zd-sheet-table" style="border-collapse:collapse;font-size:13px;font-family:monospace;min-width:100%;"><thead id="zd-col-headers"></thead><tbody id="zd-sheet-body"></tbody></table></div><script>(function(){var rows=ZD_FILE.content?JSON.parse(ZD_FILE.content):[[]];var maxCols=rows.reduce(function(m,r){return Math.max(m,r.length);},1);var hRow='<tr><th style="width:40px;background:#F5F4F0;border:1px solid #E0DED8;"></th>';for(var c=0;c<maxCols;c++)hRow+='<th style="padding:6px 16px;background:#F5F4F0;color:#6B6B6B;border:1px solid #E0DED8;font-weight:600;font-size:11px;">'+String.fromCharCode(65+c)+'</th>';hRow+='</tr>';document.getElementById('zd-col-headers').innerHTML=hRow;var html='';rows.forEach(function(r,ri){html+='<tr>';html+='<td style="padding:4px 8px;text-align:center;background:#F5F4F0;color:#6B6B6B;border:1px solid #E0DED8;font-size:11px;user-select:none;">'+(ri+1)+'</td>';for(var ci=0;ci<maxCols;ci++){var val=(r[ci]!==undefined&&r[ci]!==null)?r[ci]:'';html+='<td contenteditable="true" data-r="'+ri+'" data-c="'+ci+'" onfocus="zdCellFocus(this)" oninput="zdCellInput(this)" style="padding:8px 14px;border:1px solid #E0DED8;min-width:100px;outline:none;color:#1A1A1A;cursor:text;">'+String(val).replace(/</g,'&lt;')+'</td>';}html+='</tr>';});document.getElementById('zd-sheet-body').innerHTML=html;})();function zdCellFocus(td){var r=parseInt(td.dataset.r),c=parseInt(td.dataset.c);document.getElementById('zd-cell-ref').textContent=String.fromCharCode(65+c)+(r+1);document.getElementById('zd-formula-bar').value=td.innerText;}function zdCellInput(td){document.getElementById('zd-formula-bar').value=td.innerText;}document.getElementById('zd-formula-bar').addEventListener('input',function(){var active=document.querySelector('td[contenteditable]:focus');if(active)active.innerText=this.value;});<\/script>`;
       case "image":
-        return `
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-            ${["Normal","Grayscale","Sepia","Brighten","Invert","Blur"].map(f=>`<button onclick="zdApplyFilter('${f.toLowerCase()}')" class="tb-btn">${f}</button>`).join("")}
-          </div>
-          <div style="display:flex;justify-content:center;">
-            <div style="border-radius:16px;overflow:hidden;border:0.5px solid #1A3028;">
-              <canvas id="zd-img-canvas" style="max-width:100%;height:auto;display:block;"></canvas>
-            </div>
-          </div>
-          <script>
-            var _zdCanvas=document.getElementById('zd-img-canvas');
-            var _zdCtx=_zdCanvas.getContext('2d');
-            var _zdImg=new Image();
-            _zdImg.onload=function(){
-              _zdCanvas.width=_zdImg.width>900?900:_zdImg.width;
-              _zdCanvas.height=Math.round(_zdImg.height/_zdImg.width*_zdCanvas.width);
-              _zdCtx.drawImage(_zdImg,0,0,_zdCanvas.width,_zdCanvas.height);
-            };
-            _zdImg.src=ZD_FILE.content;
-            function zdApplyFilter(f){
-              if(f==='normal'){_zdCanvas.style.filter='none';_zdCtx.drawImage(_zdImg,0,0,_zdCanvas.width,_zdCanvas.height);return;}
-              if(f==='blur'){_zdCanvas.style.filter='blur(4px)';return;}
-              _zdCanvas.style.filter='none';
-              _zdCtx.drawImage(_zdImg,0,0,_zdCanvas.width,_zdCanvas.height);
-              var id=_zdCtx.getImageData(0,0,_zdCanvas.width,_zdCanvas.height),d=id.data;
-              for(var i=0;i<d.length;i+=4){
-                var r=d[i],g=d[i+1],b=d[i+2];
-                if(f==='grayscale'){var v=0.3*r+0.59*g+0.11*b;d[i]=d[i+1]=d[i+2]=v;}
-                else if(f==='sepia'){d[i]=Math.min(255,r*.393+g*.769+b*.189);d[i+1]=Math.min(255,r*.349+g*.686+b*.168);d[i+2]=Math.min(255,r*.272+g*.534+b*.131);}
-                else if(f==='brighten'){d[i]=Math.min(255,r+40);d[i+1]=Math.min(255,g+40);d[i+2]=Math.min(255,b+40);}
-                else if(f==='invert'){d[i]=255-r;d[i+1]=255-g;d[i+2]=255-b;}
-              }
-              _zdCtx.putImageData(id,0,0);
-            }
-          <\/script>`;
-
-      case "pdf": {
-        const sz = sizeKb || "Unknown size";
-        return `
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:80px 40px;text-align:center;">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#00E5C0" stroke-width="1.2">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
-            </svg>
-            <div>
-              <p style="font-size:22px;font-weight:700;color:#E8FFF9;margin-bottom:8px;">${fileName}</p>
-              <p style="font-size:14px;color:#5A8070;">${sz}</p>
-            </div>
-            <p style="font-size:15px;color:#5A8070;max-width:400px;line-height:1.7;">PDF files cannot be edited in the browser.<br>Download and open in your PDF app.</p>
-            <a href="${content||'#'}" download="${fileName}"
-              style="padding:12px 28px;border-radius:12px;background:rgba(0,229,192,0.15);border:1px solid #00E5C0;color:#00E5C0;font-weight:700;font-size:14px;text-decoration:none;"
-              onmouseover="this.style.background='rgba(0,229,192,0.25)'"
-              onmouseout="this.style.background='rgba(0,229,192,0.15)'">↓ Download PDF</a>
-          </div>`;
-      }
-
+        return `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">${["Normal","Grayscale","Sepia","Brighten","Invert","Blur"].map(function(f){return '<button onclick="zdApplyFilter(\''+f.toLowerCase()+'\')" class="tb-btn">'+f+'</button>';}).join("")}</div><div style="display:flex;justify-content:center;"><div style="border-radius:8px;overflow:hidden;border:1px solid #E0DED8;"><canvas id="zd-img-canvas" style="max-width:100%;height:auto;display:block;"></canvas></div></div><script>var _zdCanvas=document.getElementById('zd-img-canvas');var _zdCtx=_zdCanvas.getContext('2d');var _zdImg=new Image();_zdImg.onload=function(){_zdCanvas.width=_zdImg.width>900?900:_zdImg.width;_zdCanvas.height=Math.round(_zdImg.height/_zdImg.width*_zdCanvas.width);_zdCtx.drawImage(_zdImg,0,0,_zdCanvas.width,_zdCanvas.height);};_zdImg.src=ZD_FILE.content;function zdApplyFilter(f){if(f==='normal'){_zdCanvas.style.filter='none';_zdCtx.drawImage(_zdImg,0,0,_zdCanvas.width,_zdCanvas.height);return;}if(f==='blur'){_zdCanvas.style.filter='blur(4px)';return;}_zdCanvas.style.filter='none';_zdCtx.drawImage(_zdImg,0,0,_zdCanvas.width,_zdCanvas.height);var id=_zdCtx.getImageData(0,0,_zdCanvas.width,_zdCanvas.height),d=id.data;for(var i=0;i<d.length;i+=4){var r=d[i],g=d[i+1],b=d[i+2];if(f==='grayscale'){var v=0.3*r+0.59*g+0.11*b;d[i]=d[i+1]=d[i+2]=v;}else if(f==='sepia'){d[i]=Math.min(255,r*.393+g*.769+b*.189);d[i+1]=Math.min(255,r*.349+g*.686+b*.168);d[i+2]=Math.min(255,r*.272+g*.534+b*.131);}else if(f==='brighten'){d[i]=Math.min(255,r+40);d[i+1]=Math.min(255,g+40);d[i+2]=Math.min(255,b+40);}else if(f==='invert'){d[i]=255-r;d[i+1]=255-g;d[i+2]=255-b;}}_zdCtx.putImageData(id,0,0);}<\/script>`;
+      case "pdf":
+        return `<div id="zd-pdf-container" style="max-width:816px;margin:0 auto;"></div><script>if(ZD_FILE.content&&ZD_FILE.content.indexOf('data:')===0){var _pdfB64=ZD_FILE.content.split(',')[1];var _pdfBin=atob(_pdfB64);var _pdfArr=new Uint8Array(_pdfBin.length);for(var _i=0;_i<_pdfBin.length;_i++)_pdfArr[_i]=_pdfBin.charCodeAt(_i);var _pdfjsLib=window.opener&&window.opener.__zdEditorLibs&&window.opener.__zdEditorLibs.pdfjsLib;if(_pdfjsLib){_pdfjsLib.GlobalWorkerOptions.workerSrc=window.location.origin+'/pdf.worker.min.js';setTimeout(function(){renderPDF(_pdfArr.buffer);},100);}else{document.getElementById('zd-pdf-container').innerHTML='<embed src="'+ZD_FILE.content+'" type="application/pdf" style="width:100%;height:80vh;border-radius:8px;border:1px solid #E0DED8;">';}}<\/script>`;
       case "code":
-        return `
-          <div style="display:flex;height:100%;min-height:calc(100vh - 240px);">
-            <div id="zd-line-nums" style="width:48px;background:rgba(0,0,0,0.25);padding:16px 0;text-align:center;border-right:0.5px solid #1A3028;flex-shrink:0;color:#3A5848;font-size:11px;font-family:'DM Mono',monospace;line-height:1.7;overflow:hidden;user-select:none;"></div>
-            <pre id="zd-editor" contenteditable="true" spellcheck="false" oninput="zdCodeInput()"
-              style="flex:1;margin:0;padding:16px 24px;outline:none;white-space:pre;overflow-x:auto;font-family:'DM Mono',monospace;font-size:13px;line-height:1.7;color:#B8D8CF;tab-size:2;background:transparent;border:none;"></pre>
-          </div>
-          <script>
-            var _zdHljsTimer=null;
-            var _zdCodeEditor=document.getElementById('zd-editor');
-            _zdCodeEditor.textContent=ZD_FILE.content;
-            zdUpdateLineNums();
-            var hljsScript=document.createElement('script');
-            hljsScript.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
-            document.head.appendChild(hljsScript);
-            var hljsStyle=document.createElement('link');
-            hljsStyle.rel='stylesheet';
-            hljsStyle.href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css';
-            document.head.appendChild(hljsStyle);
-            function zdUpdateLineNums(){
-              var lines=(_zdCodeEditor.textContent||'').split('\\n');
-              document.getElementById('zd-line-nums').innerHTML=lines.map(function(_,i){return '<div>'+(i+1)+'</div>';}).join('');
-            }
-            function zdCodeInput(){
-              zdUpdateLineNums();
-              clearTimeout(_zdHljsTimer);
-              _zdHljsTimer=setTimeout(function(){
-                if(window.hljs){
-                  var text=_zdCodeEditor.textContent;
-                  var lang=ZD_FILE.name.split('.').pop();
-                  try{var res=hljs.highlight(text,{language:lang,ignoreIllegals:true});if(!window.getSelection().toString())_zdCodeEditor.innerHTML=res.value;}catch(e){}
-                }
-              },600);
-            }
-          <\/script>`;
-
+        return `<div style="display:flex;height:100%;min-height:calc(100vh - 240px);"><div id="zd-line-nums" style="width:48px;background:#F5F4F0;padding:16px 0;text-align:center;border-right:1px solid #E0DED8;flex-shrink:0;color:#6B6B6B;font-size:11px;font-family:monospace;line-height:1.7;overflow:hidden;user-select:none;"></div><pre id="zd-editor" contenteditable="true" spellcheck="false" oninput="zdCodeInput()" style="flex:1;margin:0;padding:16px 24px;outline:none;white-space:pre;overflow-x:auto;font-family:monospace;font-size:13px;line-height:1.7;color:#1A1A1A;tab-size:2;background:transparent;border:none;"></pre></div><script>var _zdHljsTimer=null;var _zdCodeEditor=document.getElementById('zd-editor');_zdCodeEditor.textContent=ZD_FILE.content;zdUpdateLineNums();var hljs=(window.opener&&window.opener.__zdEditorLibs&&window.opener.__zdEditorLibs.hljs)||null;function zdUpdateLineNums(){var lines=(_zdCodeEditor.textContent||'').split('\\n');document.getElementById('zd-line-nums').innerHTML=lines.map(function(_,i){return '<div>'+(i+1)+'</div>';}).join('');}function zdCodeInput(){zdUpdateLineNums();clearTimeout(_zdHljsTimer);_zdHljsTimer=setTimeout(function(){if(hljs){var text=_zdCodeEditor.textContent;var lang=ZD_FILE.name.split('.').pop();try{var res=hljs.highlight(text,{language:lang,ignoreIllegals:true});if(!window.getSelection().toString())_zdCodeEditor.innerHTML=res.value;}catch(e){}}},600);}<\/script>`;
       case "text":
-        return `
-          <textarea id="zd-editor"
-            style="width:100%;height:calc(100vh - 240px);min-height:400px;padding:32px 40px;background:rgba(255,255,255,0.013);border:0.5px solid #1A3028;border-radius:16px;outline:none;color:#E8FFF9;font-family:'DM Mono',monospace;font-size:14px;line-height:1.8;resize:none;box-sizing:border-box;">
-          </textarea>
-          <script>document.getElementById('zd-editor').value=ZD_FILE.content;<\/script>`;
-
-      default: {
-        return `
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:80px 40px;text-align:center;">
-            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#3A5848" stroke-width="1.2">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
-            </svg>
-            <p style="font-size:18px;font-weight:700;color:#E8FFF9;">${fileName}</p>
-            ${sizeKb ? `<p style="font-size:13px;color:#3A5848;">${sizeKb}</p>` : ""}
-            <p style="font-size:14px;color:#5A8070;">Preview not available for this format.</p>
-          </div>`;
-      }
+        return `<textarea id="zd-editor" style="width:100%;height:calc(100vh - 240px);min-height:400px;padding:32px 40px;background:#fff;border:1px solid #E0DED8;border-radius:8px;outline:none;color:#1A1A1A;font-family:monospace;font-size:14px;line-height:1.8;resize:none;box-sizing:border-box;"></textarea><script>document.getElementById('zd-editor').value=ZD_FILE.content;<\/script>`;
+      default:
+        return `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:80px 40px;text-align:center;"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p style="font-size:18px;font-weight:700;color:#1A1A1A;margin-bottom:8px;">${fileName}</p>${sizeKb?'<p style="font-size:13px;color:#6B6B6B;">'+sizeKb+'</p>':''}<p style="font-size:14px;color:#6B6B6B;">Preview not available for this format.</p></div>`;
     }
   })();
 
-  const xlsxCdn = fileType === "sheet"
-    ? `<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"><\/script>`
-    : "";
+  const showToolbar = isDoc || isPdf;
 
-  /* ─────────────── FULL PAGE ─────────────── */
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ZipDrop Editor — ${fileName}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-${xlsxCdn}
-<script>
-var ZD_FILE = { name: ${safeJson(fileName)}, type: ${safeJson(fileType)}, content: ${safeJson(content)} };
-<\/script>
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  :root{
-    --bg:#050D0B; --surface:#0A1A14; --border:#1A3028;
-    --cyan:#00E5C0; --cyan-dim:rgba(0,229,192,0.08); --text:#E8FFF9;
-    --muted:#5A8070; --font-sans:'DM Sans',sans-serif;
-    --font-head:'Syne',sans-serif; --font-mono:'DM Mono',monospace;
-  }
-  html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:14px;}
-
-  /* ── Root layout ── */
-  #zd-root{display:flex;flex-direction:column;height:100vh;}
-  #zd-topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;border-bottom:0.5px solid var(--border);flex-shrink:0;background:rgba(5,13,11,.95);backdrop-filter:blur(16px);gap:12px;}
-  #zd-body{display:flex;flex:1;overflow:hidden;}
-  #zd-main{flex:1;overflow-y:auto;padding:24px;}
-  #zd-sidebar{width:212px;flex-shrink:0;border-left:0.5px solid var(--border);overflow-y:auto;padding:20px 16px;display:flex;flex-direction:column;gap:28px;}
-
-  /* ── Topbar ── */
-  #zd-logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-  #zd-logo-text{font-family:var(--font-head);font-weight:700;font-size:15px;color:var(--text);}
-  #zd-file-badge{padding:4px 12px;border-radius:20px;border:0.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:var(--font-mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;flex:1;}
-  #zd-editable-dot{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);flex-shrink:0;}
-  #zd-editable-dot .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.8s ease-in-out infinite;}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-  #zd-btn-info{background:none;border:0.5px solid var(--border);color:var(--muted);cursor:pointer;font-size:13px;line-height:1;padding:4px 9px;border-radius:8px;transition:all .2s;font-family:var(--font-sans);}
-  #zd-btn-info:hover{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-dim);}
-  #zd-btn-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:22px;line-height:1;padding:4px 8px;border-radius:8px;transition:all .2s;flex-shrink:0;}
-  #zd-btn-close:hover{color:var(--text);background:rgba(255,255,255,.05);}
-
-  /* ── Info panel (formats legend) ── */
-  #zd-info-panel{flex-shrink:0;overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(0.4,0,0.2,1);border-bottom:0.5px solid var(--border);background:#08120F;}
-  #zd-info-panel.open{max-height:320px;}
-  .zd-info-inner{padding:16px 24px;overflow-x:auto;}
-  .zd-fmt-table{width:100%;border-collapse:collapse;font-size:12px;}
-  .zd-fmt-table th{padding:7px 14px;background:#0D1A16;color:#5A8A7A;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-bottom:0.5px solid var(--border);text-align:left;}
-  .zd-fmt-table td{padding:8px 14px;border-bottom:0.5px solid #0D1A16;color:#A0C8BE;vertical-align:top;}
-  .zd-fmt-table tr:last-child td{border-bottom:none;}
-  .zd-fmt-ext{font-family:var(--font-mono);color:var(--cyan);}
-  .zd-fmt-mode{color:#E8FFF9;}
-
-  /* ── Doc editor toolbar ── */
-  .tb-btn{padding:5px 12px;border-radius:8px;border:0.5px solid var(--border);background:var(--surface);color:var(--muted);font-family:var(--font-sans);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
-  .tb-btn:hover{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-dim);}
-
-  /* ── NEW BOTTOM BAR ── */
-  .zd-bottom-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:#08120F;border-top:0.5px solid #1A3028;gap:16px;flex-wrap:wrap;flex-shrink:0;}
-  .zd-save-status{display:flex;align-items:center;font-size:12px;color:#5A8A7A;gap:0;min-width:120px;}
-  .zd-save-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#3DFFA0;margin-right:7px;box-shadow:0 0 6px #3DFFA0;flex-shrink:0;}
-  .zd-bottom-actions{display:flex;align-items:center;gap:8px;}
-  .zd-btn-primary{padding:10px 22px;background:#00E5C0;color:#030E10;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
-  .zd-btn-primary:hover{background:#00FFD6;box-shadow:0 0 16px rgba(0,229,192,0.3);}
-  .zd-btn-primary:disabled{opacity:.6;cursor:not-allowed;}
-  .zd-btn-secondary{padding:10px 22px;background:transparent;color:#A0C8BE;border:0.5px solid #1A3028;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
-  .zd-btn-secondary:hover{border-color:#00E5C0;color:#00E5C0;}
-  .zd-new-code-wrap{display:flex;align-items:center;gap:10px;background:#0D1A16;border:0.5px solid #1A3028;border-radius:12px;padding:8px 16px;}
-  .zd-new-code-label{font-size:11px;color:#5A8A7A;white-space:nowrap;}
-  .zd-code-digits{display:flex;gap:6px;}
-  .zd-code-digit{width:36px;height:40px;background:#050D0B;border:1.5px solid #00E5C0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:#00E5C0;animation:digitPop .3s cubic-bezier(0.34,1.56,0.64,1) both;}
-  @keyframes digitPop{from{transform:scale(0.6);opacity:0}to{transform:scale(1);opacity:1}}
-  .zd-copy-btn{font-size:11px;color:#00B4E5;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;white-space:nowrap;}
-
-  /* ── Sidebar ── */
-  .sidebar-heading{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
-  .collab-entry{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-  .avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0;}
-  .peer-name{font-size:13px;font-weight:600;color:var(--text);}
-  .peer-status{display:flex;align-items:center;gap:4px;margin-top:2px;}
-  .green-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);flex-shrink:0;}
-  .status-text{font-size:11px;color:var(--muted);}
-  .version-entry{padding:10px 12px;border-radius:10px;border:0.5px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all .2s;}
-  .version-entry:hover{border-color:var(--cyan);background:var(--cyan-dim);}
-  .version-entry.latest{border-left:2px solid var(--cyan);background:rgba(0,229,192,.04);}
-  .v-top{display:flex;justify-content:space-between;margin-bottom:2px;}
-  .v-tag{font-size:12px;font-weight:700;color:var(--text);}
-  .v-tag.latest{color:var(--cyan);}
-  .v-time{font-size:10px;color:var(--muted);}
-  .v-author{font-size:11px;color:var(--muted);}
-
-  /* ── Misc ── */
-  .zd-divider{border:none;border-top:0.5px solid var(--border);margin:0;}
-  ::-webkit-scrollbar{width:4px;height:4px;}
-  ::-webkit-scrollbar-track{background:transparent;}
-  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
-  @media(max-width:768px){#zd-sidebar{display:none;}.zd-save-status{display:none;}}
-  #zd-editor h1{font-size:28px;font-weight:700;margin:16px 0 8px;color:#E8FFF9;}
-  #zd-editor h2{font-size:22px;font-weight:600;margin:14px 0 6px;color:#E8FFF9;}
-  #zd-editor p{margin:6px 0;}
-  #zd-editor ul{padding-left:24px;margin:6px 0;}
-  #zd-editor a{color:var(--cyan);}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg-app:#F2F1ED;--bg-surface:#FFF;--bg-topbar:#FFF;--accent:#00C49A;--accent-hover:#00B08A;--text-primary:#1A1A1A;--text-muted:#6B6B6B;--border:#E0DED8;--radius:8px;--font-mono:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,Courier,monospace;--shadow:0 1px 4px rgba(0,0,0,0.06)}
+html,body{height:100%;background:var(--bg-app);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;color:var(--text-primary);-webkit-font-smoothing:antialiased}
+#zd-root{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+#zd-topbar{display:flex;align-items:center;gap:12px;height:48px;padding:0 16px;background:var(--bg-topbar);border-bottom:1px solid var(--border);flex-shrink:0}
+#zd-logo{display:flex;align-items:center;gap:8px}
+#zd-logo-text{font-weight:700;font-size:15px;color:var(--text-primary)}
+#zd-filename{flex:1;border:none;background:transparent;font-size:13px;color:var(--text-primary);outline:none;padding:4px 8px;border-radius:4px;max-width:300px}
+#zd-filename:focus{background:#F5F4F0}
+.zd-badge{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:4px;background:rgba(0,196,154,0.1);color:var(--accent);border:1px solid rgba(0,196,154,0.2)}
+.zd-icon-btn{width:32px;height:32px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-size:18px;color:var(--text-muted);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.zd-icon-btn:hover{background:#F0EFEA;color:var(--text-primary)}
+#zd-info-panel{display:none;position:absolute;top:56px;left:16px;z-index:100;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,0.12);min-width:480px;padding:20px}
+#zd-info-panel.open{display:block}
+.zd-info-inner{overflow-x:auto}
+.zd-fmt-table{width:100%;border-collapse:collapse;font-size:12px}
+.zd-fmt-table th{text-align:left;padding:8px 12px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border);text-transform:uppercase;font-size:10px;letter-spacing:.5px}
+.zd-fmt-table td{padding:8px 12px;border-bottom:1px solid #F0EFEA;color:var(--text-primary)}
+.zd-fmt-ext{font-family:var(--font-mono);font-size:11px;color:var(--text-muted)}
+#zd-toolbar{display:flex;align-items:center;gap:4px;height:40px;padding:0 12px;background:var(--bg-surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.tb-group{display:flex;align-items:center;gap:2px}
+.tb-select{background:#F5F4F0;border:1px solid var(--border);border-radius:4px;padding:2px 4px;font-size:11px;color:var(--text-primary);outline:none;height:26px}
+.tb-btn{display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:28px;padding:0 6px;border:none;background:transparent;border-radius:4px;cursor:pointer;font-size:12px;color:var(--text-primary);transition:all .12s}
+.tb-btn:hover{background:#F0EFEA}
+.tb-btn.active{background:rgba(0,196,154,0.12);color:var(--accent)}
+.tb-btn.pill{font-size:10px;font-weight:700;padding:0 8px}
+.tb-divider{width:1px;height:20px;background:var(--border);margin:0 4px}
+.zd-zoom{display:flex;align-items:center;gap:4px;margin-left:auto}
+.zd-zoom button{width:24px;height:24px;border:none;background:transparent;border-radius:4px;cursor:pointer;font-size:14px;color:var(--text-muted);display:flex;align-items:center;justify-content:center}
+.zd-zoom button:hover{background:#F0EFEA}
+#zd-zoom-level{font-size:11px;color:var(--text-muted);min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
+#zd-body{display:flex;flex:1;overflow:hidden}
+#zd-thumb-strip{width:80px;flex-shrink:0;background:var(--bg-surface);border-right:1px solid var(--border);overflow-y:auto;padding:8px 6px}
+.zd-thumb-page{width:64px;height:48px;margin:0 auto 8px;background:#F5F4F0;border:2px solid transparent;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text-muted);transition:all .12s}
+.zd-thumb-page.active{border-color:var(--accent);background:rgba(0,196,154,0.06);color:var(--text-primary);font-weight:600}
+.zd-thumb-page:hover{border-color:var(--border)}
+#zd-main{display:flex;flex-direction:column;align-items:center;flex:1;overflow-y:auto;padding:32px 16px;background:var(--bg-app)}
+#page-wrapper{width:816px;max-width:100%;min-height:1056px;background:#fff;box-shadow:0 1px 8px rgba(0,0,0,0.10);border-radius:2px;padding:72px 96px}
+#zd-sidebar{width:240px;flex-shrink:0;background:var(--bg-surface);border-left:1px solid var(--border);overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:4px}
+.sidebar-heading{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);margin-bottom:10px}
+.zd-divider{border:none;border-top:1px solid var(--border);margin:12px 0}
+#zd-version-list{display:flex;flex-direction:column;gap:2px}
+.shimmer{height:14px;background:linear-gradient(90deg,#F0EFEA 25%,#F8F7F4 50%,#F0EFEA 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;margin-bottom:6px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.version-entry{padding:8px 10px;border-radius:6px;cursor:pointer;transition:all .12s}
+.version-entry:hover{background:#F5F4F0}
+.version-entry.latest{background:rgba(0,196,154,0.06);border-left:2px solid var(--accent)}
+.v-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.v-tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;background:#F0EFEA;color:var(--text-muted)}
+.v-tag.latest{background:var(--accent);color:#fff}
+.v-time{font-size:10px;color:var(--text-muted)}
+.v-author{font-size:11px;color:var(--text-primary);margin-top:2px}
+.zd-status-bar{display:flex;align-items:center;justify-content:space-between;height:40px;padding:0 16px;background:var(--bg-surface);border-top:1px solid var(--border);flex-shrink:0}
+.zd-status-left{display:flex;align-items:center;gap:8px}
+.zd-status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+#zd-save-text{font-size:11px;color:var(--text-muted)}
+.zd-status-actions{display:flex;gap:8px}
+.zd-btn-primary{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s}
+.zd-btn-primary:hover{background:var(--accent-hover)}
+.zd-btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.zd-btn-secondary{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;background:transparent;color:var(--text-primary);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:12px;font-weight:500;transition:all .15s}
+.zd-btn-secondary:hover{background:#F5F4F0}
+.zd-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);z-index:1000;align-items:center;justify-content:center}
+.zd-modal-overlay.open{display:flex}
+.zd-modal{background:var(--bg-surface);border-radius:12px;padding:24px;min-width:360px;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+.zd-modal h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.zd-modal label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px}
+.zd-modal input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:20px;font-weight:700;letter-spacing:8px;text-align:center;outline:none;color:var(--text-primary);background:var(--bg-app)}
+.zd-modal input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,196,154,0.1)}
+.zd-modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.zd-toast{display:none;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 24px;border-radius:8px;font-size:13px;z-index:2000;box-shadow:0 4px 16px rgba(0,0,0,0.2)}
+#zd-doc-canvas{width:100%}
+.zd-pdf-tool-btn{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 10px;border:none;background:transparent;border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-primary);transition:all .12s}
+.zd-pdf-tool-btn:hover{background:#F0EFEA}
+.zd-pdf-tool-btn.active{background:rgba(0,196,154,0.12);color:var(--accent);font-weight:600}
+#zd-pdf-container{width:100%}
 </style>
+<script>var ZD_FILE={name:${safeJson(fileName)},type:${safeJson(fileType)},content:${safeJson(content)},fileUrl:${safeJson(fileUrl)}};<\/script>
 </head>
 <body>
 <div id="zd-root">
 
-  <!-- TOPBAR -->
-  <div id="zd-topbar">
-    <div id="zd-logo">
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-        <rect width="30" height="30" rx="8" fill="rgba(0,229,192,0.1)" stroke="#1A3028" stroke-width="0.5"/>
-        <path d="M9 10h12M9 15h8M9 20h10" stroke="#00E5C0" stroke-width="1.6" stroke-linecap="round"/>
-      </svg>
-      <span id="zd-logo-text">ZipDrop</span>
-    </div>
-    <span id="zd-file-badge">${fileName}</span>
-    <div id="zd-editable-dot"><span class="dot"></span>EDITABLE</div>
-    <button id="zd-btn-info" onclick="toggleInfoPanel()" title="Supported formats">ⓘ Formats</button>
-    <button id="zd-btn-close" onclick="window.close()" title="Close tab">×</button>
+<div id="zd-topbar">
+  <div id="zd-logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+      <rect width="26" height="26" rx="6" fill="#00C49A"/>
+      <path d="M8 9h10M8 13h7M8 17h8" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span id="zd-logo-text">ZipDrop</span>
   </div>
+  <input id="zd-filename" value="${fileName}" readonly onfocus="this.readOnly=false;this.select()" onblur="this.readOnly=true" spellcheck="false" />
+  <span class="zd-badge">EDITABLE</span>
+  <button class="zd-icon-btn" id="zd-btn-formats" onclick="toggleInfoPanel()" title="Supported formats">\u24D8</button>
+  <button class="zd-icon-btn" onclick="window.close()" title="Close tab">\u00D7</button>
+</div>
 
-  <!-- FORMATS INFO PANEL -->
-  <div id="zd-info-panel">
-    <div class="zd-info-inner">
-      <table class="zd-fmt-table">
-        <thead>
-          <tr>
-            <th>Format</th>
-            <th>Extensions</th>
-            <th>Edit mode</th>
-            <th>Resends as</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Document</td><td class="zd-fmt-ext">.docx .doc .txt .md</td><td class="zd-fmt-mode">Rich text editor</td><td>.html</td></tr>
-          <tr><td>Spreadsheet</td><td class="zd-fmt-ext">.xlsx .xls</td><td class="zd-fmt-mode">Editable table grid</td><td>.xlsx / .csv</td></tr>
-          <tr><td>Code</td><td class="zd-fmt-ext">.py .js .ts .jsx .tsx .json .html .css</td><td class="zd-fmt-mode">Syntax code editor</td><td>same extension</td></tr>
-          <tr><td>Image</td><td class="zd-fmt-ext">.png .jpg .jpeg .webp .gif</td><td class="zd-fmt-mode">Canvas + filters</td><td>.png</td></tr>
-          <tr><td>PDF</td><td class="zd-fmt-ext">.pdf</td><td class="zd-fmt-mode">Preview only</td><td>download only</td></tr>
-          <tr><td>Other</td><td class="zd-fmt-ext">anything else</td><td class="zd-fmt-mode">Info card</td><td>—</td></tr>
-        </tbody>
-      </table>
-    </div>
+<div id="zd-info-panel" class="zd-info-panel">
+  <div class="zd-info-inner">
+    <table class="zd-fmt-table">
+      <thead><tr><th>Format</th><th>Extensions</th><th>Edit mode</th><th>Resends as</th></tr></thead>
+      <tbody>
+        <tr><td>Document</td><td class="zd-fmt-ext">.docx .doc .txt .md</td><td>Rich text editor</td><td>.docx</td></tr>
+        <tr><td>Spreadsheet</td><td class="zd-fmt-ext">.xlsx .xls</td><td>Editable table grid</td><td>.xlsx / .csv</td></tr>
+        <tr><td>Code</td><td class="zd-fmt-ext">.py .js .ts .jsx .tsx .json .html .css</td><td>Syntax code editor</td><td>same extension</td></tr>
+        <tr><td>Image</td><td class="zd-fmt-ext">.png .jpg .jpeg .webp .gif</td><td>Canvas + filters</td><td>.png</td></tr>
+        <tr><td>PDF</td><td class="zd-fmt-ext">.pdf</td><td>Inline viewer + annotations</td><td>.pdf</td></tr>
+        <tr><td>Other</td><td class="zd-fmt-ext">anything else</td><td>Info card</td><td>\u2014</td></tr>
+      </tbody>
+    </table>
   </div>
+</div>
 
-  <!-- BODY -->
-  <div id="zd-body">
-    <div id="zd-main">${editorArea}</div>
-    <div id="zd-sidebar">
-      <div>
-        <div class="sidebar-heading">Collaborators</div>
-        <div id="zd-collab-list"><p style="font-size:11px;color:var(--muted);">Waiting for others…</p></div>
+${showToolbar ? `<div id="zd-toolbar">${isDoc ? `
+<div class="tb-group">
+  <select id="zd-font-family" class="tb-select" style="width:80px;" onchange="document.execCommand('fontName',false,this.value)">
+    <option value="Arial">Arial</option><option value="Times New Roman">Times</option>
+    <option value="Courier New">Courier</option><option value="Georgia">Georgia</option>
+    <option value="Verdana">Verdana</option>
+  </select>
+  <select id="zd-font-size" class="tb-select" style="width:52px;" onchange="document.execCommand('fontSize',false,this.value)">
+    <option value="3">8</option><option value="4">10</option><option value="5">12</option>
+    <option value="6">14</option><option value="7">18</option><option value="8">24</option>
+  </select>
+</div>
+<div class="tb-divider"></div>
+<div class="tb-group">
+  <button class="tb-btn" onclick="execCmd('bold')" title="Bold"><b>B</b></button>
+  <button class="tb-btn" onclick="execCmd('italic')" title="Italic"><i>I</i></button>
+  <button class="tb-btn" onclick="execCmd('underline')" title="Underline"><u>U</u></button>
+  <button class="tb-btn" onclick="execCmd('strikeThrough')" title="Strikethrough"><s>S</s></button>
+</div>
+<div class="tb-divider"></div>
+<div class="tb-group">
+  <button class="tb-btn pill" onclick="execCmd('formatBlock','<h1>')">H1</button>
+  <button class="tb-btn pill" onclick="execCmd('formatBlock','<h2>')">H2</button>
+  <button class="tb-btn pill" onclick="execCmd('formatBlock','<h3>')">H3</button>
+</div>
+<div class="tb-divider"></div>
+<div class="tb-group">
+  <button class="tb-btn" onclick="execCmd('justifyLeft')" title="Align left">\u2261</button>
+  <button class="tb-btn" onclick="execCmd('justifyCenter')" title="Center">\u2550</button>
+  <button class="tb-btn" onclick="execCmd('justifyRight')" title="Align right">\u2261</button>
+</div>
+<div class="tb-divider"></div>
+<div class="tb-group">
+  <button class="tb-btn" onclick="execCmd('insertUnorderedList')" title="Bullet list">\u2022</button>
+  <button class="tb-btn" onclick="execCmd('insertOrderedList')" title="Numbered list">1.</button>
+</div>
+` : ''}${isPdf ? `
+<div class="tb-group">
+  <button id="zd-pdf-tool-text" class="zd-pdf-tool-btn active" onclick="setPdfTool('text')">\u270E Add Text</button>
+  <button id="zd-pdf-tool-highlight" class="zd-pdf-tool-btn" onclick="setPdfTool('highlight')">\uD83D\uDCCD Highlight</button>
+  <button id="zd-pdf-tool-comment" class="zd-pdf-tool-btn" onclick="setPdfTool('comment')">\uD83D\uDCAC Comment</button>
+</div>
+<div class="tb-divider"></div>
+<div class="tb-group">
+  <button class="zd-pdf-tool-btn" onclick="pdfPrevPage()">\u25C0</button>
+  <span id="zd-pdf-page-info" style="font-size:11px;color:var(--text-muted);min-width:50px;text-align:center;">1/1</span>
+  <button class="zd-pdf-tool-btn" onclick="pdfNextPage()">\u25B6</button>
+</div>
+` : ''}
+<div class="zd-zoom">
+  <button onclick="zoomOut()">\u2212</button>
+  <span id="zd-zoom-level">100%</span>
+  <button onclick="zoomIn()">+</button>
+</div>
+</div>` : ''}
+
+<div id="zd-body">
+  <div id="zd-thumb-strip"></div>
+  <div id="zd-main">${editorArea}</div>
+  <div id="zd-sidebar">
+    <div>
+      <div class="sidebar-heading">Collaborators</div>
+      <p style="font-size:11px;color:var(--text-muted);line-height:1.5;">Only you are here</p>
+    </div>
+    <hr class="zd-divider">
+    <div style="flex:1;">
+      <div class="sidebar-heading">Version Trail</div>
+      <div id="zd-version-list">
+        <div class="shimmer"></div><div class="shimmer" style="width:80%;"></div><div class="shimmer" style="width:60%;"></div>
       </div>
-      <hr class="zd-divider">
-      <div style="flex:1;">
-        <div class="sidebar-heading">Version Trail</div>
-        <div id="zd-version-list"><p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px;">Initializing history…</p></div>
-      </div>
     </div>
   </div>
+</div>
 
-  <!-- NEW BOTTOM BAR -->
-  <div class="zd-bottom-bar">
-    <div class="zd-save-status">
-      <span class="zd-save-dot"></span>
-      <span id="zd-save-text">All changes saved</span>
-    </div>
-    <div class="zd-bottom-actions">
-      <button id="zd-resend-btn" class="zd-btn-primary" onclick="zdResend()">↗ Resend edited file</button>
-      <button id="zd-download-btn" class="zd-btn-secondary" onclick="zdDownload()">↓ Download edited</button>
-    </div>
-    <div class="zd-new-code-wrap" id="zd-new-code-wrap" style="display:none;">
-      <span class="zd-new-code-label">New code for recipient</span>
-      <div class="zd-code-digits" id="zd-code-digits"></div>
-      <button class="zd-copy-btn" onclick="zdCopyCode()">Copy</button>
-    </div>
+<div class="zd-status-bar">
+  <div class="zd-status-left">
+    <span class="zd-status-dot"></span>
+    <span id="zd-save-text">Synced \u2713</span>
   </div>
+  <div class="zd-status-actions">
+    <button id="zd-resend-btn" class="zd-btn-primary" onclick="zdOpenResendModal()">\u2191 Resend edited file</button>
+    <button id="zd-download-btn" class="zd-btn-secondary" onclick="zdDownload()">\u2193 Download edited</button>
+  </div>
+</div>
 
 </div>
 
-<!-- ── INFO PANEL TOGGLE ── -->
-<script>
-function toggleInfoPanel(){
-  var panel=document.getElementById('zd-info-panel');
-  panel.classList.toggle('open');
-  document.getElementById('zd-btn-info').style.color=panel.classList.contains('open')?'#00E5C0':'';
-}
-<\/script>
+<div class="zd-modal-overlay" id="zd-resend-modal">
+  <div class="zd-modal">
+    <h3>\u2191 Resend File</h3>
+    <div style="margin-bottom:16px;">
+      <label>Recipient Code</label>
+      <input id="zd-resend-code" type="text" maxlength="4" inputmode="numeric" pattern="[0-9]*" value="${recipientCode || ''}" />
+    </div>
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">
+      Will send as: <span id="zd-resend-filename" style="font-family:var(--font-mono);color:var(--text-primary);font-weight:600;"></span>
+    </div>
+    <div class="zd-modal-foot">
+      <button onclick="zdCloseResendModal()" style="padding:10px 20px;background:transparent;color:var(--text-muted);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px;">Cancel</button>
+      <button id="zd-resend-send-btn" onclick="zdConfirmResend()" style="padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">\u2191 Send</button>
+    </div>
+  </div>
+</div>
 
-<!-- ── COLLABORATORS SIMULATION ── -->
+<div id="zd-toast" class="zd-toast"></div>
+
 <script>
 (function(){
-  var names=['Aarav','Riya','Tanvir','Priya','Kabir','Sneha','Arjun','Meera'];
-  var colors=['#00E5C0','#00B4E5','#FFB830','#C9A7FF'];
-  var statuses=['Editing now','Viewing','Typing…','Selecting text','Idle'];
-  var peers=[];
-  function rdm(arr){return arr[Math.floor(Math.random()*arr.length)];}
-  function addPeer(){var name=rdm(names);peers.push({name:name,initials:name[0],color:rdm(colors),status:'Viewing'});renderPeers();}
-  function renderPeers(){
-    var list=document.getElementById('zd-collab-list');
-    if(!list)return;
-    if(peers.length===0){list.innerHTML='<p style="font-size:11px;color:var(--muted);">Waiting for others…</p>';return;}
-    list.innerHTML=peers.map(function(p){
-      return '<div class="collab-entry"><div class="avatar" style="background:'+p.color+'">'+p.initials+'</div>'
-        +'<div><div class="peer-name">'+p.name+'</div>'
-        +'<div class="peer-status"><span class="green-dot"></span><span class="status-text">'+p.status+'</span></div></div></div>';
-    }).join('');
+  var L = window.opener && window.opener.__zdEditorLibs;
+  if(L){
+    if(L.mammoth) window.mammoth = L.mammoth;
+    if(L.htmlDocx) window.htmlDocx = L.htmlDocx;
+    if(L.pdfjsLib) window.pdfjsLib = L.pdfjsLib;
+    if(L.PDFLib) window.PDFLib = L.PDFLib;
+    if(L.XLSX) window.XLSX = L.XLSX;
+    if(L.hljs) window.hljs = L.hljs;
+    if(L.pdfWorkerUrl && window.pdfjsLib) window.pdfjsLib.GlobalWorkerOptions.workerSrc = L.pdfWorkerUrl;
   }
-  setTimeout(function(){addPeer();setTimeout(addPeer,2000);},3000);
-  setInterval(function(){peers=peers.map(function(p){return Object.assign({},p,{status:rdm(statuses)});});renderPeers();},5000);
 })();
 <\/script>
 
-<!-- ── VERSION TRAIL ── -->
+<script>
+function toggleInfoPanel(){
+  var p=document.getElementById('zd-info-panel');
+  p.classList.toggle('open');
+}
+function zdToast(msg){var t=document.getElementById('zd-toast');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},3000);}
+function execCmd(cmd,val){document.execCommand(cmd,false,val||null);document.getElementById('zd-editor').focus();}
+var _zoomLevel=100;
+function zoomIn(){_zoomLevel=Math.min(200,_zoomLevel+10);updateZoom();}
+function zoomOut(){_zoomLevel=Math.max(50,_zoomLevel-10);updateZoom();}
+function updateZoom(){document.getElementById('zd-zoom-level').textContent=_zoomLevel+'%';var c=document.getElementById('zd-doc-canvas')||document.getElementById('zd-pdf-container');if(c)c.style.transform='scale('+(_zoomLevel/100)+')';c.style.transformOrigin='top center';}
+<\/script>
+
+${isDoc ? '<script>document.addEventListener(\'mouseup\',function(){var b=document.querySelector(\'#zd-editor\');if(!b)return;[[\'bold\',\'B\'],[\'italic\',\'I\'],[\'underline\',\'U\'],[\'strikeThrough\',\'S\']].forEach(function(p){var el=document.querySelector(\'.tb-btn[onclick*="\'+p[0]+\'"]\');if(el)el.classList.toggle(\'active\',document.queryCommandState(p[0]));});});<\/script>' : ''}
+
+
+
 <script>
 (function(){
   var versions=[],vCount=0,_snapTimer=null;
+  var skeletonDone=false;
   function getEditorContent(){
     var ed=document.getElementById('zd-editor');
     if(!ed)return '';
@@ -433,10 +305,13 @@ function toggleInfoPanel(){
   function renderVersions(){
     var list=document.getElementById('zd-version-list');
     if(!list)return;
-    if(versions.length===0){list.innerHTML='<p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px;">Initializing history…</p>';return;}
+    if(!skeletonDone){skeletonDone=true;}
+    if(versions.length===0){list.innerHTML='<p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:16px;">No versions yet</p>';return;}
     list.innerHTML=versions.map(function(v,i){
+      var d=new Date(v.time);
+      var dateStr=(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
       return '<div class="version-entry'+(i===0?' latest':'')+'" onclick="zdRestoreVersion('+i+')">'
-        +'<div class="v-top"><span class="v-tag'+(i===0?' latest':'')+'">'+v.tag+'</span><span class="v-time">'+timeAgo(v.time)+'</span></div>'
+        +'<div class="v-top"><span class="v-tag'+(i===0?' latest':'')+'">'+v.tag+'</span><span class="v-time">'+dateStr+'</span></div>'
         +'<div class="v-author">'+v.author+'</div></div>';
     }).join('');
   }
@@ -458,14 +333,14 @@ function toggleInfoPanel(){
     var ed=document.getElementById('zd-editor');
     if(ed)ed.addEventListener('input',scheduleSnap);
     setTimeout(scheduleSnap,5000);
+    setTimeout(function(){if(versions.length===0&&skeletonDone){var list=document.getElementById('zd-version-list');if(list)list.innerHTML='<p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:16px;">No versions yet</p>';}},7000);
   },500);
 })();
 <\/script>
 
-<!-- ── AUTOSAVE TICKER ── -->
 <script>
 (function(){
-  var msgs=['All changes saved','Autosaving…','Synced locally ✓','All changes saved'];
+  var msgs=['Synced \u2713','Autosaving\u2026','Synced \u2713','All changes saved'];
   var i=0;
   setInterval(function(){
     i=(i+1)%msgs.length;
@@ -475,18 +350,42 @@ function toggleInfoPanel(){
 })();
 <\/script>
 
-<!-- ── BLOB CREATION + RESEND + DOWNLOAD ── -->
 <script>
 var _zdLastCode=null;
+var _zdOriginalPdfBytes=null;
 
-/* Returns Promise<{blob, filename}> */
 function getEditedBlob(){
   var ft=ZD_FILE.type, fn=ZD_FILE.name;
   if(ft==='doc'){
     var el=document.getElementById('zd-editor');
     var html=el?el.innerHTML:'';
-    var full='<html><body style="font-family:sans-serif;max-width:800px;margin:40px auto;line-height:1.8">'+html+'</body></html>';
-    return Promise.resolve({blob:new Blob([full],{type:'text/html'}),filename:fn.replace(/\.[^.]+$/,'_edited.html')});
+    var fullHtml='<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>'+html+'</body></html>';
+    if(window.htmlDocx&&htmlDocx.asBlob){
+      var docxBlob=htmlDocx.asBlob(fullHtml,{orientation:'portrait',margins:{top:720,right:1080,bottom:720,left:1080}});
+      return Promise.resolve({blob:docxBlob,filename:fn.replace(/\\.[^.]+$/,'')+'_edited.docx'});
+    }
+    var origin=(window.opener&&window.opener.location)?window.opener.location.origin:window.location.origin;
+    return new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src=origin+'/html-docx.js';
+      s.onload=function(){
+        var docxBlob=htmlDocx.asBlob(fullHtml,{orientation:'portrait',margins:{top:720,right:1080,bottom:720,left:1080}});
+        resolve({blob:docxBlob,filename:fn.replace(/\\.[^.]+$/,'')+'_edited.docx'});
+      };
+      s.onerror=function(){reject(new Error('DOCX library not loaded.'));};
+      document.head.appendChild(s);
+    });
+  }
+  if(ft==='pdf'){
+    if(window.PDFLib) return exportAnnotatedPDF();
+    var origin=(window.opener&&window.opener.location)?window.opener.location.origin:window.location.origin;
+    return new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src=origin+'/pdf-lib.min.js';
+      s.onload=function(){ exportAnnotatedPDF().then(resolve,reject); };
+      s.onerror=function(){ reject(new Error('PDF library not loaded.')); };
+      document.head.appendChild(s);
+    });
   }
   if(ft==='sheet'){
     var rows=[];
@@ -500,97 +399,203 @@ function getEditedBlob(){
       var ws=XLSX.utils.aoa_to_sheet(rows);
       XLSX.utils.book_append_sheet(wb,ws,'Sheet1');
       var buf=XLSX.write(wb,{bookType:'xlsx',type:'array'});
-      return Promise.resolve({blob:new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),filename:fn.replace(/\.[^.]+$/,'_edited.xlsx')});
+      return Promise.resolve({blob:new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),filename:fn.replace(/\\.[^.]+$/,'')+'_edited.xlsx'});
     }
     var csv=rows.map(function(r){return r.join(',');}).join('\\n');
-    return Promise.resolve({blob:new Blob([csv],{type:'text/csv'}),filename:fn.replace(/\.[^.]+$/,'_edited.csv')});
+    return Promise.resolve({blob:new Blob([csv],{type:'text/csv'}),filename:fn.replace(/\\.[^.]+$/,'')+'_edited.csv'});
   }
   if(ft==='code'||ft==='text'){
     var ed=document.getElementById('zd-editor');
     var text=ed?(ed.tagName==='TEXTAREA'?ed.value:ed.textContent):'';
     var ext=fn.split('.').pop();
-    return Promise.resolve({blob:new Blob([text],{type:'text/plain'}),filename:fn.replace(/\.[^.]+$/,'_edited.'+ext)});
+    return Promise.resolve({blob:new Blob([text],{type:'text/plain'}),filename:fn.replace(/\\.[^.]+$/,'')+'_edited.'+ext});
   }
   if(ft==='image'){
     return new Promise(function(resolve){
       var canvas=document.getElementById('zd-img-canvas');
-      canvas.toBlob(function(blob){resolve({blob:blob,filename:fn.replace(/\.[^.]+$/,'_edited.png')});
-      },'image/png');
+      canvas.toBlob(function(blob){resolve({blob:blob,filename:fn.replace(/\\.[^.]+$/,'')+'_edited.png'});},'image/png');
     });
   }
   return Promise.reject(new Error('Format cannot be edited.'));
 }
 
-function zdShowCode(code){
-  _zdLastCode=code;
-  var wrap=document.getElementById('zd-new-code-wrap');
-  var digitsEl=document.getElementById('zd-code-digits');
-  digitsEl.innerHTML='';
-  wrap.style.display='flex';
-  code.split('').forEach(function(d,i){
-    setTimeout(function(){
-      var div=document.createElement('div');
-      div.className='zd-code-digit';
-      div.style.animationDelay=i*80+'ms';
-      div.textContent=d;
-      digitsEl.appendChild(div);
-    },i*80);
-  });
+function zdOpenResendModal(){
+  var el=document.getElementById('zd-resend-modal');
+  if(!el)return;
+  el.classList.add('open');
+  el.style.display='flex';
+  var fnEl=document.getElementById('zd-resend-filename');
+  if(fnEl)fnEl.textContent=ZD_FILE.name.replace(/\\.[^.]+$/,'')+'_edited.'+(ZD_FILE.type==='doc'?'docx':ZD_FILE.type==='pdf'?'pdf':ZD_FILE.type==='sheet'?'xlsx':ZD_FILE.type==='image'?'png':ZD_FILE.name.split('.').pop());
+  var codeEl=document.getElementById('zd-resend-code');
+  if(codeEl&&!codeEl.value)codeEl.value=Math.floor(1000+Math.random()*9000).toString();
+  if(codeEl){setTimeout(function(){codeEl.focus();codeEl.select();},100);}
 }
 
-function zdResend(){
-  var btn=document.getElementById('zd-resend-btn');
+function zdCloseResendModal(){
+  var el=document.getElementById('zd-resend-modal');
+  if(el){el.classList.remove('open');el.style.display='none';}
+}
+
+function zdConfirmResend(){
+  var code=document.getElementById('zd-resend-code');
+  if(!code||code.value.length!==4||!/^\\d{4}$/.test(code.value)){
+    alert('Please enter a valid 4-digit code.');
+    return;
+  }
+  var btn=document.getElementById('zd-resend-send-btn');
   if(btn.disabled)return;
-  btn.disabled=true;
-  btn.textContent='Sending…';
+  btn.disabled=true;btn.textContent='Sending\u2026';
   getEditedBlob().then(function(result){
-    var code=Math.floor(1000+Math.random()*9000).toString();
-    try{
-      if(window.opener){
-        window.opener.zdDropStore=window.opener.zdDropStore||new Map();
-        window.opener.zdDropStore.set(code,{blob:result.blob,filename:result.filename,fileType:ZD_FILE.type});
-      } else {
-        localStorage.setItem('zdDrop_'+code,'pending');
-      }
-    }catch(e){}
-    zdShowCode(code);
-    btn.textContent='✓ Sent';
-    btn.style.background='#1A6B50';
-    var saveEl=document.getElementById('zd-save-text');
-    if(saveEl)saveEl.textContent='Shared! Recipient uses code '+code;
+    var fd=new FormData();
+    var blob=result.blob;
+    var ext=result.filename.split('.').pop();
+    var mime=ext==='pdf'?'application/pdf':ext==='docx'?'application/vnd.openxmlformats-officedocument.wordprocessingml.document':ext==='xlsx'?'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':ext==='png'?'image/png':'application/octet-stream';
+    if(blob.type!==mime) blob=new Blob([blob],{type:mime});
+    fd.append('file',blob,result.filename);
+    fd.append('recipientCode',code.value);
+    return fetch('/api/send',{method:'POST',body:fd});
+  }).then(function(res){
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    zdCloseResendModal();
+    zdToast('Sent '+ZD_FILE.type.replace('doc','.docx').replace('pdf','.pdf').replace('sheet','.xlsx')+' to '+code.value+' \u2713');
+    btn.disabled=false;btn.textContent='\u2191 Send';
   }).catch(function(e){
-    btn.disabled=false;
-    btn.textContent='↗ Resend edited file';
-    alert('Could not collect edited content: '+e.message);
+    console.error('Resend failed:',e);
+    alert('Send failed: '+e.message);
+    btn.disabled=false;btn.textContent='\u2191 Send';
   });
 }
 
 function zdDownload(){
   var btn=document.getElementById('zd-download-btn');
-  btn.textContent='Preparing…';
-  btn.style.pointerEvents='none';
+  btn.textContent='Preparing\u2026';btn.style.pointerEvents='none';
   getEditedBlob().then(function(result){
     var url=URL.createObjectURL(result.blob);
     var a=document.createElement('a');
     a.href=url;a.download=result.filename;a.click();
     setTimeout(function(){URL.revokeObjectURL(url);},2000);
-    btn.textContent='✓ Downloaded';
-    btn.style.color='#00E5C0';
-    setTimeout(function(){btn.textContent='↓ Download edited';btn.style.color='';btn.style.pointerEvents='';},2500);
+    btn.textContent='\u2713 Downloaded';
+    var orig=btn.textContent;
+    setTimeout(function(){btn.textContent='\u2193 Download edited';btn.style.pointerEvents='';},2500);
   }).catch(function(e){
-    btn.textContent='↓ Download edited';btn.style.pointerEvents='';
+    btn.textContent='\u2193 Download edited';btn.style.pointerEvents='';
     alert('Download failed: '+e.message);
   });
 }
-
-function zdCopyCode(){
-  if(!_zdLastCode)return;
-  navigator.clipboard.writeText(_zdLastCode).catch(function(){});
-  var btn=event.target;
-  btn.textContent='Copied!';
-  setTimeout(function(){btn.textContent='Copy';},1800);
-}
 <\/script>
+
+${isPdf ? `<script>
+var zdAnnotations=[];
+var zdPdfDoc=null;
+var _zdPdfCurrentTool='text';
+var _zdPdfPages=[];
+
+function setPdfTool(tool){
+  _zdPdfCurrentTool=tool;
+  document.querySelectorAll('.zd-pdf-tool-btn').forEach(function(b){b.classList.remove('active');});
+  var btn=document.getElementById('zd-pdf-tool-'+tool);
+  if(btn)btn.classList.add('active');
+  document.dispatchEvent(new CustomEvent('zd-tool-change',{detail:tool}));
+}
+
+function renderPDF(arrayBuffer){
+  pdfjsLib.getDocument({data:arrayBuffer}).promise.then(function(pdf){
+    zdPdfDoc=pdf;
+    var container=document.getElementById('zd-pdf-container');
+    container.innerHTML='';
+    var renderAll=function(){
+      var promises=[];
+      for(var i=1;i<=pdf.numPages;i++){
+        promises.push(pdf.getPage(i).then(function(page){
+          var pageNum=page.pageNumber;
+          var viewport=page.getViewport({scale:1.5});
+          var wrapper=document.createElement('div');
+          wrapper.style.cssText='position:relative;display:block;width:'+viewport.width+'px;margin:0 auto 20px;box-shadow:0 1px 6px rgba(0,0,0,0.08);border-radius:2px;background:white;';
+          var canvas=document.createElement('canvas');
+          canvas.width=viewport.width;
+          canvas.height=viewport.height;
+          canvas.style.display='block';
+          wrapper.appendChild(canvas);
+          container.appendChild(wrapper);
+          attachAnnotationOverlay(wrapper,canvas,pageNum-1);
+          return page.render({canvasContext:canvas.getContext('2d'),viewport:viewport}).promise;
+        }));
+      }
+      return Promise.all(promises);
+    };
+    renderAll().then(function(){
+      var info=document.getElementById('zd-pdf-page-info');
+      if(info)info.textContent='1/'+pdf.numPages;
+      var strip=document.getElementById('zd-thumb-strip');
+      strip.innerHTML='';
+      for(var i=1;i<=Math.min(pdf.numPages,20);i++){
+        var thumb=document.createElement('div');
+        thumb.className='zd-thumb-page'+(i===1?' active':'');
+        thumb.textContent=i;
+        strip.appendChild(thumb);
+      }
+    });
+  });
+}
+
+function attachAnnotationOverlay(wrapper,canvas,pageIndex){
+  var overlay=document.createElement('div');
+  overlay.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;';
+  wrapper.appendChild(overlay);
+  document.addEventListener('zd-tool-change',function(e){overlay.style.pointerEvents=e.detail==='text'?'auto':'none';});
+  overlay.addEventListener('click',function(e){
+    if(overlay.style.pointerEvents!=='auto')return;
+    if(_zdPdfCurrentTool!=='text')return;
+    var box=document.createElement('div');
+    box.contentEditable=true;
+    box.style.cssText='position:absolute;left:'+e.offsetX+'px;top:'+e.offsetY+'px;min-width:80px;padding:2px 6px;border:1.5px dashed '+getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#00C49A'+';background:rgba(255,255,255,0.9);font-size:12px;font-family:Helvetica,sans-serif;outline:none;cursor:text;border-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,0.08);';
+    overlay.appendChild(box);
+    box.focus();
+    box.addEventListener('blur',function(){
+      if(box.innerText.trim()){
+        zdAnnotations.push({pageIndex:pageIndex,x:e.offsetX,y:e.offsetY,text:box.innerText.trim()});
+      }
+    });
+  });
+}
+
+function exportAnnotatedPDF(){
+  if(!ZD_FILE.content||ZD_FILE.content.indexOf('data:')!==0)return Promise.reject(new Error('No PDF data'));
+  if(!window.PDFLib)return Promise.reject(new Error('PDF library not loaded.'));
+  try{
+    var b64=ZD_FILE.content.split(',')[1];
+    var bin=atob(b64);
+    var arr=new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+    return PDFLib.PDFDocument.load(arr).then(function(pdfDoc){
+      var fontRef=null;
+      return pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica).then(function(font){
+        fontRef=font;
+        var pages=pdfDoc.getPages();
+        zdAnnotations.forEach(function(anno){
+          var page=pages[anno.pageIndex];
+          if(!page)return;
+          var size=page.getSize();
+          page.drawText(anno.text,{
+            x:anno.x/1.5,
+            y:size.height-(anno.y/1.5),
+            size:12,
+            font:fontRef,
+            color:PDFLib.rgb(0.1,0.1,0.1)
+          });
+        });
+        return pdfDoc.save();
+      });
+    }).then(function(bytes){
+      var blob=new Blob([bytes],{type:'application/pdf'});
+      return {blob:blob,filename:ZD_FILE.name.replace(/\\.[^.]+$/,'')+'_edited.pdf'};
+    });
+  }catch(e){return Promise.reject(e);}
+}
+
+function pdfPrevPage(){}
+function pdfNextPage(){}
+<\/script>` : ''}
 
 </body>
 </html>`;

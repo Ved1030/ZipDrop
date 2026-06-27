@@ -117,11 +117,41 @@ export default function sitemap(): MetadataRoute.Sitemap {
   changeFrequency: "weekly",
   priority: 0.8,
 },
-{
-  url: "https://zip-drop.vercel.app/blog/android-file-transfer-windows",
-  lastModified: new Date(),
-  changeFrequency: "weekly",
-  priority: 0.8,
-},
+    {
+      url: "https://zip-drop.vercel.app/blog/android-file-transfer-windows",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: "https://zip-drop.vercel.app/blog/file-transfer-website",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: "https://zip-drop.vercel.app/blog/web-file-transfer",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: "https://zip-drop.vercel.app/blog/file-sharing-websites",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: "https://zip-drop.vercel.app/blog/upload-and-share-files",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: "https://zip-drop.vercel.app/blog/send-files-via-link",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
 }

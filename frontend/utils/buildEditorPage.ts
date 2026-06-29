@@ -3,18 +3,14 @@ export function buildEditorPage(
   fileType: string,
   content: string,
   fileSize?: number,
-  recipientCode?: string,
-  fileUrl: string = ""
+  recipientCode?: string
 ): string {
   const safeJson = (s: string) => JSON.stringify(s);
   const sizeKb = fileSize ? (fileSize / 1024).toFixed(1) + " KB" : "";
-  const isDoc = fileType === "doc";
   const isPdf = fileType === "pdf";
 
   const editorArea = (() => {
     switch (fileType) {
-      case "doc":
-        return `<div id="page-wrapper"><div id="zd-loading-doc" style="display:flex;align-items:center;justify-content:center;min-height:500px;color:#6B6B6B;font-size:14px;">Loading document\u2026</div><div id="zd-doc-canvas" style="display:none;"><div id="zd-editor" contenteditable="true" spellcheck="true" style="outline:none;font-family:Arial,sans-serif;font-size:12pt;line-height:1.6;color:#1A1A1A;min-height:900px;"></div></div></div><script>(function(){var url=ZD_FILE.fileUrl;var mammoth=window.opener&&window.opener.__zdEditorLibs&&window.opener.__zdEditorLibs.mammoth;if(!url){document.getElementById('zd-loading-doc').textContent='No file URL provided.';return;}if(!mammoth){document.getElementById('zd-loading-doc').innerHTML='Could not load document engine.';return;}fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.blob();}).then(function(blob){return mammoth.convertToHtml({arrayBuffer:blob},{convertImage:mammoth.images.imgElement(function(image){return image.read('base64').then(function(data){return{src:'data:'+image.contentType+';base64,'+data};});})});}).then(function(result){var html=result.value;if(!html||html.trim()===''){html='<div style="padding:60px 40px;text-align:center;color:#6B6B6B;"><p style="font-size:16px;font-weight:600;margin-bottom:8px;">Could not load document content</p><p style="font-size:13px;">Try <a href="'+url+'" download style="color:#00C49A;text-decoration:underline;">downloading the original file</a> instead.</p></div>';}document.getElementById('zd-loading-doc').style.display='none';var canvas=document.getElementById('zd-doc-canvas');canvas.style.display='block';document.getElementById('zd-editor').innerHTML=html;}).catch(function(err){console.error('[ZipDrop] Doc load failed:',err);document.getElementById('zd-loading-doc').innerHTML='Failed to load document. <a href="'+url+'" download style="color:#00C49A;">Download original</a>.';});})();<\/script>`;
       case "sheet":
         return `<div style="display:flex;gap:12px;background:#F5F4F0;padding:10px 16px;border-radius:8px;margin-bottom:14px;align-items:center;border:1px solid #E0DED8;"><span style="color:#00C49A;font-weight:800;font-size:14px;">f(x)</span><span id="zd-cell-ref" style="color:#6B6B6B;min-width:36px;font-size:13px;">A1</span><input id="zd-formula-bar" type="text" placeholder="Cell value\u2026" style="flex:1;background:none;border:none;outline:none;color:#1A1A1A;font-family:monospace;font-size:13px;" /></div><div style="overflow:auto;border-radius:8px;border:1px solid #E0DED8;"><table id="zd-sheet-table" style="border-collapse:collapse;font-size:13px;font-family:monospace;min-width:100%;"><thead id="zd-col-headers"></thead><tbody id="zd-sheet-body"></tbody></table></div><script>(function(){var rows=ZD_FILE.content?JSON.parse(ZD_FILE.content):[[]];var maxCols=rows.reduce(function(m,r){return Math.max(m,r.length);},1);var hRow='<tr><th style="width:40px;background:#F5F4F0;border:1px solid #E0DED8;"></th>';for(var c=0;c<maxCols;c++)hRow+='<th style="padding:6px 16px;background:#F5F4F0;color:#6B6B6B;border:1px solid #E0DED8;font-weight:600;font-size:11px;">'+String.fromCharCode(65+c)+'</th>';hRow+='</tr>';document.getElementById('zd-col-headers').innerHTML=hRow;var html='';rows.forEach(function(r,ri){html+='<tr>';html+='<td style="padding:4px 8px;text-align:center;background:#F5F4F0;color:#6B6B6B;border:1px solid #E0DED8;font-size:11px;user-select:none;">'+(ri+1)+'</td>';for(var ci=0;ci<maxCols;ci++){var val=(r[ci]!==undefined&&r[ci]!==null)?r[ci]:'';html+='<td contenteditable="true" data-r="'+ri+'" data-c="'+ci+'" onfocus="zdCellFocus(this)" oninput="zdCellInput(this)" style="padding:8px 14px;border:1px solid #E0DED8;min-width:100px;outline:none;color:#1A1A1A;cursor:text;">'+String(val).replace(/</g,'&lt;')+'</td>';}html+='</tr>';});document.getElementById('zd-sheet-body').innerHTML=html;})();function zdCellFocus(td){var r=parseInt(td.dataset.r),c=parseInt(td.dataset.c);document.getElementById('zd-cell-ref').textContent=String.fromCharCode(65+c)+(r+1);document.getElementById('zd-formula-bar').value=td.innerText;}function zdCellInput(td){document.getElementById('zd-formula-bar').value=td.innerText;}document.getElementById('zd-formula-bar').addEventListener('input',function(){var active=document.querySelector('td[contenteditable]:focus');if(active)active.innerText=this.value;});<\/script>`;
       case "image":
@@ -30,7 +26,7 @@ export function buildEditorPage(
     }
   })();
 
-  const showToolbar = isDoc || isPdf;
+  const showToolbar = isPdf;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -116,7 +112,7 @@ html,body{height:100%;background:var(--bg-app);font-family:-apple-system,BlinkMa
 .zd-pdf-tool-btn.active{background:rgba(0,196,154,0.12);color:var(--accent);font-weight:600}
 #zd-pdf-container{width:100%}
 </style>
-<script>var ZD_FILE={name:${safeJson(fileName)},type:${safeJson(fileType)},content:${safeJson(content)},fileUrl:${safeJson(fileUrl)}};<\/script>
+<script>var ZD_FILE={name:${safeJson(fileName)},type:${safeJson(fileType)},content:${safeJson(content)}};<\/script>
 </head>
 <body>
 <div id="zd-root">
@@ -151,43 +147,7 @@ html,body{height:100%;background:var(--bg-app);font-family:-apple-system,BlinkMa
   </div>
 </div>
 
-${showToolbar ? `<div id="zd-toolbar">${isDoc ? `
-<div class="tb-group">
-  <select id="zd-font-family" class="tb-select" style="width:80px;" onchange="document.execCommand('fontName',false,this.value)">
-    <option value="Arial">Arial</option><option value="Times New Roman">Times</option>
-    <option value="Courier New">Courier</option><option value="Georgia">Georgia</option>
-    <option value="Verdana">Verdana</option>
-  </select>
-  <select id="zd-font-size" class="tb-select" style="width:52px;" onchange="document.execCommand('fontSize',false,this.value)">
-    <option value="3">8</option><option value="4">10</option><option value="5">12</option>
-    <option value="6">14</option><option value="7">18</option><option value="8">24</option>
-  </select>
-</div>
-<div class="tb-divider"></div>
-<div class="tb-group">
-  <button class="tb-btn" onclick="execCmd('bold')" title="Bold"><b>B</b></button>
-  <button class="tb-btn" onclick="execCmd('italic')" title="Italic"><i>I</i></button>
-  <button class="tb-btn" onclick="execCmd('underline')" title="Underline"><u>U</u></button>
-  <button class="tb-btn" onclick="execCmd('strikeThrough')" title="Strikethrough"><s>S</s></button>
-</div>
-<div class="tb-divider"></div>
-<div class="tb-group">
-  <button class="tb-btn pill" onclick="execCmd('formatBlock','<h1>')">H1</button>
-  <button class="tb-btn pill" onclick="execCmd('formatBlock','<h2>')">H2</button>
-  <button class="tb-btn pill" onclick="execCmd('formatBlock','<h3>')">H3</button>
-</div>
-<div class="tb-divider"></div>
-<div class="tb-group">
-  <button class="tb-btn" onclick="execCmd('justifyLeft')" title="Align left">\u2261</button>
-  <button class="tb-btn" onclick="execCmd('justifyCenter')" title="Center">\u2550</button>
-  <button class="tb-btn" onclick="execCmd('justifyRight')" title="Align right">\u2261</button>
-</div>
-<div class="tb-divider"></div>
-<div class="tb-group">
-  <button class="tb-btn" onclick="execCmd('insertUnorderedList')" title="Bullet list">\u2022</button>
-  <button class="tb-btn" onclick="execCmd('insertOrderedList')" title="Numbered list">1.</button>
-</div>
-` : ''}${isPdf ? `
+${showToolbar ? `<div id="zd-toolbar">${isPdf ? `
 <div class="tb-group">
   <button id="zd-pdf-tool-text" class="zd-pdf-tool-btn active" onclick="setPdfTool('text')">\u270E Add Text</button>
   <button id="zd-pdf-tool-highlight" class="zd-pdf-tool-btn" onclick="setPdfTool('highlight')">\uD83D\uDCCD Highlight</button>
@@ -285,7 +245,6 @@ function zoomOut(){_zoomLevel=Math.max(50,_zoomLevel-10);updateZoom();}
 function updateZoom(){document.getElementById('zd-zoom-level').textContent=_zoomLevel+'%';var c=document.getElementById('zd-doc-canvas')||document.getElementById('zd-pdf-container');if(c)c.style.transform='scale('+(_zoomLevel/100)+')';c.style.transformOrigin='top center';}
 <\/script>
 
-${isDoc ? '<script>document.addEventListener(\'mouseup\',function(){var b=document.querySelector(\'#zd-editor\');if(!b)return;[[\'bold\',\'B\'],[\'italic\',\'I\'],[\'underline\',\'U\'],[\'strikeThrough\',\'S\']].forEach(function(p){var el=document.querySelector(\'.tb-btn[onclick*="\'+p[0]+\'"]\');if(el)el.classList.toggle(\'active\',document.queryCommandState(p[0]));});});<\/script>' : ''}
 
 
 

@@ -87,7 +87,7 @@ export default function DocEditor({
       })
       .then((data) => {
         if (data.html) {
-          editor.commands.setContent(data.html, false);
+          editor.commands.setContent(data.html, { emitUpdate: false });
         } else {
           throw new Error(data.error || "No HTML returned");
         }

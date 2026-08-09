@@ -1,10 +1,17 @@
 "use client";
 
+import type { Editor } from "@tiptap/react";
+
 interface LeftSidebarProps {
   pageCount: number;
+  editor: Editor | null;
 }
 
-export default function LeftSidebar({ pageCount }: LeftSidebarProps) {
+export default function LeftSidebar({ pageCount, editor }: LeftSidebarProps) {
+  const handleAddPage = () => {
+    editor?.chain().focus().setHorizontalRule().run();
+  };
+
   return (
     <div
       id="pages-panel"
@@ -34,7 +41,13 @@ export default function LeftSidebar({ pageCount }: LeftSidebarProps) {
         }}
       >
         Pages
-        <span style={{ fontSize: 16, cursor: "pointer", color: "#1a73e8" }}>+</span>
+        <span
+          onClick={handleAddPage}
+          title="Add page"
+          style={{ fontSize: 16, cursor: "pointer", color: "#1a73e8" }}
+        >
+          +
+        </span>
       </div>
       <div
         style={{

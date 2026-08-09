@@ -123,15 +123,11 @@ function Sel({
 }
 
 export default function Toolbar({ editor }: ToolbarProps) {
-  const handleSetLink = useCallback(() => {
+  const handleInsertLink = useCallback(() => {
     if (!editor) return;
-    const prevUrl = editor.getAttributes("link").href || "";
-    const url = window.prompt("Link URL:", prevUrl || "https://");
-    if (url === null) return;
-    if (url === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-    } else {
-      editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+    const url = window.prompt("Enter URL:", "https://");
+    if (url && url !== "https://") {
+      editor.chain().focus().setLink({ href: url }).run();
     }
   }, [editor]);
 
@@ -148,13 +144,25 @@ export default function Toolbar({ editor }: ToolbarProps) {
 
   const handleInsertImage = useCallback(() => {
     if (!editor) return;
-    const u = window.prompt("Image URL:");
-    if (u) editor.chain().focus().setImage({ src: u }).run();
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const src = ev.target?.result as string;
+        if (src) editor?.chain().focus().setImage({ src }).run();
+      };
+      reader.readAsDataURL(file);
+    };
+    input.click();
   }, [editor]);
 
   const handleInsertCodeBlock = useCallback(() => {
     if (!editor) return;
-    editor.chain().focus().toggleCodeBlock().run();
+    editor.chain().focus().toggleCode().run();
   }, [editor]);
 
   if (!editor) return null;
@@ -388,11 +396,11 @@ export default function Toolbar({ editor }: ToolbarProps) {
 
         <Sep />
 
-        {/* Code block */}
+        {/* Inline code */}
         <Btn
-          active={editor.isActive("codeBlock")}
+          active={editor.isActive("code")}
           onClick={handleInsertCodeBlock}
-          title="Code block"
+          title="Inline code"
         >
           <Code size={16} />
         </Btn>
@@ -414,7 +422,7 @@ export default function Toolbar({ editor }: ToolbarProps) {
         <Btn onClick={handleInsertImage} title="Insert image">
           <ImageIcon size={16} />
         </Btn>
-        <Btn onClick={handleSetLink} title="Insert link">
+        <Btn onClick={handleInsertLink} title="Insert link">
           <Link size={16} />
         </Btn>
       </div>

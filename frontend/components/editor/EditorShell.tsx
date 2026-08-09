@@ -129,7 +129,7 @@ export default function EditorShell({
       setContent(initialContent);
       setOverlayVisible(false);
     }
-  }, [initialContent]);
+  }, [initialContent, editor]);
 
   // Cleanup
   useEffect(() => {
@@ -141,6 +141,7 @@ export default function EditorShell({
 
   const words = countWords(content);
   const chars = countChars(content);
+  const loading = hasFileUrl && !initialContent;
 
   const handleStartBlank = useCallback(() => {
     setOverlayVisible(false);
@@ -286,13 +287,32 @@ export default function EditorShell({
         }}
       />
 
-      <MenuBar />
+      <MenuBar
+        editor={editor}
+        onNewDocument={handleStartBlank}
+        onOpenFile={handleOpenFile}
+        onDownload={(format) => handleDownload(format)}
+        onZoom={(delta) => setZoom((z) => Math.min(Math.max(z + delta, 50), 200))}
+      />
       <Toolbar editor={editor} />
 
       <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
-        <LeftSidebar pageCount={1} />
+        <LeftSidebar pageCount={1} editor={editor} />
         <DocumentCanvas zoom={zoom}>
-          <TipTapEditor editor={editor} />
+          {loading ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: 600,
+              }}
+            >
+              <div className="spinner" />
+            </div>
+          ) : (
+            <TipTapEditor editor={editor} />
+          )}
         </DocumentCanvas>
         <RightSidebar
           info={{

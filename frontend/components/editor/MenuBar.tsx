@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import type { Editor } from "@tiptap/react";
 
 const ITEMS = ["File", "Edit", "Insert", "Format", "Tools", "View", "Help"];
@@ -34,6 +34,32 @@ export default function MenuBar({
     return () => document.removeEventListener("mousedown", onDocClick);
   }, [openMenu]);
 
+  const handleInsertImage = useCallback(() => {
+    if (!editor) return;
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const src = ev.target?.result as string;
+        if (src) editor?.chain().focus().setImage({ src }).run();
+      };
+      reader.readAsDataURL(file);
+    };
+    input.click();
+  }, [editor]);
+
+  const handleInsertPageBreak = useCallback(() => {
+    editor
+      ?.chain()
+      .focus()
+      .insertContent('<p style="page-break-after: always;">&nbsp;</p>')
+      .run();
+  }, [editor]);
+
   const menus: Record<string, { label: string; action: () => void }[]> = {
     File: [
       { label: "New Document", action: onNewDocument },
@@ -46,19 +72,40 @@ export default function MenuBar({
       { label: "Redo", action: () => editor?.chain().focus().redo().run() },
       { label: "Select All", action: () => editor?.chain().focus().selectAll().run() },
     ],
+    Insert: [
+      { label: "Image", action: handleInsertImage },
+      { label: "Table", action: () => editor?.chain().focus().insertTable({ rows: 2, cols: 2 }).run() },
+      { label: "Horizontal Rule", action: () => editor?.chain().focus().setHorizontalRule().run() },
+      { label: "Page Break", action: handleInsertPageBreak },
+    ],
+    Format: [
+      { label: "Bold", action: () => editor?.chain().focus().toggleBold().run() },
+      { label: "Italic", action: () => editor?.chain().focus().toggleItalic().run() },
+      { label: "Underline", action: () => editor?.chain().focus().toggleUnderline().run() },
+      { label: "Heading 1", action: () => editor?.chain().focus().toggleHeading({ level: 1 }).run() },
+      { label: "Heading 2", action: () => editor?.chain().focus().toggleHeading({ level: 2 }).run() },
+      { label: "Clear Formatting", action: () => editor?.chain().focus().clearNodes().unsetAllMarks().run() },
+    ],
     View: [
       { label: "Zoom In", action: () => onZoom(10) },
       { label: "Zoom Out", action: () => onZoom(-10) },
     ],
   };
 
+  const shellBg = "#ffffff";
+  const shellBorder = "#e0e0e0";
+  const textColor = "#3c3c3c";
+  const activeBg = "#e8f0fe";
+  const menuBg = "#ffffff";
+  const hoverBg = "#f1f3f4";
+
   return (
     <div
       ref={barRef}
       id="menubar"
       style={{
-        background: "#ffffff",
-        borderBottom: "1px solid #e0e0e0",
+        background: shellBg,
+        borderBottom: `1px solid ${shellBorder}`,
         padding: "2px 12px",
         display: "flex",
         gap: 2,
@@ -73,11 +120,11 @@ export default function MenuBar({
             style={{
               padding: "5px 12px",
               fontSize: 13,
-              color: "#3c3c3c",
+              color: textColor,
               borderRadius: 4,
               cursor: "pointer",
               border: "none",
-              background: openMenu === item ? "#e8f0fe" : "none",
+              background: openMenu === item ? activeBg : "none",
               transition: "background 0.1s",
             }}
           >
@@ -90,8 +137,8 @@ export default function MenuBar({
                 top: "100%",
                 left: 0,
                 minWidth: 190,
-                background: "#ffffff",
-                border: "1px solid #e0e0e0",
+                background: menuBg,
+                border: `1px solid ${shellBorder}`,
                 borderRadius: 4,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08)",
                 padding: 4,
@@ -111,14 +158,14 @@ export default function MenuBar({
                     textAlign: "left",
                     padding: "7px 12px",
                     fontSize: 13,
-                    color: "#3c3c3c",
+                    color: textColor,
                     borderRadius: 3,
                     border: "none",
                     background: "none",
                     cursor: "pointer",
                     transition: "background 0.1s",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#f1f3f4")}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = hoverBg)}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
                 >
                   {m.label}

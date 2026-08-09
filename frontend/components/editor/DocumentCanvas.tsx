@@ -1,53 +1,42 @@
 "use client";
+import TipTapEditor from "./TipTapEditor";
+import { Editor } from "@tiptap/react";
 
-import { ReactNode } from "react";
-
-interface DocumentCanvasProps {
-  children: ReactNode;
+interface Props {
+  editor: Editor | null;
   zoom: number;
 }
 
-export default function DocumentCanvas({ children, zoom }: DocumentCanvasProps) {
+export default function DocumentCanvas({ editor, zoom }: Props) {
   return (
     <div
-      id="canvas"
+      id="editor-canvas"
       style={{
         flex: 1,
-        overflowY: "auto",
-        padding: "32px 24px",
-        background: "#f0f0f0",
-        display: "flex",
-        justifyContent: "center",
+        minWidth: 0,
+        overflowY: 'auto',
+        overflowX: 'auto',
+        background: '#e8e8e8',
+        padding: '32px 24px 64px',
       }}
     >
       <div
-        id="canvas-inner"
+        className="doc-page"
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 24,
-          width: "100%",
-          maxWidth: 860,
+          background: 'white',
+          width: '816px',
+          minWidth: '816px',
+          minHeight: '1056px',
+          padding: '96px',
+          boxSizing: 'border-box',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+          margin: '0 auto',
+          flexShrink: 0,
+          transform: zoom !== 100 ? `scale(${zoom / 100})` : undefined,
+          transformOrigin: 'top center',
         }}
       >
-        <div
-          className="doc-page"
-          style={{
-            background: "#fff",
-            width: 816,
-            minHeight: 1056,
-            padding: 96,
-            boxShadow: "0 2px 8px rgba(0,0,0,0.14), 0 8px 32px rgba(0,0,0,0.1)",
-            borderRadius: 2,
-            position: "relative",
-            flexShrink: 0,
-            transform: `scale(${zoom / 100})`,
-            transformOrigin: "top center",
-          }}
-        >
-          {children}
-        </div>
+        <TipTapEditor editor={editor} />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback } from "react";
 import type { Editor } from "@tiptap/react";
@@ -30,6 +30,7 @@ import { FONT_FAMILIES, FONT_SIZES } from "@/lib/editor/extensions";
 
 interface ToolbarProps {
   editor: Editor | null;
+  showRulers: boolean;
 }
 
 type ChainWithIndent = ReturnType<Editor["chain"]> & {
@@ -57,23 +58,23 @@ function Btn({
       onClick={onClick}
       title={title}
       disabled={disabled}
-        className="tb"
-        style={{
-          width: 32,
-          height: 32,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          border: "none",
-          background: active ? "#e8f0fe" : "none",
-          borderRadius: 4,
-          cursor: disabled ? "not-allowed" : "pointer",
-          fontSize: 14,
-          color: disabled ? "#bbb" : active ? "#1a73e8" : "#3c3c3c",
-          transition: "all 0.1s",
-          opacity: disabled ? 0.4 : 1,
-          ...btnStyle,
-        }}
+      className="tb"
+      style={{
+        width: 32,
+        height: 32,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "none",
+        background: active ? "#e8f0fe" : "none",
+        borderRadius: 4,
+        cursor: disabled ? "not-allowed" : "pointer",
+        fontSize: 14,
+        color: disabled ? "#bbb" : active ? "#1a73e8" : "#3c3c3c",
+        transition: "all 0.1s",
+        opacity: disabled ? 0.4 : 1,
+        ...btnStyle,
+      }}
     >
       {children}
     </button>
@@ -122,7 +123,7 @@ function Sel({
   );
 }
 
-export default function Toolbar({ editor }: ToolbarProps) {
+export default function Toolbar({ editor, showRulers }: ToolbarProps) {
   const handleInsertLink = useCallback(() => {
     if (!editor) return;
     const url = window.prompt("Enter URL:", "https://");
@@ -427,42 +428,43 @@ export default function Toolbar({ editor }: ToolbarProps) {
         </Btn>
       </div>
 
-      {/* Ruler */}
-      <div
-        id="ruler"
-        style={{
-          background: "#f8f9fa",
-          borderBottom: "1px solid #e0e0e0",
-          height: 24,
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: 154,
-          flexShrink: 0,
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "flex-end", height: "100%" }}>
-          {Array.from({ length: 18 }).map((_, i) => (
-            <div
-              key={i}
-              style={{
-                fontSize: 10,
-                color: "#9aa0a6",
-                width: 52,
-                textAlign: "center",
-                borderLeft: "1px solid #e0e0e0",
-                height: 8,
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "center",
-                paddingBottom: 1,
-              }}
-            >
-              {i + 1}
-            </div>
-          ))}
+      {showRulers && (
+        <div
+          id="ruler"
+          style={{
+            background: "#f8f9fa",
+            borderBottom: "1px solid #e0e0e0",
+            height: 24,
+            display: "flex",
+            alignItems: "center",
+            paddingLeft: 154,
+            flexShrink: 0,
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "flex-end", height: "100%" }}>
+            {Array.from({ length: 18 }).map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  fontSize: 10,
+                  color: "#9aa0a6",
+                  width: 52,
+                  textAlign: "center",
+                  borderLeft: "1px solid #e0e0e0",
+                  height: 8,
+                  display: "flex",
+                  alignItems: "flex-end",
+                  justifyContent: "center",
+                  paddingBottom: 1,
+                }}
+              >
+                {i + 1}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

@@ -9,7 +9,6 @@ import Toolbar from "./Toolbar";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
 import DocumentCanvas from "./DocumentCanvas";
-import TipTapEditor from "./TipTapEditor";
 import StatusBar from "./StatusBar";
 import UploadOverlay from "./UploadOverlay";
 
@@ -57,7 +56,8 @@ export default function EditorShell({
   const [zoom, setZoom] = useState(100);
   const [showRulers, setShowRulers] = useState(true);
   const [showPageBreaks, setShowPageBreaks] = useState(true);
-  const [darkMode, setDarkMode] = useState(true);
+  const [pageCount, setPageCount] = useState(1);
+  const [activePage, setActivePage] = useState(0);
   const [spellCheck, setSpellCheck] = useState(true);
   const [overlayVisible, setOverlayVisible] = useState(!initialContent && !hasFileUrl);
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -67,6 +67,7 @@ export default function EditorShell({
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autosaveTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const createdAt = "Today, " + nowFormatted();
 
   const editor = useEditor({
     extensions: editorExtensions,
@@ -131,6 +132,44 @@ export default function EditorShell({
     }
   }, [initialContent, editor]);
 
+  // Calculate page count from content height
+  useEffect(() => {
+    if (!editor) return;
+
+    const updatePageCount = () => {
+      const editorEl = document.querySelector(".tiptap.ProseMirror");
+      if (!editorEl) return;
+      const height = editorEl.scrollHeight;
+      setPageCount(Math.max(1, Math.ceil(height / 1056)));
+    };
+
+    const timer = setTimeout(updatePageCount, 300);
+    let debounceRef: ReturnType<typeof setTimeout> | null = null;
+    const onUpdate = () => {
+      if (debounceRef) clearTimeout(debounceRef);
+      debounceRef = setTimeout(updatePageCount, 300);
+    };
+    editor.on("update", onUpdate);
+    return () => {
+      clearTimeout(timer);
+      if (debounceRef) clearTimeout(debounceRef);
+      editor.off("update", onUpdate);
+    };
+  }, [editor]);
+
+  // Track the active page from canvas scroll position
+  useEffect(() => {
+    const canvas = document.getElementById("editor-canvas");
+    if (!canvas) return;
+    const handleScroll = () => {
+      const scrollTop = canvas.scrollTop;
+      const currentPage = Math.floor(scrollTop / 1056);
+      setActivePage(Math.min(currentPage, pageCount - 1));
+    };
+    canvas.addEventListener("scroll", handleScroll);
+    return () => canvas.removeEventListener("scroll", handleScroll);
+  }, [pageCount]);
+
   // Cleanup
   useEffect(() => {
     return () => {
@@ -141,7 +180,6 @@ export default function EditorShell({
 
   const words = countWords(content);
   const chars = countChars(content);
-  const loading = hasFileUrl && !initialContent;
 
   const handleStartBlank = useCallback(() => {
     setOverlayVisible(false);
@@ -294,46 +332,34 @@ export default function EditorShell({
         onDownload={(format) => handleDownload(format)}
         onZoom={(delta) => setZoom((z) => Math.min(Math.max(z + delta, 50), 200))}
       />
-      <Toolbar editor={editor} />
+      <Toolbar editor={editor} showRulers={showRulers} />
 
-      <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
-        <LeftSidebar pageCount={1} editor={editor} />
-        <DocumentCanvas zoom={zoom}>
-          {loading ? (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                minHeight: 600,
-              }}
-            >
-              <div className="spinner" />
-            </div>
-          ) : (
-            <TipTapEditor editor={editor} />
-          )}
-        </DocumentCanvas>
+      <div style={{ flex: 1, display: "flex", overflow: "hidden", minWidth: 0 }}>
+        <LeftSidebar
+          pageCount={pageCount}
+          editor={editor}
+          activePage={activePage}
+          onPageChange={setActivePage}
+        />
+        <DocumentCanvas editor={editor} zoom={zoom} />
         <RightSidebar
           info={{
             fileName,
-            fileType,
-            fileSize,
-            pageCount: 1,
+            fileType: fileType || "DOCX",
+            fileSize: fileSize || "—",
+            pageCount,
             wordCount: words,
             charCount: chars,
-            createdAt: "Today, " + nowFormatted(),
+            createdAt: createdAt,
             modifiedAt: lastSaved
               ? lastSaved.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
-              : "Today, " + nowFormatted(),
+              : createdAt,
           }}
           showRulers={showRulers}
           showPageBreaks={showPageBreaks}
-          darkMode={darkMode}
           spellCheck={spellCheck}
           onToggleRulers={() => setShowRulers(!showRulers)}
           onTogglePageBreaks={() => setShowPageBreaks(!showPageBreaks)}
-          onToggleDarkMode={() => setDarkMode(!darkMode)}
           onToggleSpellCheck={() => {
             setSpellCheck(!spellCheck);
             if (editor) editor.setOptions({ editorProps: { attributes: { spellcheck: String(!spellCheck) } } });
@@ -342,7 +368,7 @@ export default function EditorShell({
       </div>
 
       <StatusBar
-        pageCount={1}
+        pageCount={pageCount}
         wordCount={words}
         charCount={chars}
         zoom={zoom}

@@ -627,7 +627,23 @@ body {
 
 /* === EDITOR STYLES === */
 .editor-content .tiptap {
-  outline: none;
+  background: white;
+  outline: none !important;
+}
+
+/* Word-style page simulation: one clean 1px gray line every 1056px */
+.doc-page {
+  background-color: white;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent calc(1056px - 2px),
+    #a0a0a0 calc(1056px - 2px),
+    #a0a0a0 1056px
+  ) !important;
+  background-size: 100% 1056px !important;
+  background-attachment: local !important;
+  width: 100%;
 }
 
 .editor-content .tiptap p.is-editor-empty:first-child::before {
@@ -932,22 +948,6 @@ body {
 
 .page-thumb:hover {
   border-color: #00e5ff88;
-}
-
-.toggle.on::after {
-  left: 19px;
-}
-
-.toggle::after {
-  content: '';
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 14px;
-  height: 14px;
-  background: #fff;
-  border-radius: 50%;
-  transition: left 0.2s;
 }
 
 @keyframes spin {

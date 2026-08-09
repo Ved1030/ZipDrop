@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZipDrop Editor</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Segoe UI',Arial,sans-serif;background:#1a1a2e;color:#e0e0e0;overflow:hidden}
+#app{display:flex;flex-direction:column;height:100vh}
+
+/* TOP BAR */
+#topbar{background:#0f0f1a;border-bottom:1px solid #2a2a3e;height:52px;padding:0 16px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+#logo{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:#00e5ff;text-decoration:none}
+#logo img{width:28px;height:28px}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:13px;color:#aaa;background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:4px;transition:background 0.15s}
+.back-btn:hover{background:#2a2a3e;color:#fff}
+.topbar-center{flex:1;display:flex;align-items:center;justify-content:center;gap:10px}
+.file-icon{width:30px;height:30px;background:#1a73e8;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:700}
+.file-title-wrap{display:flex;flex-direction:column;align-items:flex-start}
+#fname{background:none;border:none;font-size:14px;font-weight:600;color:#fff;outline:none;cursor:pointer;padding:1px 4px;border-radius:3px}
+#fname:hover{background:#2a2a3e}
+#fname:focus{background:#2a2a3e;border-bottom:2px solid #00e5ff}
+.save-status{font-size:11px;color:#00e5ff;display:flex;align-items:center;gap:4px}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.auto-save-info{font-size:12px;color:#888;display:flex;align-items:center;gap:5px}
+.top-btn{display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:6px;border:none;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s}
+#btn-share{background:#1a2a3e;color:#00e5ff;border:1px solid #00e5ff33}
+#btn-share:hover{background:#00e5ff22}
+#btn-dl{background:#00e5ff;color:#000;font-weight:600}
+#btn-dl:hover{background:#00cfee}
+.more-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:#1a2a3e;border:1px solid #2a2a3e;border-radius:6px;cursor:pointer;color:#aaa;font-size:18px}
+.more-btn:hover{background:#2a2a3e;color:#fff}
+
+/* MENU BAR */
+#menubar{background:#0f0f1a;border-bottom:1px solid #2a2a3e;padding:2px 12px;display:flex;gap:2px;flex-shrink:0}
+.menu-item{padding:5px 12px;font-size:13px;color:#ccc;border-radius:4px;cursor:pointer;border:none;background:none;transition:background 0.1s}
+.menu-item:hover{background:#2a2a3e;color:#fff}
+
+/* TOOLBAR */
+#toolbar{background:#0f0f1a;border-bottom:1px solid #2a2a3e;padding:5px 12px;display:flex;align-items:center;gap:2px;flex-wrap:wrap;flex-shrink:0}
+.tb{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;background:none;border-radius:4px;cursor:pointer;font-size:14px;color:#ccc;transition:all 0.1s}
+.tb:hover{background:#2a2a3e;color:#fff}
+.tb.active{background:#00e5ff22;color:#00e5ff}
+.sep{width:1px;height:22px;background:#2a2a3e;margin:0 4px}
+.tb-sel{height:30px;border:1px solid #2a2a3e;border-radius:4px;font-size:13px;padding:0 6px;background:#1a1a2e;color:#ccc;cursor:pointer;outline:none}
+.tb-sel:focus{border-color:#00e5ff}
+.color-wrap{display:flex;align-items:center;gap:2px;padding:0 4px;cursor:pointer;font-size:13px;color:#ccc}
+.color-input{width:20px;height:20px;border:none;border-radius:3px;cursor:pointer;padding:0;background:none}
+
+/* MAIN CONTENT */
+#main{flex:1;display:flex;overflow:hidden}
+
+/* LEFT PANEL - PAGES */
+#pages-panel{width:130px;background:#0a0a16;border-right:1px solid #2a2a3e;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+#pages-header{padding:10px 12px;font-size:12px;font-weight:600;color:#888;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a2a3e;text-transform:uppercase;letter-spacing:0.5px}
+.pages-list{padding:10px 8px;display:flex;flex-direction:column;gap:10px}
+.page-thumb{border-radius:4px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color 0.15s}
+.page-thumb.active{border-color:#00e5ff}
+.page-thumb:hover{border-color:#00e5ff88}
+.thumb-img{background:#fff;width:100%;aspect-ratio:0.77;display:flex;align-items:flex-start;justify-content:center;overflow:hidden}
+.thumb-img canvas{width:100%;height:auto}
+.page-num{text-align:center;font-size:11px;color:#888;margin-top:4px}
+
+/* CANVAS */
+#canvas{flex:1;overflow-y:auto;padding:32px 24px;background:#1a1a2e;display:flex;justify-content:center}
+#canvas-inner{display:flex;flex-direction:column;align-items:center;gap:24px;width:100%;max-width:860px}
+
+/* RULER */
+#ruler{background:#0f0f1a;border-bottom:1px solid #2a2a3e;height:24px;display:flex;align-items:center;padding:0 0 0 154px;flex-shrink:0;overflow:hidden}
+.ruler-marks{display:flex;align-items:flex-end;height:100%;gap:0}
+.ruler-mark{font-size:10px;color:#555;width:52px;text-align:center;border-left:1px solid #333;height:8px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:1px}
+
+/* PAGE */
+.doc-page{background:#fff;width:816px;min-height:1056px;padding:96px 96px;box-shadow:0 4px 24px rgba(0,0,0,0.5);border-radius:2px;position:relative;flex-shrink:0}
+.page-break-line{width:816px;height:1px;background:#2a2a3e;border:none;margin:0}
+
+#editor{outline:none;min-height:864px;font-size:11pt;line-height:1.7;color:#000;font-family:'Calibri','Segoe UI',Arial,sans-serif;caret-color:#1a73e8}
+#editor:empty:before{content:'Start typing…';color:#bbb;pointer-events:none;display:block}
+#editor h1{font-size:20pt;font-weight:700;margin:10px 0 8px;color:#111}
+#editor h2{font-size:15pt;font-weight:600;margin:10px 0 6px;color:#1a73e8}
+#editor h3{font-size:12pt;font-weight:600;margin:8px 0 4px;color:#333}
+#editor p{margin:0 0 6px}
+#editor ul,#editor ol{padding-left:28px;margin:0 0 6px}
+#editor table{border-collapse:collapse;width:100%;margin:8px 0}
+#editor td,#editor th{border:1px solid #ddd;padding:6px 10px}
+#editor a{color:#1a73e8;text-decoration:underline}
+
+/* RIGHT PANEL */
+#right-panel{width:220px;background:#0a0a16;border-left:1px solid #2a2a3e;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+#right-panel-title{padding:14px 14px 10px;font-size:13px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a2a3e}
+.info-group{padding:12px 14px;border-bottom:1px solid #2a2a3e}
+.info-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px}
+.info-label{color:#888}
+.info-value{color:#fff;font-weight:500}
+.info-badge{background:#1a73e8;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px}
+.options-group{padding:12px 14px}
+.options-title{font-size:12px;font-weight:600;color:#888;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.option-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px;color:#ccc}
+.toggle{width:36px;height:20px;background:#2a2a3e;border-radius:10px;position:relative;cursor:pointer;transition:background 0.2s;border:none}
+.toggle.on{background:#00e5ff}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:left 0.2s}
+.toggle.on::after{left:19px}
+
+/* STATUS BAR */
+#statusbar{background:#0f0f1a;border-top:1px solid #2a2a3e;padding:5px 20px;display:flex;gap:24px;font-size:12px;color:#666;flex-shrink:0;align-items:center}
+.status-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+.zoom-ctrl{display:flex;align-items:center;gap:6px;font-size:12px;color:#888}
+.zoom-btn{background:none;border:1px solid #2a2a3e;color:#ccc;width:22px;height:22px;border-radius:3px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.zoom-btn:hover{background:#2a2a3e}
+.view-btns{display:flex;gap:4px}
+.view-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid #2a2a3e;border-radius:3px;cursor:pointer;background:none;color:#888;font-size:14px}
+.view-btn:hover,.view-btn.active{background:#2a2a3e;color:#fff}
+
+/* OVERLAY */
+#overlay{position:fixed;inset:0;background:rgba(10,10,22,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;z-index:100}
+#drop-box{border:2px dashed #2a2a3e;border-radius:16px;padding:56px 80px;text-align:center;cursor:pointer;background:#0f0f1a;transition:border-color 0.2s,background 0.2s;max-width:440px}
+#drop-box:hover{border-color:#00e5ff;background:#00e5ff0a}
+#drop-icon{font-size:48px;color:#00e5ff;margin-bottom:16px}
+#drop-box h2{font-size:17px;font-weight:600;color:#fff;margin-bottom:6px}
+#drop-box p{font-size:13px;color:#888}
+.overlay-or{font-size:13px;color:#444}
+#blank-btn{padding:10px 28px;background:#00e5ff;color:#000;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.15s}
+#blank-btn:hover{background:#00cfee}
+</style>
+</head>
+<body>
+<input type="file" id="fileInput" accept=".docx,.txt" style="display:none">
+
+<div id="app">
+
+  <!-- TOP BAR -->
+  <div id="topbar">
+    <div id="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#00e5ff22"/><path d="M8 14l4 4 8-8" stroke="#00e5ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      ZipDrop
+    </div>
+    <button class="back-btn"><i class="ti ti-arrow-left"></i> Back to files</button>
+    <div class="topbar-center">
+      <div class="file-icon">W</div>
+      <div class="file-title-wrap">
+        <input id="fname" type="text" value="Untitled document" spellcheck="false">
+        <div class="save-status"><i class="ti ti-check" style="font-size:11px"></i> <span id="saveText">Saved</span></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="auto-save-info"><i class="ti ti-cloud-upload" style="font-size:14px"></i> Auto-saved just now</div>
+      <button class="top-btn" id="btn-share" onclick="document.getElementById('fileInput').click()">
+        <i class="ti ti-folder-open" style="font-size:14px"></i> Open file
+      </button>
+      <button class="top-btn" id="btn-dl" onclick="downloadDoc()">
+        <i class="ti ti-download" style="font-size:14px"></i> Download
+      </button>
+      <div class="more-btn"><i class="ti ti-dots-vertical"></i></div>
+    </div>
+  </div>
+
+  <!-- MENU BAR -->
+  <div id="menubar">
+    <button class="menu-item">File</button>
+    <button class="menu-item">Edit</button>
+    <button class="menu-item">Insert</button>
+    <button class="menu-item">Format</button>
+    <button class="menu-item">Tools</button>
+    <button class="menu-item">View</button>
+    <button class="menu-item">Help</button>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div id="toolbar">
+    <button class="tb" onclick="execF('undo')" title="Undo"><i class="ti ti-arrow-back-up"></i></button>
+    <button class="tb" onclick="execF('redo')" title="Redo"><i class="ti ti-arrow-forward-up"></i></button>
+    <div class="sep"></div>
+    <select class="tb-sel" style="width:100px" onchange="execF('fontName',this.value)">
+      <option value="Arial">Arial</option>
+      <option value="Calibri">Calibri</option>
+      <option value="Times New Roman">Times New Roman</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Verdana">Verdana</option>
+      <option value="Courier New">Courier New</option>
+    </select>
+    <select class="tb-sel" style="width:50px" onchange="execF('fontSize',this.value)">
+      <option value="1">8</option>
+      <option value="2">10</option>
+      <option value="3" selected>11</option>
+      <option value="4">14</option>
+      <option value="5">18</option>
+      <option value="6">24</option>
+      <option value="7">36</option>
+    </select>
+    <div class="sep"></div>
+    <label class="color-wrap" title="Text color">A
+      <input type="color" class="color-input" value="#000000" onchange="execF('foreColor',this.value)">
+    </label>
+    <label class="color-wrap" title="Highlight">
+      <i class="ti ti-highlight" style="font-size:14px"></i>
+      <input type="color" class="color-input" value="#ffff00" onchange="execF('hiliteColor',this.value)">
+    </label>
+    <div class="sep"></div>
+    <button class="tb" onclick="execF('bold')" title="Bold"><b>B</b></button>
+    <button class="tb" onclick="execF('italic')" title="Italic"><i>I</i></button>
+    <button class="tb" onclick="execF('underline')" title="Underline"><u>U</u></button>
+    <button class="tb" onclick="execF('strikeThrough')" title="Strikethrough"><s>S</s></button>
+    <button class="tb" onclick="execF('superscript')" title="Superscript" style="font-size:11px">x²</button>
+    <button class="tb" onclick="execF('subscript')" title="Subscript" style="font-size:11px">x₂</button>
+    <div class="sep"></div>
+    <button class="tb" onclick="execF('justifyLeft')" title="Align left"><i class="ti ti-align-left"></i></button>
+    <button class="tb" onclick="execF('justifyCenter')" title="Center"><i class="ti ti-align-center"></i></button>
+    <button class="tb" onclick="execF('justifyRight')" title="Align right"><i class="ti ti-align-right"></i></button>
+    <button class="tb" onclick="execF('justifyFull')" title="Justify"><i class="ti ti-align-justified"></i></button>
+    <div class="sep"></div>
+    <button class="tb" onclick="execF('insertUnorderedList')" title="Bullet list"><i class="ti ti-list"></i></button>
+    <button class="tb" onclick="execF('insertOrderedList')" title="Numbered list"><i class="ti ti-list-numbers"></i></button>
+    <button class="tb" onclick="execF('insertCheckbox')" title="Checklist"><i class="ti ti-checkbox"></i></button>
+    <div class="sep"></div>
+    <button class="tb" onclick="insertTable()" title="Table"><i class="ti ti-table"></i></button>
+    <button class="tb" onclick="insertImage()" title="Image"><i class="ti ti-photo"></i></button>
+    <button class="tb" onclick="insertLink()" title="Link"><i class="ti ti-link"></i></button>
+    <button class="tb" title="More"><i class="ti ti-dots"></i></button>
+  </div>
+
+  <!-- RULER -->
+  <div id="ruler">
+    <div class="ruler-marks">
+      <div class="ruler-mark">1</div><div class="ruler-mark">2</div>
+      <div class="ruler-mark">3</div><div class="ruler-mark">4</div>
+      <div class="ruler-mark">5</div><div class="ruler-mark">6</div>
+      <div class="ruler-mark">7</div><div class="ruler-mark">8</div>
+      <div class="ruler-mark">9</div><div class="ruler-mark">10</div>
+      <div class="ruler-mark">11</div><div class="ruler-mark">12</div>
+      <div class="ruler-mark">13</div><div class="ruler-mark">14</div>
+      <div class="ruler-mark">15</div><div class="ruler-mark">16</div>
+      <div class="ruler-mark">17</div><div class="ruler-mark">18</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+
+    <!-- LEFT: PAGES PANEL -->
+    <div id="pages-panel">
+      <div id="pages-header">
+        Pages <span style="font-size:16px;cursor:pointer;color:#00e5ff">+</span>
+      </div>
+      <div class="pages-list" id="pagesList">
+        <div class="page-thumb active">
+          <div class="thumb-img" style="background:#fff;padding:6px">
+            <div style="width:100%;font-size:3px;color:#333;line-height:1.4;overflow:hidden" id="thumbContent"></div>
+          </div>
+          <div class="page-num">1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER: CANVAS -->
+    <div id="canvas">
+      <div id="canvas-inner">
+        <div class="doc-page">
+          <div id="editor" contenteditable="true" spellcheck="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: INFO PANEL -->
+    <div id="right-panel">
+      <div id="right-panel-title">
+        Document <i class="ti ti-info-circle" style="font-size:14px;color:#888;cursor:pointer"></i>
+      </div>
+      <div class="info-group">
+        <div class="info-row"><span class="info-label">File name</span><span class="info-value" id="infoName" style="font-size:11px">Untitled</span></div>
+        <div class="info-row"><span class="info-label">File type</span><span class="info-badge" id="infoType">DOCX</span></div>
+        <div class="info-row"><span class="info-label">File size</span><span class="info-value" id="infoSize">—</span></div>
+        <div class="info-row"><span class="info-label">Pages</span><span class="info-value" id="infoPages">1</span></div>
+        <div class="info-row"><span class="info-label">Words</span><span class="info-value" id="infoWords">0</span></div>
+        <div class="info-row"><span class="info-label">Characters</span><span class="info-value" id="infoChars">0</span></div>
+        <div class="info-row"><span class="info-label">Last modified</span><span class="info-value" id="infoModified">—</span></div>
+        <div class="info-row"><span class="info-label">Created</span><span class="info-value" id="infoCreated">—</span></div>
+      </div>
+      <div class="options-group">
+        <div class="options-title">Document options <i class="ti ti-chevron-up" style="font-size:12px"></i></div>
+        <div class="option-row">Show rulers <button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="option-row">Show page breaks <button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="option-row">Dark mode <button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="option-row">Spell check <button class="toggle on" id="spellToggle" onclick="toggleSpell(this)"></button></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STATUS BAR -->
+  <div id="statusbar">
+    <span id="pgInfo">Page 1 of 1</span>
+    <span id="wcInfo">Words: 0</span>
+    <span id="ccInfo">Characters: 0</span>
+    <span id="langInfo">English (US)</span>
+    <span id="spellInfo" style="color:#00e5ff;display:flex;align-items:center;gap:4px"><i class="ti ti-check" style="font-size:12px"></i> Spell check</span>
+    <div class="status-right">
+      <div class="view-btns">
+        <button class="view-btn active" title="Page view"><i class="ti ti-layout-distribute-vertical"></i></button>
+        <button class="view-btn" title="Two page view"><i class="ti ti-layout-columns"></i></button>
+        <button class="view-btn" title="Reading view"><i class="ti ti-book"></i></button>
+      </div>
+      <div class="zoom-ctrl">
+        <button class="zoom-btn" onclick="changeZoom(-10)">−</button>
+        <span id="zoomLabel">100%</span>
+        <button class="zoom-btn" onclick="changeZoom(10)">+</button>
+      </div>
+      <i class="ti ti-help-circle" style="font-size:16px;color:#555;cursor:pointer"></i>
+    </div>
+  </div>
+
+</div>
+
+<!-- OVERLAY -->
+<div id="overlay">
+  <div id="drop-box" onclick="document.getElementById('fileInput').click()">
+    <div id="drop-icon"><i class="ti ti-file-text"></i></div>
+    <h2>Open a document to edit</h2>
+    <p>Click to browse — supports .docx and .txt<br>or drag & drop a file here</p>
+  </div>
+  <div class="overlay-or">— or —</div>
+  <button id="blank-btn" onclick="startBlank()">Start with blank document</button>
+</div>
+
+<script>
+var currentName='Untitled document';
+var currentType='docx';
+var zoomLevel=100;
+var saveTimer,statsTimer;
+var now=new Date();
+var timeStr=now.toLocaleDateString('en-US',{month:'short',day:'numeric'})+ ', '+now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+document.getElementById('infoCreated').textContent='Today, '+now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+document.getElementById('infoModified').textContent='Today, '+now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+document.getElementById('fileInput').addEventListener('change',function(){
+  var f=this.files[0]; if(!f) return;
+  currentName=f.name;
+  currentType=f.name.split('.').pop().toLowerCase();
+  document.getElementById('fname').value=f.name;
+  document.getElementById('infoName').textContent=f.name;
+  document.getElementById('infoType').textContent=currentType.toUpperCase();
+  document.getElementById('infoSize').textContent=(f.size/1024).toFixed(1)+' KB';
+  var r=new FileReader();
+  if(currentType==='docx'){
+    r.onload=function(e){
+      mammoth.convertToHtml({arrayBuffer:e.target.result}).then(function(res){
+        document.getElementById('editor').innerHTML=res.value;
+        hideOverlay(); updateStats();
+      }).catch(function(){alert('Could not open DOCX.');});
+    };
+    r.readAsArrayBuffer(f);
+  } else {
+    r.onload=function(e){
+      document.getElementById('editor').innerHTML=e.target.result.split('\n').map(function(l){return'<p>'+(l||'&nbsp;')+'</p>';}).join('');
+      hideOverlay(); updateStats();
+    };
+    r.readAsText(f);
+  }
+  this.value='';
+});
+
+function hideOverlay(){
+  document.getElementById('overlay').style.display='none';
+  document.getElementById('btn-dl').style.display='flex';
+  document.getElementById('editor').focus();
+}
+
+function startBlank(){
+  document.getElementById('editor').innerHTML='';
+  hideOverlay();
+}
+
+function execF(cmd,val){
+  document.execCommand(cmd,false,val||null);
+  document.getElementById('editor').focus();
+}
+
+function updateStats(){
+  var el=document.getElementById('editor');
+  var txt=el.innerText||'';
+  var words=txt.trim()===''?0:txt.trim().split(/\s+/).length;
+  var chars=txt.length;
+  document.getElementById('wcInfo').textContent='Words: '+words;
+  document.getElementById('ccInfo').textContent='Characters: '+chars;
+  document.getElementById('infoWords').textContent=words.toLocaleString();
+  document.getElementById('infoChars').textContent=chars.toLocaleString();
+  document.getElementById('thumbContent').innerHTML=el.innerHTML;
+  var mod=new Date();
+  document.getElementById('infoModified').textContent='Today, '+mod.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+}
+
+document.getElementById('editor').addEventListener('input',function(){
+  updateStats();
+  document.getElementById('saveText').textContent='Saving…';
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(function(){document.getElementById('saveText').textContent='Saved ✓';},1200);
+});
+
+function downloadDoc(){
+  var html=document.getElementById('editor').innerHTML;
+  var name=document.getElementById('fname').value.replace(/\.(docx|txt)$/i,'')||'document';
+  var blob=new Blob(['\ufeff'+html],{type:'application/msword'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=name+'.docx';
+  a.click();
+  document.getElementById('saveText').textContent='Downloaded ✓';
+}
+
+function changeZoom(delta){
+  zoomLevel=Math.max(50,Math.min(200,zoomLevel+delta));
+  document.getElementById('zoomLabel').textContent=zoomLevel+'%';
+  document.querySelector('.doc-page').style.transform='scale('+zoomLevel/100+')';
+  document.querySelector('.doc-page').style.transformOrigin='top center';
+}
+
+function insertTable(){
+  document.execCommand('insertHTML',false,'<table style="border-collapse:collapse;width:100%"><tr><td style="border:1px solid #ddd;padding:8px">Cell</td><td style="border:1px solid #ddd;padding:8px">Cell</td></tr><tr><td style="border:1px solid #ddd;padding:8px">Cell</td><td style="border:1px solid #ddd;padding:8px">Cell</td></tr></table><p></p>');
+}
+
+function insertLink(){
+  var url=prompt('Enter URL:','https://');
+  if(url) document.execCommand('createLink',false,url);
+}
+
+function insertImage(){
+  var input=document.createElement('input');
+  input.type='file'; input.accept='image/*';
+  input.onchange=function(){
+    var file=this.files[0]; if(!file) return;
+    var r=new FileReader();
+    r.onload=function(e){ document.execCommand('insertImage',false,e.target.result); };
+    r.readAsDataURL(file);
+  };
+  input.click();
+}
+
+function toggleSpell(btn){
+  btn.classList.toggle('on');
+  document.getElementById('editor').spellcheck=btn.classList.contains('on');
+}
+
+document.addEventListener('dragover',function(e){e.preventDefault();});
+document.addEventListener('drop',function(e){
+  e.preventDefault();
+  var f=e.dataTransfer.files[0]; if(!f) return;
+  var dt=new DataTransfer(); dt.items.add(f);
+  document.getElementById('fileInput').files=dt.files;
+  document.getElementById('fileInput').dispatchEvent(new Event('change'));
+});
+</script>
+</body>
+</html>

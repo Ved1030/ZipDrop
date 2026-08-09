@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     return Response.json({ html });
 
   } catch (err: any) {
-    console.error("[convert-to-html]", err.message);
-    return Response.json({ error: err.message }, { status: 500 });
+    console.error("[convert-to-html]", err.message, err.stack);
+    return Response.json({ error: err.message, stack: process.env.NODE_ENV === "development" ? err.stack : undefined }, { status: 500 });
   }
 }

@@ -2,7 +2,6 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import { TextStyle } from "@tiptap/extension-text-style";
 import FontFamily from "@tiptap/extension-font-family";
@@ -43,13 +42,12 @@ export default function DocEditor({
   const [fontSize, setFontSize] = useState("11");
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
       }),
-      Underline,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
-      TextStyle,
       FontFamily,
       FontSize,
     ],
@@ -81,9 +79,10 @@ export default function DocEditor({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ fileUrl }),
     })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Server error: ${res.status}`);
-        return res.json();
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || `Server error: ${res.status}`);
+        return data;
       })
       .then((data) => {
         if (data.html) {

@@ -15,4 +15,4 @@ backend/.env
 # Build folders
 .next/
 dist/
-build/
+build/frontend/dev-server.log

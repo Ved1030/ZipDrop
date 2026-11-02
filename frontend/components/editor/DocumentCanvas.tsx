@@ -227,7 +227,17 @@ function blockFromNode(node: Node | null): HTMLElement | null {
 function selectionElement(): HTMLElement | null {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return null;
-  return elementOf(selection.getRangeAt(0).startContainer);
+  const range = selection.getRangeAt(0);
+  const node = range.startContainer;
+  if (node.nodeType === Node.ELEMENT_NODE) {
+    const el = node as HTMLElement;
+    const child = el.childNodes[range.startOffset];
+    if (child && child.nodeType === Node.ELEMENT_NODE) return child as HTMLElement;
+    const prev = range.startOffset > 0 ? el.childNodes[range.startOffset - 1] : null;
+    if (prev && prev.nodeType === Node.ELEMENT_NODE) return prev as HTMLElement;
+    return el;
+  }
+  return node.parentElement;
 }
 
 const INLINE_STYLE_PROPS = [
@@ -528,33 +538,77 @@ const PaginatedDocumentCanvas = forwardRef<PaginatedEditorHandle, DocumentCanvas
       return tail;
     }
 
-    function insertCaretMarker(): HTMLElement | null {
-      const selection = window.getSelection();
-      const article = getActiveArticle();
-      if (!selection || selection.rangeCount === 0 || !article) return null;
-      const range = selection.getRangeAt(0);
-      if (!range.collapsed || !article.contains(range.startContainer)) return null;
-
+    function createCaretMarker(): HTMLElement {
       const marker = document.createElement("span");
       marker.setAttribute("data-zd-caret", "1");
       marker.style.cssText =
         "display:inline-block;width:0;height:0;overflow:hidden;vertical-align:baseline;pointer-events:none;";
-      const collapsed = range.cloneRange();
-      collapsed.collapse(true);
-      collapsed.insertNode(marker);
       return marker;
     }
 
-    function restoreCaret(marker: HTMLElement | null): void {
-      if (!marker || !marker.isConnected) return;
-      const parent = marker.parentNode;
-      if (!parent) return;
-      const range = document.createRange();
-      range.setStartAfter(marker);
-      range.collapse(true);
-      marker.remove();
-      const article = elementOf(parent)?.closest("article");
+    function insertSelectionMarkers(): { start: HTMLElement; end: HTMLElement } | null {
+      const selection = window.getSelection();
+      const article = getActiveArticle();
+      if (!selection || selection.rangeCount === 0 || !article) return null;
+      const range = selection.getRangeAt(0);
+      const startEl = elementOf(range.startContainer);
+      const endEl = elementOf(range.endContainer);
+      if (!startEl?.closest("article") || !endEl?.closest("article")) return null;
+
+      const place = (marker: HTMLElement, atStart: boolean): boolean => {
+        const probe = range.cloneRange();
+        const container = atStart ? probe.startContainer : probe.endContainer;
+        if (container.nodeType === Node.ELEMENT_NODE) {
+          const el = container as HTMLElement;
+          const owner = el.closest("article") || article;
+          if (el === owner) {
+            const atEdge = atStart ? probe.startOffset === 0 : probe.endOffset === 0;
+            const block = atEdge ? owner.firstElementChild : owner.lastElementChild;
+            if (block) {
+              const inner = document.createRange();
+              inner.selectNodeContents(block);
+              inner.collapse(atStart);
+              inner.insertNode(marker);
+              return true;
+            }
+          }
+        }
+        probe.collapse(atStart);
+        probe.insertNode(marker);
+        return true;
+      };
+
+      if (range.collapsed) {
+        const caret = createCaretMarker();
+        place(caret, true);
+        return { start: caret, end: caret };
+      }
+
+      const startMarker = createCaretMarker();
+      const endMarker = createCaretMarker();
+      place(endMarker, false);
+      place(startMarker, true);
+      return { start: startMarker, end: endMarker };
+    }
+
+    function restoreSelection(
+      markers: { start: HTMLElement; end: HTMLElement } | null
+    ): void {
+      if (!markers) return;
+      const { start, end } = markers;
+      if (!start.isConnected || !end.isConnected) return;
+      const article = elementOf(start)?.closest("article");
       if (!(article instanceof HTMLElement)) return;
+      const range = document.createRange();
+      if (start === end) {
+        range.setStartAfter(start);
+        range.collapse(true);
+      } else {
+        range.setStartAfter(start);
+        range.setEndBefore(end);
+      }
+      start.remove();
+      if (end !== start) end.remove();
       article.focus({ preventScroll: true });
       lastArticleRef.current = article;
       const selection = window.getSelection();
@@ -651,7 +705,7 @@ const PaginatedDocumentCanvas = forwardRef<PaginatedEditorHandle, DocumentCanvas
       const layer = zoomLayerRef.current;
       if (layer) layer.style.setProperty("zoom", "1");
 
-      const marker = preserveCaret ? insertCaretMarker() : null;
+      const markers = preserveCaret ? insertSelectionMarkers() : null;
 
       const blocksInOrder: HTMLElement[] = [];
       pagesRef.current.forEach((page) => {
@@ -739,7 +793,7 @@ const PaginatedDocumentCanvas = forwardRef<PaginatedEditorHandle, DocumentCanvas
         page.section.setAttribute("data-zd-page-index", String(index));
       });
 
-      restoreCaret(marker);
+      restoreSelection(markers);
       attachObserver();
 
       if (layer) {

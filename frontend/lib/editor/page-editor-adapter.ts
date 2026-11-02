@@ -8,6 +8,19 @@ import type {
 type HandleGetter = () => PaginatedEditorHandle | null;
 type UpdateListener = () => void;
 
+const PENDING_MARK_COMMANDS = new Set([
+  "bold",
+  "italic",
+  "underline",
+  "strikeThrough",
+  "superscript",
+  "subscript",
+  "foreColor",
+  "hiliteColor",
+  "fontName",
+  "styleWithCSS",
+]);
+
 function rgbToHex(color: string): string {
   if (!color) return "#000000";
   if (color.startsWith("#")) return color;
@@ -27,10 +40,17 @@ function rgbToHex(color: string): string {
 function selectionElement(): HTMLElement | null {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return null;
-  const node = selection.getRangeAt(0).startContainer;
-  return node.nodeType === Node.ELEMENT_NODE
-    ? (node as HTMLElement)
-    : (node.parentElement as HTMLElement | null);
+  const range = selection.getRangeAt(0);
+  const node = range.startContainer;
+  if (node.nodeType === Node.ELEMENT_NODE) {
+    const el = node as HTMLElement;
+    const child = el.childNodes[range.startOffset];
+    if (child && child.nodeType === Node.ELEMENT_NODE) return child as HTMLElement;
+    const prev = range.startOffset > 0 ? el.childNodes[range.startOffset - 1] : null;
+    if (prev && prev.nodeType === Node.ELEMENT_NODE) return prev as HTMLElement;
+    return el;
+  }
+  return (node.parentElement as HTMLElement | null);
 }
 
 function blockOf(el: HTMLElement | null): HTMLElement | null {
@@ -101,14 +121,35 @@ export class PageEditorAdapter {
   }
 
   doFocus(position?: "start" | "end"): void {
-    this.getHandle()?.focus(position);
+    const handle = this.getHandle();
+    if (!handle) return;
+
+    const selection = window.getSelection();
+    const anchor = selection?.anchorNode;
+    const anchorEl =
+      anchor instanceof Element ? anchor : anchor?.parentElement ?? null;
+    const article = anchorEl?.closest("article");
+
+    if (selection && selection.rangeCount > 0 && article instanceof HTMLElement) {
+      const range = selection.getRangeAt(0).cloneRange();
+      article.focus({ preventScroll: true });
+      selection.removeAllRanges();
+      selection.addRange(range);
+      return;
+    }
+
+    handle.focus(position);
   }
 
   run(command: string, value?: string): boolean {
     const handle = this.getHandle();
     if (!handle) return false;
     const ok = handle.exec(command, value);
-    handle.requestReflow(true);
+    const selection = window.getSelection();
+    const collapsed = !!selection && selection.rangeCount > 0 && selection.isCollapsed;
+    if (!(collapsed && PENDING_MARK_COMMANDS.has(command))) {
+      handle.requestReflow(true);
+    }
     this.emitUpdate();
     return ok;
   }
@@ -118,27 +159,51 @@ export class PageEditorAdapter {
     if (!handle) return;
     const selection = window.getSelection();
     if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
-      handle.exec("fontSize", "4");
-      handle.requestReflow(true);
-      this.emitUpdate();
       return;
     }
 
     const range = selection.getRangeAt(0);
-    const span = document.createElement("span");
-    span.style.fontSize = `${size}pt`;
-    try {
-      range.surroundContents(span);
-    } catch {
-      span.appendChild(range.extractContents());
-      range.insertNode(span);
+    const root = range.commonAncestorContainer;
+    const container = root.nodeType === Node.ELEMENT_NODE ? (root as Element) : root.parentElement;
+    if (!container) return;
+
+    const targets: Text[] = [];
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+    while (node) {
+      const text = node as Text;
+      if (text.nodeValue && text.nodeValue.length > 0 && range.intersectsNode(text)) {
+        targets.push(text);
+      }
+      node = walker.nextNode();
     }
 
+    const spans: HTMLSpanElement[] = [];
+    targets.forEach((text) => {
+      const start = text === range.startContainer ? range.startOffset : 0;
+      const end = text === range.endContainer ? range.endOffset : text.nodeValue?.length || 0;
+      if (end <= start) return;
+      const slice = document.createRange();
+      slice.setStart(text, start);
+      slice.setEnd(text, end);
+      const span = document.createElement("span");
+      span.style.fontSize = `${size}pt`;
+      try {
+        slice.surroundContents(span);
+      } catch {
+        return;
+      }
+      spans.push(span);
+    });
+
+    if (!spans.length) return;
+
     const next = document.createRange();
-    next.selectNodeContents(span);
-    next.collapse(false);
+    next.setStartBefore(spans[0]);
+    next.setEndAfter(spans[spans.length - 1]);
     selection.removeAllRanges();
     selection.addRange(next);
+
     handle.requestReflow(true);
     this.emitUpdate();
   }

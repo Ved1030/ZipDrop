@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "How to Transfer Files from Phone to PC Wirelessly in 2026",
   description:
-    "Discover how to transfer files from phone to PC wirelessly without installing software. Fast, secure, and works on all devices with no account needed.",
+    "Learn how to transfer files from phone to PC wirelessly without installing software. ZipDrop works on any device with a browser, no account needed.",
 };
 
 export default function Page() {
@@ -13,9 +13,9 @@ export default function Page() {
 
       <p>
         The ability to transfer files from phone to PC wirelessly has become a
-        must-have feature for modern device owners. Cables are inconvenient.
-        Cloud storage is slow. The demand for a truly wireless, instant solution
-        has never been higher.
+        must-have feature for modern device owners. Cables are inconvenient, and
+        cloud storage adds steps. A wireless transfer that runs in the browser is
+        the simplest option for many people.
       </p>
 
       <p>
@@ -93,13 +93,12 @@ export default function Page() {
         viable wireless option when they need one most.
       </p>
 
-      <h2>Why ZipDrop Is the Best Way to Transfer Files from Phone to PC Wirelessly</h2>
+      <h2>How ZipDrop Handles Wireless Phone-to-PC Transfer</h2>
 
       <p>
-        ZipDrop solves the wireless transfer problem by working entirely in the
-        browser. There is no app to install, no ecosystem to buy into, and no
-        network configuration to manage. As long as both devices have a browser
-        and an internet connection, they can exchange files wirelessly.
+        ZipDrop keeps wireless transfer simple: no app, no ecosystem to buy into,
+        no network configuration, and no account. As long as both devices have a
+        browser and an internet connection, you can move files between them.
       </p>
 
       <p>
@@ -132,7 +131,8 @@ export default function Page() {
           On your PC, open the ZipDrop website and enter the code.
         </li>
         <li>
-          The files transfer wirelessly. Download them to your PC once complete.
+          The files are uploaded from your phone. Once the upload finishes, you
+          can download them on your PC with the same code.
         </li>
       </ol>
 
@@ -150,15 +150,18 @@ export default function Page() {
       </p>
 
       <p>
-        Security is another major advantage. Because the transfer uses a unique,
-        temporary code, only the intended recipient can access the file. There
-        is no public link that can be shared or intercepted.
+        The code-based system is intuitive and requires no technical knowledge.
+        Anyone who can open a browser can send a file. Access is controlled by the
+        4-digit code: there is no public link to share. Because a 4-digit code has
+        only 10,000 possible values, treat it as convenient rather than strong
+        protection.
       </p>
 
       <p>
-        Speed is also noteworthy. Wireless transfers through ZipDrop are fast
-        because the data moves directly. There is no intermediate server
-        processing or cloud storage latency.
+        Speed depends on your connection. Files are uploaded from your phone to
+        ZipDrop's server and then downloaded to your PC, so the transfer takes
+        roughly as long as an upload plus a download. Avoid uploading anything
+        sensitive: automatic deletion is not yet enforced.
       </p>
 
       <h2>Frequently Asked Questions</h2>
@@ -171,8 +174,9 @@ export default function Page() {
 
       <h3>Is there a file size limit for wireless transfers?</h3>
       <p>
-        ZipDrop does not impose file size limits. Larger files take longer to
-        transfer depending on your connection speed.
+        Yes. ZipDrop accepts up to 10 files per transfer, with a maximum of 1 GB
+        per file. Larger files take longer to upload depending on your connection
+        speed.
       </p>
 
       <h3>Can I transfer folders wirelessly?</h3>
@@ -190,8 +194,10 @@ export default function Page() {
 
       <h3>How do I know the transfer is secure?</h3>
       <p>
-        All data is encrypted during transfer, and the 4-digit code ensures
-        only the recipient you choose can access the files.
+        Files travel over HTTPS, and the 4-digit code is required to open the
+        download page. There is no end-to-end encryption: files are stored on
+        ZipDrop's server. Each transfer is created with a 48-hour expiry
+        timestamp, but automatic deletion is not yet enforced.
       </p>
 
       <h2>Conclusion</h2>

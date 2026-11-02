@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Best File Transfer Website for Fast and Secure Sharing",
+  title: "Best File Transfer Website: What to Look For in 2026",
   description:
-    "Looking for a reliable file transfer website? Learn how ZipDrop lets you share files instantly with a 4-digit code — no login required.",
+    "Looking for a reliable file transfer website? Learn what to check and how ZipDrop works: up to 10 files, 1 GB per file, and a 4-digit code. No login required.",
 };
 
 export default function Page() {
   return (
     <main className="max-w-4xl mx-auto p-8">
-      <h1>Best File Transfer Website for Fast and Secure Sharing</h1>
+      <h1>Best File Transfer Website: What to Look For in 2026</h1>
 
       <p>
-        Finding the right file transfer website can make a huge difference in how quickly and conveniently you move documents, photos, videos, and other digital content between devices or to other people. With countless options available, choosing a platform that is fast, secure, and easy to use is essential.
+        Finding the right file transfer website can make a huge difference in how quickly and conveniently you move documents, photos, videos, and other digital content between devices or to other people. With countless options available, choosing a platform that is fast, simple, and honest about its limits is essential.
       </p>
 
       <p>
@@ -46,11 +46,11 @@ export default function Page() {
       <h2>Why ZipDrop Is the Best File Transfer Website</h2>
 
       <p>
-        ZipDrop reimagines file transfer by removing every unnecessary step. There is no account creation, no software download, and no confusing dashboard. You simply upload your file, receive a unique 4-digit code, and share that code with your recipient. They open ZipDrop on any device, enter the code, and download the file instantly.
+        ZipDrop removes the unnecessary steps. There is no account creation, no software download, and no confusing dashboard. You upload up to 10 files of up to 1 GB each, receive a unique 4-digit code, and share that code with your recipient. They open ZipDrop on any device, enter the code, and download the files.
       </p>
 
       <p>
-        This approach eliminates the pain points of traditional file sharing. Files stay intact at original quality, transfers happen in seconds, and the process works across platforms — Windows, macOS, Android, iOS, and Linux all work seamlessly through the browser.
+        Files keep their original quality, and the process works across platforms — Windows, macOS, Android, iOS, and Linux all work through the browser. Files are uploaded to ZipDrop's server, so transfer time depends on your upload and download speeds.
       </p>
 
       <h2>Step-by-Step Guide to Using ZipDrop</h2>
@@ -60,11 +60,11 @@ export default function Page() {
         <li>Upload the file or files you want to share.</li>
         <li>Receive a unique 4-digit code generated for your transfer.</li>
         <li>Share the code with your recipient through any channel — text, email, or messaging app.</li>
-        <li>The recipient enters the code on ZipDrop from their device and downloads the files instantly.</li>
+        <li>The recipient enters the code on ZipDrop from their device and downloads the files.</li>
       </ol>
 
       <p>
-        The entire process takes less than a minute. No login, no email verification, no waiting.
+        No login, no email verification, no waiting for account approval.
       </p>
 
       <h2>Benefits of Using ZipDrop</h2>
@@ -74,7 +74,7 @@ export default function Page() {
         <li><strong>Cross-platform support:</strong> Works in any modern browser on any operating system.</li>
         <li><strong>No file compression:</strong> Files are transferred in their original quality.</li>
         <li><strong>Simple 4-digit code system:</strong> Easy to share and type on any device.</li>
-        <li><strong>Privacy-focused:</strong> No data is stored longer than necessary for the transfer.</li>
+        <li><strong>Clear limits:</strong> Up to 10 files, 1 GB per file, stated up front.</li>
       </ul>
 
       <h2>Frequently Asked Questions</h2>
@@ -86,18 +86,18 @@ export default function Page() {
       <p>No. ZipDrop works entirely in your browser. There is nothing to download or install on any device.</p>
 
       <h3>How large can my files be?</h3>
-      <p>ZipDrop supports files up to 1 GB per transfer, making it suitable for large videos, project files, and high-resolution images.</p>
+      <p>ZipDrop supports up to 10 files per transfer, with a maximum of 1 GB per file. That covers most videos, project files, and high-resolution images.</p>
 
       <h3>How long are files available?</h3>
-      <p>Files remain available for 48 hours after upload. This gives recipients plenty of time to download while ensuring your data does not stay on servers indefinitely.</p>
+      <p>Each transfer is created with a 48-hour expiry timestamp, but automatic deletion is not yet enforced. Until cleanup is added, files remain stored on our server. Do not upload anything you would not want kept there.</p>
 
       <h3>Is ZipDrop secure?</h3>
-      <p>ZipDrop uses unique 4-digit codes to protect access to your files. Only someone with the correct code can download the content, adding a layer of privacy to every transfer.</p>
+      <p>Files travel over HTTPS and require the 4-digit code to open the download page. There is no end-to-end encryption: files are stored on ZipDrop's server, and the code is the only access control. A 4-digit code is not hard to guess, so avoid sensitive files.</p>
 
       <h2>Conclusion</h2>
 
       <p>
-        A good file transfer website should prioritize speed, simplicity, and security. ZipDrop delivers on all three fronts by removing barriers like account creation and software installation. Whether you are sharing large video files, important documents, or family photos, ZipDrop provides the fastest and easiest way to get your files where they need to go.
+        A good file transfer website should prioritize speed, simplicity, and honesty about its limits. ZipDrop removes barriers like account creation and software installation, and it states its limits plainly: up to 10 files, 1 GB per file, and a 4-digit code. Whether you are sharing videos, documents, or family photos, it is a free way to get your files where they need to go.
       </p>
 
       <div className="mt-10">

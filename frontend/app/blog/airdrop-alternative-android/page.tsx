@@ -1,7 +1,7 @@
 export const metadata = {
   title: "Best AirDrop Alternative for Android Users",
   description:
-    "Looking for an AirDrop alternative for Android? Learn how ZipDrop helps Android users share files instantly between devices.",
+    "Looking for an AirDrop alternative for Android? ZipDrop lets Android users share files with any device using a browser and a 4-digit code.",
 };
 
 export default function Page() {
@@ -28,7 +28,7 @@ export default function Page() {
 
       <p>
         ZipDrop is a browser-based file-sharing platform that allows users to
-        transfer files and text using a secure 4-digit code. No downloads or
+        transfer files and text using a 4-digit code. No downloads or
         registrations are required.
       </p>
 
@@ -39,7 +39,7 @@ export default function Page() {
         <li>Upload your file or text.</li>
         <li>Receive a unique 4-digit code.</li>
         <li>Open ZipDrop on another device.</li>
-        <li>Enter the code and access the content instantly.</li>
+        <li>Enter the code to open the download page.</li>
       </ol>
 
       <h2>Advantages of ZipDrop</h2>
@@ -47,9 +47,9 @@ export default function Page() {
       <ul>
         <li>No app installation required</li>
         <li>Works across Android, Windows, Mac, and iPhone</li>
-        <li>Quick file transfers</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
         <li>No login needed</li>
-        <li>Simple and secure sharing process</li>
+        <li>Files keep their original quality</li>
       </ul>
 
       <h2>Conclusion</h2>

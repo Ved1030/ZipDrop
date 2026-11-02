@@ -35,7 +35,7 @@ export default function Page() {
 
       <p>
         ZipDrop makes it easy to transfer files between iPhone and Android
-        devices using a simple 4-digit code.
+        devices using a 4-digit code.
       </p>
 
       <ol>
@@ -43,7 +43,7 @@ export default function Page() {
         <li>Upload your file.</li>
         <li>Receive a 4-digit code.</li>
         <li>Open ZipDrop on your Android device.</li>
-        <li>Enter the code and download instantly.</li>
+        <li>Enter the code and download the file.</li>
       </ol>
 
       <h2>Benefits</h2>
@@ -52,7 +52,7 @@ export default function Page() {
         <li>No apps required</li>
         <li>No login needed</li>
         <li>Works across devices</li>
-        <li>Fast and secure transfers</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
       </ul>
 
       <p>

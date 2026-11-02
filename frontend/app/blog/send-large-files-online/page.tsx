@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Best Way to Send Large Files Online",
   description:
-    "Learn the best way to send large files online quickly and securely.",
+    "Learn how to send large files online. ZipDrop takes up to 10 files of 1 GB each, with no compression and no account needed.",
 };
 
 export default function Page() {
@@ -44,8 +44,8 @@ export default function Page() {
 
       <p>
         ZipDrop offers a simple way to transfer files online using a unique
-        4-digit code. Users can upload content and access it from another device
-        within seconds.
+        4-digit code. Users can upload up to 10 files of up to 1 GB each and
+        access them from another device.
       </p>
 
       <ol>
@@ -53,24 +53,25 @@ export default function Page() {
         <li>Receive a code.</li>
         <li>Open ZipDrop elsewhere.</li>
         <li>Enter the code.</li>
-        <li>Download instantly.</li>
+        <li>Download the file.</li>
       </ol>
 
       <h2>Advantages</h2>
 
       <ul>
         <li>No login required</li>
-        <li>Fast file transfers</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
         <li>Works across platforms</li>
-        <li>Easy user experience</li>
-        <li>Secure access through codes</li>
+        <li>No compression, so quality is preserved</li>
+        <li>No account needed</li>
       </ul>
 
       <h2>Conclusion</h2>
 
       <p>
         Whether you are sharing documents, photos, or project files, ZipDrop
-        provides a simple and efficient way to send large files online.
+        provides a simple way to send large files online within its stated
+        limits.
       </p>
       <div className="mt-10">
   <a

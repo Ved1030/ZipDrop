@@ -1,7 +1,7 @@
 export const metadata = {
   title: "Best AirDrop Alternative for Windows in 2026",
   description:
-    "Looking for an AirDrop alternative for Windows? Learn how ZipDrop helps you transfer files instantly between devices.",
+    "Looking for an AirDrop alternative for Windows? ZipDrop works in any browser: share up to 10 files of 1 GB each with a 4-digit code.",
 };
 
 export default function Page() {
@@ -27,9 +27,9 @@ export default function Page() {
       <h2>What is ZipDrop?</h2>
 
       <p>
-        ZipDrop is a fast and secure file-sharing platform that allows users to
-        transfer files and text between devices using a simple 4-digit code.
-        There is no need to create an account or install software.
+        ZipDrop is a browser-based file-sharing platform that allows users to
+        transfer files and text between devices using a 4-digit code. There is no
+        need to create an account or install software.
       </p>
 
       <h2>How ZipDrop Works</h2>
@@ -39,7 +39,7 @@ export default function Page() {
         <li>Upload your file.</li>
         <li>Receive a unique 4-digit code.</li>
         <li>Open ZipDrop on another device.</li>
-        <li>Enter the code and download instantly.</li>
+        <li>Enter the code and download the file.</li>
       </ol>
 
       <h2>Benefits of Using ZipDrop</h2>
@@ -47,17 +47,16 @@ export default function Page() {
       <ul>
         <li>No login required</li>
         <li>Works on Windows, Android, Mac, and iPhone</li>
-        <li>Fast file transfers</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
         <li>No software installation needed</li>
-        <li>Simple and secure sharing</li>
+        <li>Files keep their original quality</li>
       </ul>
 
       <h2>Conclusion</h2>
 
       <p>
-        If you are looking for the best AirDrop alternative for Windows,
-        ZipDrop provides a simple solution for sharing files across devices
-        quickly and securely.
+        If you are looking for an AirDrop alternative for Windows, ZipDrop
+        provides a simple way to share files across devices through the browser.
       </p>
 
       <p>

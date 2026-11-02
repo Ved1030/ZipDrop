@@ -96,9 +96,9 @@ export default function Page() {
       <h2>Why ZipDrop Is a Better Solution for Mobile to PC File Transfer</h2>
 
       <p>
-        ZipDrop reimagines mobile to PC file transfer by removing every
-        unnecessary step. Instead of cables, accounts, or app installations,
-        ZipDrop uses a simple 4-digit code to connect your devices instantly.
+        ZipDrop simplifies mobile to PC file transfer by removing unnecessary
+        steps. Instead of cables, accounts, or app installations, ZipDrop uses a
+        4-digit code to open the transfer.
       </p>
 
       <p>
@@ -119,12 +119,12 @@ export default function Page() {
           Windows, or macOS, ZipDrop works identically.
         </li>
         <li>
-          <strong>Fast transfers:</strong> Files move directly between devices
-          without intermediate servers slowing things down.
+          <strong>Fast transfers:</strong> Files are uploaded to ZipDrop's server
+          and downloaded on your PC.
         </li>
         <li>
-          <strong>No file size limits:</strong> Send large videos, high-res
-          photo albums, and documents without worrying about caps.
+          <strong>Up to 1 GB per file:</strong> Send large videos, high-res
+          photo albums, and documents within a clear limit.
         </li>
       </ul>
 
@@ -150,39 +150,37 @@ export default function Page() {
           On your PC, open the same ZipDrop website and enter the code.
         </li>
         <li>
-          The files transfer instantly. Download them to your computer and you
-          are done.
+          The files are uploaded and become available to download on your PC.
         </li>
       </ol>
 
       <p>
-        That is the entire process. No cables to plug in. No cloud upload to
-        wait for. No account to create.
+        That is the entire process. No cables to plug in. No account to
+        create.
       </p>
 
       <h2>Benefits of Using ZipDrop for Everyday Transfers</h2>
 
       <p>
         ZipDrop fits naturally into daily workflows. Photographers can move
-        shots from their phone to a laptop for editing in seconds. Students can
+        shots from their phone to a laptop for editing. Students can
         transfer lecture notes between devices without carrying a USB drive.
         Professionals can share documents between their work phone and personal
-        computer without compromising security.
+        computer without creating an account.
       </p>
 
       <p>
-        Because ZipDrop does not store your files on a server, your data stays
-        private. The 4-digit code acts as a temporary key that only you and
-        your recipient know. Once the transfer completes, the code expires and
-        the file is no longer available.
+        Files are uploaded to ZipDrop's server so the other device can download
+        them. The 4-digit code is required to retrieve the transfer. Automatic
+        deletion is not yet enforced, so avoid uploading content you need
+        removed immediately.
       </p>
 
       <p>
-        Speed is another major advantage. ZipDrop transfers happen over your
-        local network or peer connection, making them significantly faster than
-        uploading to the cloud and downloading again. A 1 GB video file can
-        move from your phone to PC in a fraction of the time cloud storage
-        would take.
+        Speed depends on your internet connection. The file is uploaded once
+        and downloaded once, so a 1 GB video can take longer than a local cable
+        transfer. You avoid drivers, cables, and account setup, but upload and
+        download speeds still set the pace.
       </p>
 
       <h2>Frequently Asked Questions</h2>
@@ -202,20 +200,20 @@ export default function Page() {
 
       <h3>Is there a limit on how many files I can transfer?</h3>
       <p>
-        You can transfer as many files as you need. There are no daily limits
-        or caps on the number of transfers.
+        Each transfer supports up to 10 files, with a 1 GB limit per file.
+        There is no daily cap on the number of transfers.
       </p>
 
       <h3>How long does the 4-digit code stay active?</h3>
       <p>
-        The code remains active until the file is downloaded or you cancel the
-        transfer. You control when it expires.
+        The code stays active while the transfer is stored. Automatic
+        expiration and manual cancellation are not yet available.
       </p>
 
       <h3>Is my data encrypted during transfer?</h3>
       <p>
-        All transfers are secured with encryption. Your files cannot be
-        intercepted during the transfer process.
+        Traffic is sent over HTTPS, and files are stored on our server so the
+        recipient can download them.
       </p>
 
       <h2>Conclusion</h2>
@@ -228,7 +226,7 @@ export default function Page() {
       </p>
 
       <p>
-        ZipDrop delivers exactly this experience. It is fast, secure, and works
+        ZipDrop delivers exactly this experience. It is fast, free, and works
         on every device you own. The next time you need to send a file from
         your mobile to your PC, skip the cable and use ZipDrop instead.
       </p>

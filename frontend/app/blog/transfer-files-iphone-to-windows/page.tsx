@@ -28,8 +28,8 @@ export default function Page() {
       <h2>Use ZipDrop Instead</h2>
 
       <p>
-        ZipDrop enables fast file sharing between iPhone and Windows devices
-        using a simple 4-digit code.
+        ZipDrop enables file sharing between iPhone and Windows devices using a
+        4-digit code.
       </p>
 
       <ol>
@@ -38,7 +38,7 @@ export default function Page() {
         <li>Receive a 4-digit code.</li>
         <li>Open ZipDrop on your Windows PC.</li>
         <li>Enter the code.</li>
-        <li>Download instantly.</li>
+        <li>Download the file.</li>
       </ol>
 
       <h2>Benefits</h2>
@@ -47,12 +47,12 @@ export default function Page() {
         <li>No cables required</li>
         <li>No account creation</li>
         <li>Works across devices</li>
-        <li>Simple and secure</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
       </ul>
 
       <p>
-        ZipDrop provides a fast and convenient way to transfer files from
-        iPhone to Windows.
+        ZipDrop provides a direct way to transfer files from iPhone to Windows
+        through the browser.
       </p>
       <div className="mt-10">
   <a

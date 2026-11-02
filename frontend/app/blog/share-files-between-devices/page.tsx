@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <main style={{ maxWidth: "800px", margin: "50px auto", padding: "20px" }}>
-      <h1>How to Share Files Between Devices Instantly</h1>
+      <h1>How to Share Files Between Devices</h1>
 
       <p>
         Sharing files between phones, laptops, tablets, and desktops can be
@@ -15,7 +15,7 @@ export default function Page() {
         <li>Get a unique 4-digit code.</li>
         <li>Open ZipDrop on another device.</li>
         <li>Enter the code.</li>
-        <li>Download instantly.</li>
+        <li>Download the file.</li>
       </ol>
 
       <p>

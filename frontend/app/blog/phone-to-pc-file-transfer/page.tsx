@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Phone to PC File Transfer: Send Files Instantly Without Cables",
   description:
-    "Learn how to do a fast phone to PC file transfer without USB cables or cloud storage. Send photos, videos, and documents instantly using a simple code.",
+    "Learn how to do a phone to PC file transfer without USB cables or a cloud account. Send photos, videos, and documents with a 4-digit code.",
 };
 
 export default function Page() {
@@ -97,14 +97,14 @@ export default function Page() {
 
       <p>
         ZipDrop was built with a simple philosophy: transferring a file should
-        be as easy as sharing a code. No cables. No cloud. No accounts.
+        be as easy as sharing a code. No cables. No cloud account. No installation.
       </p>
 
       <p>
         When you use ZipDrop for a phone to PC file transfer, the process is
         symmetrical. Both devices open the same website. The sending device
         generates a 4-digit code. The receiving device enters that code. The
-        file moves directly between them.
+        file is uploaded to ZipDrop's server and downloaded by the receiving device.
       </p>
 
       <p>
@@ -117,8 +117,9 @@ export default function Page() {
           office, not just at your desk.
         </li>
         <li>
-          No cloud account means your data never sits on a third-party server
-          waiting to be compromised.
+          No cloud account means you do not need to sign in to a storage
+          service. Files are uploaded to ZipDrop's server over HTTPS and
+          retrieved with the code.
         </li>
         <li>
           No installation means it works on any phone and any PC, regardless of
@@ -157,26 +158,24 @@ export default function Page() {
       </ol>
 
       <p>
-        The entire process takes less than a minute for most files. Large
-        video files may take a little longer, but still far less time than
-        uploading to the cloud and downloading again.
+        The process usually takes under a minute for small files. Large video
+        files depend on your upload and download speeds.
       </p>
 
       <h2>Benefits of Code-Based File Transfer</h2>
 
       <p>
-        Code-based transfer offers advantages that traditional methods cannot
-        match. Privacy is built in because the code acts as a one-time key.
-        Speed is maximized because data moves directly rather than through an
-        intermediate server. Compatibility is universal because everything runs
+        Code-based transfer is simple to explain and easy to use. The code
+        controls access to the transfer, and traffic is sent over HTTPS. Speed
+        depends on your internet connection, since the file is uploaded once
+        and downloaded once. Compatibility is universal because everything runs
         in the browser.
       </p>
 
       <p>
-        For frequent transfers, the time savings add up significantly.
-        Someone who moves files between their phone and PC several times a day
-        can save hours each week by using a direct code-based method instead of
-        cloud uploads and downloads.
+        For frequent transfers, the time savings add up. Someone who moves
+        files between their phone and PC several times a day can avoid repeated
+        sign-ins and folder setup by using a code-based method.
       </p>
 
       <p>
@@ -189,8 +188,8 @@ export default function Page() {
 
       <h3>Can I use ZipDrop for phone to PC file transfer without internet?</h3>
       <p>
-        Both devices need an internet connection to establish the transfer. Once
-        connected, the file moves directly between them.
+        Both devices need an internet connection. Once connected, the file is
+        uploaded and the recipient downloads it.
       </p>
 
       <h3>Does ZipDrop work for iPhone to Windows transfers?</h3>
@@ -207,8 +206,7 @@ export default function Page() {
 
       <h3>How many files can I send in one transfer?</h3>
       <p>
-        You can send multiple files in a single transfer. ZipDrop handles
-        batches without additional steps.
+        You can send up to 10 files in a single transfer, with a 1 GB limit per file.
       </p>
 
       <h3>Do I need to keep the browser tab open during transfer?</h3>
@@ -227,7 +225,7 @@ export default function Page() {
       </p>
 
       <p>
-        ZipDrop offers a modern alternative that is faster, more private, and
+        ZipDrop offers a modern alternative that is faster, simpler, and
         easier to use. With no installation and no accounts, it works on any
         device at any time. Try it for your next transfer and see how much
         simpler the process can be.

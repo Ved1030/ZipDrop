@@ -136,33 +136,52 @@ function ZipDropLogo() {
 /* ─── Stats strip ──────────────────────── */
 
 function StatsStrip() {
-  const stats = [
-    { label: "Transfers Today", value: "12,847" },
-    { label: "Avg. Transfer Time", value: "0.4s" },
-    { label: "Files Shared", value: "3.2M+" },
-    { label: "Uptime", value: "99.98%" },
+  const [stats, setStats] = useState<{ files: number; transfers: number } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/stats")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.visible) {
+          setStats({ files: data.files, transfers: data.transfers });
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (!stats) return null;
+
+  const items = [
+    { label: "Files shared", value: stats.files.toLocaleString("en-US") },
+    { label: "Transfers", value: stats.transfers.toLocaleString("en-US") },
   ];
 
   return (
-    <div style={{
-      display: "flex",
-      gap: "32px",
-      justifyContent: "center",
-      flexWrap: "wrap",
-      margin: "0 auto",
-      padding: "0 24px",
-    }}>
-      {stats.map((s) => (
-        <div key={s.label} style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "20px", fontWeight: 700, color: "var(--cyan)", fontFamily: "var(--font-mono)", textShadow: "0 0 16px rgba(0,245,255,0.5)" }}>
-            {s.value}
-          </p>
-          <p style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-            {s.label}
-          </p>
-        </div>
-      ))}
-    </div>
+    <section style={{ animation: "fadeInUp 0.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both" }}>
+      <div style={{
+        display: "flex",
+        gap: "32px",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        margin: "0 auto",
+        padding: "0 24px",
+      }}>
+        {items.map((s) => (
+          <div key={s.label} style={{ textAlign: "center" }}>
+            <p style={{ fontSize: "20px", fontWeight: 700, color: "var(--cyan)", fontFamily: "var(--font-mono)", textShadow: "0 0 16px rgba(0,245,255,0.5)" }}>
+              {s.value}
+            </p>
+            <p style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              {s.label}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -235,7 +254,7 @@ export default function Home() {
           {/* Top badge */}
           <div className="badge" style={{ fontSize: "11px", padding: "5px 14px" }}>
             <span className="badge-dot" />
-            No sign-up · No limits · Instant sharing
+            No sign-up · Up to 1 GB per file · 4-digit code
           </div>
 
           {/* Headline */}
@@ -274,7 +293,7 @@ export default function Home() {
             lineHeight: 1.7,
             maxWidth: "480px",
           }}>
-            ZipDrop lets you securely share files and text across devices in seconds.
+            ZipDrop lets you share files and text across devices in a few steps.
             Upload, get a code, receive—no accounts needed.
           </p>
         </section>
@@ -301,9 +320,7 @@ export default function Home() {
         {/* Editor opens in a new tab via ZDOpenEditButton — no drawer */}
 
         {/* ── STATS ── */}
-        <section style={{ animation: "fadeInUp 0.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both" }}>
-          <StatsStrip />
-        </section>
+        <StatsStrip />
 
         {/* ── HOW IT WORKS ── */}
         <section style={{
@@ -366,7 +383,7 @@ export default function Home() {
           animation: "fadeIn 1s 0.6s ease both",
         }}>
           <div className="divider" style={{ marginBottom: "16px", width: "300px", margin: "0 auto 16px" }} />
-          Built with ☄ by ZipDrop · Zero-knowledge file sharing
+          Built with ☄ by ZipDrop
         </footer>
       </main>
     </>

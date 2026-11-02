@@ -43,7 +43,7 @@ export default function Page() {
 
       <p>
         ZipDrop allows users to share files and text between devices using a
-        secure 4-digit code.
+        4-digit code.
       </p>
 
       <ol>
@@ -52,7 +52,7 @@ export default function Page() {
         <li>Receive a code.</li>
         <li>Open ZipDrop on your PC.</li>
         <li>Enter the code.</li>
-        <li>Download the file instantly.</li>
+        <li>Download the file.</li>
       </ol>
 
       <h2>Benefits</h2>
@@ -61,7 +61,7 @@ export default function Page() {
         <li>No cables required</li>
         <li>No login needed</li>
         <li>Works on modern browsers</li>
-        <li>Simple and fast</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
         <li>Cross-platform compatibility</li>
       </ul>
 

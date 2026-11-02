@@ -5,24 +5,24 @@ export default function Page() {
 
       <p>
         ZipDrop is a free WeTransfer alternative that lets users share files
-        and text instantly through a secure 4-digit code.
+        and text through a 4-digit code, with no account needed.
       </p>
 
       <h2>Features</h2>
 
       <ul>
-        <li>Fast uploads</li>
         <li>No registration</li>
-        <li>Instant code generation</li>
-        <li>Cross-device sharing</li>
+        <li>No compression, so quality is preserved</li>
+        <li>Cross-device sharing through a browser</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
         <li>Simple user interface</li>
       </ul>
 
       <h2>Why choose ZipDrop?</h2>
 
       <p>
-        ZipDrop focuses on simplicity. Upload a file, receive a code, and
-        access it from another device in seconds.
+        ZipDrop focuses on simplicity. Upload a file, receive a code, and open it
+        on another device.
       </p>
       <div className="mt-10">
   <a

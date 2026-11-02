@@ -34,7 +34,7 @@ export default function Page() {
 
       <p>
         ZipDrop is a browser-based file-sharing platform that allows users to
-        transfer files between devices using a simple 4-digit code. No account
+        transfer files between devices using a 4-digit code. No account
         creation or software installation is required.
       </p>
 
@@ -46,7 +46,7 @@ export default function Page() {
         <li>Receive a unique 4-digit code.</li>
         <li>Open ZipDrop on your laptop.</li>
         <li>Enter the code.</li>
-        <li>Download the file instantly.</li>
+        <li>Download the file.</li>
       </ol>
 
       <h2>Benefits of Using ZipDrop</h2>
@@ -55,7 +55,7 @@ export default function Page() {
         <li>No USB cable required</li>
         <li>No login or registration</li>
         <li>Works across devices</li>
-        <li>Fast file transfers</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
         <li>Simple user experience</li>
       </ul>
 
@@ -63,8 +63,8 @@ export default function Page() {
 
       <p>
         If you're looking for an easy way to transfer files from your phone to
-        your laptop, ZipDrop offers a quick and reliable solution. Upload your
-        file, get a code, and access it on another device within seconds.
+        your laptop, ZipDrop keeps the process short. Upload your file, get a
+        code, and download it on another device.
       </p>
 
       <p>

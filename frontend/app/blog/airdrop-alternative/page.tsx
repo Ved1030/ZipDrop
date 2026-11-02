@@ -1,7 +1,7 @@
 export const metadata = {
   title: "Best AirDrop Alternative",
   description:
-    "Looking for an AirDrop alternative? Use ZipDrop to share files instantly between devices."
+    "Looking for an AirDrop alternative? ZipDrop works in any browser: upload up to 10 files of 1 GB each and share a 4-digit code.",
 };
 
 export default function Page() {
@@ -11,17 +11,17 @@ export default function Page() {
 
       <p>
         Looking for an AirDrop alternative?
-        ZipDrop lets you transfer files instantly
-        using a simple 4-digit code.
+        ZipDrop lets you send files between devices
+        using a simple 4-digit code, with no app to install.
       </p>
 
       <h2>Why Use ZipDrop?</h2>
 
       <ul>
         <li>No login required</li>
-        <li>Works on any device</li>
-        <li>Fast file transfers</li>
-        <li>Secure sharing</li>
+        <li>Works on any device with a browser</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Files keep their original quality</li>
       </ul>
 
       <p>

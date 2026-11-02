@@ -38,7 +38,7 @@ export default function Page() {
         <li>Receive a 4-digit code.</li>
         <li>Open ZipDrop on your PC.</li>
         <li>Enter the code.</li>
-        <li>Download instantly.</li>
+        <li>Download the file.</li>
       </ol>
 
       <h2>Benefits</h2>
@@ -47,7 +47,7 @@ export default function Page() {
         <li>No cables required</li>
         <li>No account needed</li>
         <li>Works in any browser</li>
-        <li>Fast and secure</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
       </ul>
 
       <p>

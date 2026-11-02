@@ -16,7 +16,7 @@ export default function Page() {
       </p>
 
       <p>
-        The market is filled with file sharing platforms, but not all of them deliver the same level of service. Some prioritize features for enterprise teams while neglecting casual users. Others impose aggressive monetization that degrades the experience. Choosing the right file sharing website means finding a platform that respects your time and your privacy.
+        The market is filled with file sharing platforms, but not all of them deliver the same level of service. Some prioritize features for enterprise teams while neglecting casual users. Others impose aggressive monetization that degrades the experience. Choosing the right file sharing website means finding a platform that respects your time, states its limits clearly, and is upfront about how files are handled.
       </p>
 
       <h2>Why Users Search for File Sharing Websites</h2>
@@ -40,13 +40,13 @@ export default function Page() {
       </ul>
 
       <p>
-        These shortcomings have created space for a new generation of file sharing websites that focus on the essentials: speed, ease of use, and privacy.
+        These shortcomings have created space for a new generation of file sharing websites that focus on the essentials: speed, ease of use, and clear rules.
       </p>
 
       <h2>Why ZipDrop Is Among the Best File Sharing Websites</h2>
 
       <p>
-        ZipDrop stands out because it strips away everything unnecessary. There is no sign-up form, no email verification, and no dashboard cluttered with ads and upsells. You arrive at the site, upload your files, and receive a 4-digit code. Share that code with anyone, and they can download the files instantly from their own browser.
+        ZipDrop stands out because it strips away everything unnecessary. There is no sign-up form, no email verification, and no dashboard cluttered with ads and upsells. You arrive at the site, upload your files, and receive a 4-digit code. Share that code with anyone, and they can download the files from their own browser.
       </p>
 
       <p>
@@ -72,9 +72,9 @@ export default function Page() {
       <ul>
         <li><strong>Completely free:</strong> ZipDrop does not charge for transfers or require a subscription.</li>
         <li><strong>No registration:</strong> You never need to create an account or provide personal information.</li>
-        <li><strong>Fast uploads:</strong> The platform is optimized for quick uploads and downloads.</li>
-        <li><strong>Full quality:</strong> Files are never compressed or modified during transfer.</li>
-        <li><strong>Secure access:</strong> Each transfer is protected by a unique 4-digit code that only the sender and recipient know.</li>
+        <li><strong>No compression:</strong> Files keep their original quality.</li>
+        <li><strong>Up to 10 files, 1 GB each:</strong> Limits are stated up front, not buried in a pricing page.</li>
+        <li><strong>Code-based access:</strong> Each transfer is opened with a 4-digit code that the sender passes to the recipient.</li>
       </ul>
 
       <h2>Frequently Asked Questions</h2>
@@ -83,21 +83,21 @@ export default function Page() {
       <p>Yes. ZipDrop is a website, not an app. Anyone with a browser and internet connection can receive files you share.</p>
 
       <h3>Are there limits on how often I can share files?</h3>
-      <p>No. You can use ZipDrop as many times as you like. There are no daily or monthly limits on transfers.</p>
+      <p>There is no daily or monthly quota built into ZipDrop. Each transfer can contain up to 10 files of up to 1 GB each.</p>
 
       <h3>What types of files can I share?</h3>
       <p>Any file type is supported. ZipDrop does not restrict formats, so you can share documents, images, videos, archives, and more.</p>
 
-      <h3>How do I know my files are safe?</h3>
-      <p>Your files are stored securely and are only accessible to anyone who knows the unique 4-digit code. Files are automatically deleted after 48 hours.</p>
+      <h3>How are my files handled?</h3>
+      <p>Files are uploaded over HTTPS and stored on ZipDrop's server. The 4-digit code is the only access control, and there is no end-to-end encryption. Each transfer is created with a 48-hour expiry timestamp, but automatic deletion is not yet enforced.</p>
 
       <h3>Can I cancel a transfer after uploading?</h3>
-      <p>Files are available for 48 hours and then automatically removed. There is no manual cancellation, but the code can only be used by someone you choose to share it with.</p>
+      <p>Manual cancellation is not available yet. Files remain on the server until cleanup is added, so only upload content you are comfortable leaving there.</p>
 
       <h2>Conclusion</h2>
 
       <p>
-        When choosing among file sharing websites, the best option is the one that requires the least effort for both the sender and the recipient. ZipDrop meets that standard with a clean interface, a simple code-based system, and zero barriers to entry. Whether you share files occasionally or on a daily basis, ZipDrop provides a reliable and refreshingly simple experience.
+        When choosing among file sharing websites, the best option is often the one that requires the least effort for both the sender and the recipient. ZipDrop keeps the interface clean, uses a short 4-digit code instead of a long link, and asks for no account. Whether you share files occasionally or often, it is a free, browser-based option with limits you can see before you upload.
       </p>
 
       <div className="mt-10">

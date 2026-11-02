@@ -7,23 +7,22 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://zip-drop.vercel.app"),
 
   title: {
-    default: "ZipDrop – Instant File & Text Sharing",
+    default: "ZipDrop – File & Text Sharing",
     template: "%s | ZipDrop",
   },
 
   description:
-    "ZipDrop is a fast and secure file and text sharing platform that lets you instantly share files or text using a 4-digit code. Built by Ved Mehta and Virti Panchamia, second-year engineering students at DJ Sanghvi College of Engineering.",
+    "ZipDrop is a free file and text sharing site. Upload up to 10 files of up to 1 GB each and share them with a 4-digit code — no account needed. Built by Ved Mehta and Virti Panchamia, engineering students at DJ Sanghvi College of Engineering.",
 
   keywords: [
     "ZipDrop",
     "file sharing",
     "text sharing",
-    "instant file transfer",
-    "secure file sharing",
-    "4 digit code sharing",
+    "file transfer",
     "share files online",
+    "4 digit code sharing",
     "upload and share files",
-    "send files instantly",
+    "send files by code",
     "Ved Mehta",
     "Virti Panchamia",
     "DJ Sanghvi College of Engineering",
@@ -54,9 +53,9 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "ZipDrop – Instant File & Text Sharing",
+    title: "ZipDrop – File & Text Sharing",
     description:
-      "Share files or text instantly with a secure 4-digit code. Built by Ved Mehta and Virti Panchamia from DJ Sanghvi College of Engineering.",
+      "Share files and text with a 4-digit code. Up to 10 files, 1 GB per file, no account needed. Built by Ved Mehta and Virti Panchamia from DJ Sanghvi College of Engineering.",
     url: "https://zip-drop.vercel.app",
     siteName: "ZipDrop",
     images: [
@@ -73,9 +72,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "ZipDrop – Instant File & Text Sharing",
+    title: "ZipDrop – File & Text Sharing",
     description:
-      "Share files and text instantly using a secure 4-digit code. Built by Ved Mehta and Virti Panchamia.",
+      "Share files and text with a 4-digit code, up to 1 GB per file. Built by Ved Mehta and Virti Panchamia.",
     images: ["/og-image.png"],
   },
 
@@ -96,7 +95,7 @@ export default function RootLayout({
     applicationCategory: "FileSharingApplication",
     operatingSystem: "Web",
     description:
-      "ZipDrop is a fast and secure file and text sharing platform using a 4-digit code.",
+      "ZipDrop is a free file and text sharing site that uses a 4-digit code.",
     creator: [
       {
         "@type": "Person",

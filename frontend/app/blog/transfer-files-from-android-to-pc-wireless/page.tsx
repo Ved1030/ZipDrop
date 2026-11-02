@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "How to Transfer Files from Android to PC Wirelessly Without Apps",
   description:
-    "Learn how to transfer files from Android to PC wirelessly without USB cables or apps. Send documents, photos, and videos between devices in seconds.",
+    "Learn how to transfer files from Android to PC wirelessly without USB cables or apps. ZipDrop takes up to 10 files and 1 GB per file, using a 4-digit code.",
 };
 
 export default function Page() {
@@ -96,23 +96,23 @@ export default function Page() {
         alternatives are not compelling enough.
       </p>
 
-      <h2>Why ZipDrop Is the Best Way to Transfer Files from Android to PC Wirelessly</h2>
+      <h2>How ZipDrop Handles Android to PC Wireless Transfer</h2>
 
       <p>
-        ZipDrop offers a wireless transfer solution that works perfectly with
-        Android and Windows. Because it runs entirely in the browser, there is
-        nothing to install on either device.
+        ZipDrop offers a wireless transfer option that works with Android and
+        Windows. Because it runs entirely in the browser, there is nothing to
+        install on either device.
       </p>
 
       <p>
         The process is straightforward. Open the ZipDrop website on your
         Android phone. Select the file you want to send. A 4-digit code appears.
         On your Windows PC, open the same website and enter the code. The file
-        transfers instantly.
+        is downloaded from ZipDrop's server.
       </p>
 
       <p>
-        This approach solves every pain point of the alternatives:
+        This approach removes most friction from the alternatives:
       </p>
 
       <ul>
@@ -121,7 +121,8 @@ export default function Page() {
           processes draining your battery.
         </li>
         <li>
-          No cloud storage means your files never sit on a third-party server.
+          No cloud account is needed, although files are still uploaded to
+          ZipDrop's server for the transfer.
         </li>
         <li>
           No technical setup means anyone can use it, regardless of technical
@@ -152,33 +153,34 @@ export default function Page() {
           website.
         </li>
         <li>
-          Enter the 4-digit code displayed on your Android phone. The wireless
-          transfer begins immediately.
+          Enter the 4-digit code displayed on your Android phone. The download
+          page opens once the upload has finished.
         </li>
         <li>
-          Once the transfer completes, save the file on your PC. It is ready to
-          use.
+          Save the file on your PC. It is ready to use.
         </li>
       </ol>
 
       <p>
-        The entire process takes seconds for typical files. No cables, no
-        apps, no accounts.
+        For typical documents and photos the process is quick. Large files take
+        longer, limited by your upload and download speeds. No cables, no apps,
+        no accounts.
       </p>
 
       <h2>Benefits of Browser-Based Android to PC Transfers</h2>
 
       <p>
-        Browser-based transfer offers a unique combination of speed, security,
-        and simplicity that installed apps cannot match. There is no setup
-        overhead. The first transfer is just as fast as the hundredth.
+        Browser-based transfer is simple and requires no setup. The first
+        transfer works the same way as the hundredth, with no plugins or
+        permissions to manage.
       </p>
 
       <p>
-        Privacy is enhanced because the transfer does not route through a
-        third-party server. The 4-digit code ensures that only the intended
-        recipient can access the file. Once the transfer is complete, the code
-        expires and the data is gone.
+        Files travel over HTTPS and are stored on ZipDrop's server until they
+        are downloaded, with no end-to-end encryption. The 4-digit code is the
+        access control; it is convenient, but with only 10,000 possible values it
+        is not strong protection. Each transfer gets a 48-hour expiry timestamp,
+        although automatic deletion is not yet enforced.
       </p>
 
       <p>
@@ -204,15 +206,15 @@ export default function Page() {
 
       <h3>Are wireless transfers slower than USB?</h3>
       <p>
-        Wireless transfers depend on your connection speed. For most files, the
-        difference is negligible, and the convenience of going wireless far
-        outweighs any minor speed difference.
+        Wireless transfers depend on your connection speed and can be slower than
+        a direct USB cable. For smaller files the difference may be small; for
+        large videos, USB is often faster.
       </p>
 
       <h3>Can I send multiple files at once from Android to PC?</h3>
       <p>
-        Yes. You can select multiple files on your Android device and send them
-        all in a single transfer.
+        Yes. You can select up to 10 files at once, with a maximum of 1 GB per
+        file.
       </p>
 
       <h3>What if the code does not work?</h3>
@@ -232,9 +234,9 @@ export default function Page() {
       </p>
 
       <p>
-        ZipDrop makes wireless Android to PC file transfer fast, secure, and
-        accessible to everyone. No apps, no accounts, no cables. Just open a
-        browser and send your files.
+        ZipDrop makes wireless Android to PC file transfer simple and free: no
+        apps, no accounts, no cables. Open a browser, upload your files, and share
+        the 4-digit code.
       </p>
 
       <div className="mt-10">

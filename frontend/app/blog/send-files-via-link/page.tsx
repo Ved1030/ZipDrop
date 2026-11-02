@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Send Files via Link — The Fastest Way to Share Online",
+  title: "Send Files via Link vs a 4-Digit Code (2026 Guide)",
   description:
-    "Learn how to send files via link using ZipDrop. Generate a shareable 4-digit code and let anyone download your files instantly.",
+    "Compare sharing a file link with a 4-digit code. ZipDrop does not generate a shareable link yet: you upload up to 10 files, get a 4-digit code, and the recipient enters it on the site.",
 };
 
 export default function Page() {
   return (
     <main className="max-w-4xl mx-auto p-8">
-      <h1>Send Files via Link — The Fastest Way to Share Online</h1>
+      <h1>Send Files via Link vs a 4-Digit Code (2026 Guide)</h1>
 
       <p>
         Sending files via link has become one of the most popular ways to share digital content. Instead of attaching files to emails or transferring them physically, you upload the content once and share a link or access credential that recipients can use to download from anywhere. This approach saves time, reduces clutter, and works at any distance.
@@ -17,6 +17,14 @@ export default function Page() {
 
       <p>
         However, not all file sharing links are created equal. Some platforms generate URLs that are impossibly long and filled with random characters. Others require the recipient to create an account before they can access the content. The best solutions make the link or access method as simple and universal as possible.
+      </p>
+
+      <p>
+        <strong>A note about ZipDrop:</strong> ZipDrop does not generate a shareable
+        link today. Instead, you upload your files, receive a 4-digit code, and send
+        that code to the recipient. They open ZipDrop in a browser and enter the code
+        to download. The rest of this guide explains how that code-based approach
+        compares with traditional links.
       </p>
 
       <h2>Why Users Search for Ways to Send Files via Link</h2>
@@ -43,61 +51,65 @@ export default function Page() {
         These problems have led users to seek alternatives that prioritize the recipient experience as much as the sender experience.
       </p>
 
-      <h2>Why ZipDrop Is the Best Way to Send Files via Link</h2>
+      <h2>How ZipDrop Replaces the Link With a 4-Digit Code</h2>
 
       <p>
-        ZipDrop replaces the traditional link with something far more practical: a 4-digit code. When you upload files to ZipDrop, you receive a numeric code instead of a long URL. This code functions like a link but is infinitely easier to share. You can type it in a text message, say it over the phone, or write it on a whiteboard.
+        ZipDrop uses a 4-digit code instead of a URL. When you upload files to ZipDrop, you receive a numeric code rather than a long address. That code is easy to share: you can type it in a text message, read it over the phone, or write it on a whiteboard. It is not a link, so the recipient enters it on the ZipDrop site rather than clicking anything.
       </p>
 
       <p>
         The recipient does not need to click a link or sign in to anything. They simply open ZipDrop in their browser, enter the 4-digit code, and download the files. This simplicity makes ZipDrop ideal for quick transfers where every second counts.
       </p>
 
-      <h2>Step-by-Step Guide to Send Files via Link With ZipDrop</h2>
+      <h2>Step-by-Step Guide to Sharing Files With ZipDrop</h2>
 
       <ol>
         <li>Visit ZipDrop from any device with a browser.</li>
-        <li>Select the files you want to send and upload them.</li>
+        <li>Select up to 10 files (up to 1 GB each) and upload them.</li>
         <li>Receive your unique 4-digit code once the upload finishes.</li>
         <li>Share the code with your recipient through whatever channel works best.</li>
-        <li>Your recipient enters the code on ZipDrop and downloads the files instantly.</li>
+        <li>Your recipient opens ZipDrop, enters the code, and downloads the files.</li>
       </ol>
 
       <p>
-        The code acts as the link. No need to copy-paste long URLs or worry about link rot.
+        There is no link to copy or click. The code is the access credential, so the
+        recipient needs to reach the ZipDrop site themselves before entering it.
       </p>
 
-      <h2>Benefits of Sending Files via Link With ZipDrop</h2>
+      <h2>Benefits of Sharing Files With ZipDrop</h2>
 
       <ul>
         <li><strong>Easy to share:</strong> 4-digit codes are far simpler to communicate than complex URLs.</li>
         <li><strong>No recipient setup:</strong> The person downloading does not need an account or any special software.</li>
-        <li><strong>Fast downloads:</strong> Recipients can start downloading immediately without waiting through ads or countdown timers.</li>
-        <li><strong>Cross-platform:</strong> Works on any device with a browser, from smartphones to smart TVs.</li>
-        <li><strong>Controlled access:</strong> Only people with the 4-digit code can access your files, giving you control over distribution.</li>
+        <li><strong>No ads or countdown timers:</strong> Recipients can download without ads or fake download buttons.</li>
+        <li><strong>Cross-platform:</strong> Works on any device with a browser, from smartphones to laptops.</li>
+        <li><strong>Code-based access:</strong> The recipient needs the 4-digit code to open the download page.</li>
       </ul>
 
       <h2>Frequently Asked Questions</h2>
 
-      <h3>Is a 4-digit code really as good as a link?</h3>
-      <p>Yes. The code performs the same function as a link — it provides access to your uploaded files — but is much easier to share and type.</p>
+      <h3>Does ZipDrop give me a shareable link?</h3>
+      <p>Not yet. ZipDrop gives you a 4-digit code. You share the code, and the recipient enters it on the ZipDrop site to download your files. A shareable link is not currently available.</p>
 
-      <h3>Can I send files via link to someone on a different device?</h3>
-      <p>Absolutely. ZipDrop works across all platforms, so you can send from a computer and receive on a phone or vice versa.</p>
+      <h3>Why use a 4-digit code instead of a link?</h3>
+      <p>A short code is easy to type or read aloud, and there is no long URL to copy or truncate. The trade-off is that the recipient must open ZipDrop and enter the code rather than simply clicking a link.</p>
 
-      <h3>Do files expire after I send the code?</h3>
-      <p>Files are available for 48 hours from the time of upload. This gives recipients ample time to download at their convenience.</p>
+      <h3>Can I send files to someone on a different device?</h3>
+      <p>Yes. ZipDrop works across all platforms, so you can send from a computer and receive on a phone or vice versa.</p>
+
+      <h3>Do files expire after I share the code?</h3>
+      <p>Every transfer is created with a 48-hour expiry timestamp, but automatic deletion is not yet enforced. Until cleanup ships, files remain stored on our server, so do not upload anything you would not want kept there.</p>
 
       <h3>Can I send multiple files in one transfer?</h3>
-      <p>Yes. You can upload up to 10 files at once, and all of them become accessible through the same 4-digit code.</p>
+      <p>Yes. You can upload up to 10 files at once, up to 1 GB per file, and all of them become accessible through the same 4-digit code.</p>
 
       <h3>Is there any risk of someone intercepting the code?</h3>
-      <p>Because the code is shared through your chosen communication channel, you control who receives it. For additional security, files are automatically deleted after 48 hours.</p>
+      <p>The code is shared through your chosen communication channel, so you control who receives it. Files travel over HTTPS and are stored on ZipDrop's server while the code is active. Automatic deletion after 48 hours is not yet enforced.</p>
 
       <h2>Conclusion</h2>
 
       <p>
-        Sending files via link has never been easier than with ZipDrop. By replacing cumbersome URLs with simple 4-digit codes, ZipDrop removes the friction from file sharing and makes the experience seamless for both the sender and the recipient. Whether you are sharing documents for work, photos with friends, or files between your own devices, ZipDrop is the fastest way to send files via link.
+        Links are convenient when a service provides them, but they are not the only way to share a file. ZipDrop uses a 4-digit code that is easy to pass on and requires no account, no software, and no shared folder. Whether you are sending documents for work, photos with friends, or files between your own devices, ZipDrop keeps the process short and free.
       </p>
 
       <div className="mt-10">

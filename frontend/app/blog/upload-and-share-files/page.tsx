@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Upload and Share Files Online in Seconds",
+  title: "Upload and Share Files Online (2026 Guide)",
   description:
-    "Learn how to upload and share files online quickly with ZipDrop. No account needed, just a 4-digit code for instant access.",
+    "Learn how to upload and share files online with ZipDrop: up to 10 files, 1 GB per file, no account, and a 4-digit code the recipient enters on the site.",
 };
 
 export default function Page() {
   return (
     <main className="max-w-4xl mx-auto p-8">
-      <h1>Upload and Share Files Online in Seconds</h1>
+      <h1>Upload and Share Files Online (2026 Guide)</h1>
 
       <p>
         The ability to upload and share files online has become a daily necessity for millions of people. Whether you are collaborating on a work project, sending class notes to a study group, or sharing memories with family, having a fast and reliable way to distribute digital content is essential.
@@ -46,11 +46,11 @@ export default function Page() {
       <h2>Why ZipDrop Makes It Easy to Upload and Share Files</h2>
 
       <p>
-        ZipDrop is built around a simple insight: sharing files should be as easy as telling someone a number. When you upload files to ZipDrop, the platform generates a memorable 4-digit code. You share that code with your recipient, and they use it to access the files instantly. No links to copy, no passwords to remember, no accounts to create.
+        ZipDrop is built around a simple insight: sharing files should be as easy as telling someone a number. When you upload files to ZipDrop, the platform generates a 4-digit code. You share that code with your recipient, and they enter it on the site to reach the download page. No links to copy, no passwords to remember, no accounts to create.
       </p>
 
       <p>
-        The 4-digit code approach is what makes ZipDrop different. Codes are easy to communicate over the phone, in a text message, or in person. They eliminate the hassle of copying and pasting long URLs and ensure that only the person you give the code to can access your content.
+        The 4-digit code approach is what makes ZipDrop different. Codes are easy to communicate over the phone, in a text message, or in person. They eliminate the hassle of copying and pasting long URLs. Because a 4-digit code is short, it is not hard to guess — so it works best for files that are not sensitive.
       </p>
 
       <h2>Step-by-Step Guide to Upload and Share Files With ZipDrop</h2>
@@ -64,17 +64,17 @@ export default function Page() {
       </ol>
 
       <p>
-        That is all it takes. From start to finish, the process takes less than a minute.
+        That is all it takes. Upload finishes, the code appears, and you share it.
       </p>
 
       <h2>Benefits of Using ZipDrop to Upload and Share Files</h2>
 
       <ul>
-        <li><strong>No account needed:</strong> Upload and download without ever creating a profile or sharing personal data.</li>
-        <li><strong>Intuitive codes:</strong> 4-digit codes are easy to remember, type, and share compared to long URLs.</li>
-        <li><strong>High file size limit:</strong> Transfer files up to 1 GB in size without worrying about caps.</li>
-        <li><strong>Multi-file support:</strong> Upload up to 10 files at once in a single transfer session.</li>
-        <li><strong>Original quality:</strong> Files are never compressed, resized, or altered during transfer.</li>
+        <li><strong>No account needed:</strong> Upload and download without creating a profile.</li>
+        <li><strong>Short codes:</strong> 4-digit codes are easier to type and share than long URLs.</li>
+        <li><strong>Up to 1 GB per file:</strong> Large videos and project files are supported.</li>
+        <li><strong>Multi-file support:</strong> Upload up to 10 files at once in a single transfer.</li>
+        <li><strong>Original quality:</strong> Files are not compressed, resized, or converted.</li>
       </ul>
 
       <h2>Frequently Asked Questions</h2>
@@ -86,18 +86,18 @@ export default function Page() {
       <p>No. ZipDrop is a web-based service. There is no app to install on any device.</p>
 
       <h3>How long will my uploaded files be available?</h3>
-      <p>Uploaded files remain accessible for 48 hours. After that, they are automatically deleted from our servers.</p>
+      <p>Each transfer is created with a 48-hour expiry timestamp, but automatic deletion is not yet enforced. For now, uploaded files remain stored on our server, so avoid uploading anything you would not want kept there.</p>
 
       <h3>What happens if someone guesses my code?</h3>
-      <p>Codes are randomly generated 4-digit numbers, making them difficult to guess. Files are also automatically deleted after 48 hours, limiting exposure.</p>
+      <p>A 4-digit code has only 10,000 possible values, so it can be guessed. Use ZipDrop for files that are not sensitive, and share the code only with the intended recipient. Automatic deletion after 48 hours is planned but not yet enforced.</p>
 
       <h3>Can I share files with multiple people?</h3>
-      <p>Yes. Anyone with the 4-digit code can download the files, so you can share the code with as many people as you like.</p>
+      <p>Yes. Anyone with the 4-digit code can open the transfer, so you can pass the code to more than one person.</p>
 
       <h2>Conclusion</h2>
 
       <p>
-        Uploading and sharing files online should not require a manual. ZipDrop proves that file sharing can be instant, secure, and completely free of unnecessary steps. With a simple upload process, a memorable 4-digit code, and no account requirements, ZipDrop is the easiest way to get your files from one place to another.
+        Uploading and sharing files online should not require a manual. ZipDrop keeps the process short: upload up to 10 files of up to 1 GB each, share a 4-digit code, and the recipient downloads from the site. No account, no app, and no fee.
       </p>
 
       <div className="mt-10">

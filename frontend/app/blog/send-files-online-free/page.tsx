@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "How to Send Files Online Free Without Limits",
+  title: "How to Send Files Online Free in 2026",
   description:
-    "Learn how to send files online free with no size limits, no accounts, and no hidden fees. Fast, secure file transfers in seconds.",
+    "Learn how to send files online free with no account, no software, and no hidden fees. ZipDrop supports up to 10 files and 1 GB per file.",
 };
 
 export default function Page() {
   return (
     <main className="max-w-4xl mx-auto p-8">
-      <h1>How to Send Files Online Free Without Limits</h1>
+      <h1>How to Send Files Online Free in 2026</h1>
 
       <p>
         Finding a way to send files online free of charge is not difficult. What is difficult is finding a free service that does not come with frustrating limitations. Many so-called free file sharing platforms restrict file sizes, limit transfer speeds, impose daily caps, or require you to create an account before you can do anything at all.
@@ -49,12 +49,12 @@ export default function Page() {
       </p>
 
       <ul>
-        <li>No file size limits that interfere with your work.</li>
+        <li>A clearly stated file size limit you can plan around.</li>
         <li>No account registration or login required.</li>
         <li>Fast upload and download speeds.</li>
         <li>No daily or monthly usage caps.</li>
         <li>Works on any device and operating system.</li>
-        <li>Secure transfers with no lingering data storage.</li>
+        <li>HTTPS transfers and a clear storage policy.</li>
       </ul>
 
       <p>
@@ -64,7 +64,7 @@ export default function Page() {
       <h2>How Code-Based File Transfer Works</h2>
 
       <p>
-        One of the most innovative approaches to free file sharing is the code-based transfer model. Instead of uploading to a centralized server and generating a shareable link, the system creates a unique numeric code that pairs the sender and receiver.
+        One of the most innovative approaches to free file sharing is the code-based transfer model. Instead of a long shareable link, the system uploads the file to a server and creates a unique numeric code for the recipient.
       </p>
 
       <p>
@@ -77,11 +77,11 @@ export default function Page() {
         <li>The system generates a unique 4-digit code.</li>
         <li>Share this code with the recipient through any channel.</li>
         <li>The recipient enters the code on the same website.</li>
-        <li>The file transfers directly and securely.</li>
+        <li>The file is uploaded to the server, and the recipient downloads it with the code.</li>
       </ol>
 
       <p>
-        This approach eliminates the need for infrastructure like link management, permission settings, and user authentication. The result is a simpler, faster, and more private way to send files.
+        This approach eliminates the need for infrastructure like link management, permission settings, and user authentication. The result is a simpler, faster way to send files without long links.
       </p>
 
       <h2>Why ZipDrop Is the Best Free Option</h2>
@@ -91,7 +91,7 @@ export default function Page() {
       </p>
 
       <p>
-        With ZipDrop, you get unlimited file transfers with no size restrictions. There is no registration, no subscription, and no hidden costs. You simply upload your file, receive a 4-digit code, and share it with the recipient. They enter the code and download the file instantly.
+        With ZipDrop, you can send up to 10 files per transfer, with a 1 GB limit per file. There is no registration, no subscription, and no hidden costs. You simply upload your file, receive a 4-digit code, and share it with the recipient. They enter the code and download the file.
       </p>
 
       <p>
@@ -133,7 +133,7 @@ export default function Page() {
       <p>Yes. ZipDrop is completely free to use. There are no subscription plans or hidden charges.</p>
 
       <h3>Are there any file size limits?</h3>
-      <p>ZipDrop does not impose arbitrary file size limits. You can send files of any size as long as your internet connection supports it.</p>
+      <p>ZipDrop supports files up to 1 GB each, with up to 10 files per transfer.</p>
 
       <h3>Do I need to create an account?</h3>
       <p>No account or registration is required. You can start sending files immediately.</p>
@@ -141,17 +141,17 @@ export default function Page() {
       <h3>Can I use ZipDrop on my phone?</h3>
       <p>Yes. ZipDrop works on any device with a modern browser, including smartphones and tablets.</p>
 
-      <h3>How secure is the transfer?</h3>
-      <p>Your file is protected by a unique 4-digit code. Only someone with the code can access and download the file.</p>
+      <h3>How is the transfer protected?</h3>
+      <p>The recipient needs the 4-digit code to retrieve the file, and traffic is sent over HTTPS. Files are stored on our server; automatic deletion is not yet enforced.</p>
 
       <h2>Conclusion</h2>
 
       <p>
-        You should not have to pay money or jump through hoops just to send a file. With the right tools, you can send files online free of charge and without limitations.
+        You should not have to pay money or jump through hoops just to send a file. With the right tools, you can send files online free of charge, with clear limits you can plan around.
       </p>
 
       <p>
-        ZipDrop provides a fast, secure, and genuinely free way to transfer files between any devices. No accounts, no limits, no hassle. Just upload, share the code, and you are done.
+        ZipDrop provides a fast, genuinely free way to transfer files between devices. No accounts, no software, no hassle. Just upload, share the code, and you are done.
       </p>
 
       <div className="mt-10">

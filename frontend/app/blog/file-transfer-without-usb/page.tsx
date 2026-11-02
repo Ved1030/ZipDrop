@@ -29,8 +29,8 @@ export default function Page() {
       <h2>A Simpler Alternative</h2>
 
       <p>
-        ZipDrop lets you transfer files between devices using a secure 4-digit
-        code directly in your browser.
+        ZipDrop lets you transfer files between devices using a 4-digit code
+        directly in your browser.
       </p>
 
       <ol>
@@ -38,7 +38,7 @@ export default function Page() {
         <li>Upload your file.</li>
         <li>Receive a 4-digit code.</li>
         <li>Open ZipDrop on your second device.</li>
-        <li>Enter the code and download instantly.</li>
+        <li>Enter the code and download the file.</li>
       </ol>
 
       <h2>Benefits</h2>
@@ -47,12 +47,12 @@ export default function Page() {
         <li>No cables required</li>
         <li>No apps or software installation</li>
         <li>Works across platforms</li>
-        <li>Fast and secure file sharing</li>
+        <li>Up to 10 files per transfer, 1 GB per file</li>
       </ul>
 
       <p>
-        ZipDrop makes transferring files between devices simple, fast, and
-        cable-free.
+        ZipDrop makes transferring files between devices simple and cable-free,
+        with no account needed.
       </p>
       <div className="mt-10">
   <a

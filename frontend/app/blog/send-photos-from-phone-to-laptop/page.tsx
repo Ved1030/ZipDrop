@@ -37,7 +37,7 @@ export default function Page() {
         <li>Select and upload your photos.</li>
         <li>Receive a 4-digit code.</li>
         <li>Open ZipDrop on your laptop.</li>
-        <li>Enter the code and download your photos instantly.</li>
+        <li>Enter the code and download your photos.</li>
       </ol>
 
       <h2>Why Use ZipDrop?</h2>
@@ -46,12 +46,12 @@ export default function Page() {
         <li>No cables required</li>
         <li>No account creation</li>
         <li>Works on any device</li>
-        <li>Simple and secure sharing</li>
+        <li>Photos keep their original quality</li>
       </ul>
 
       <p>
-        ZipDrop helps you transfer photos from your phone to your laptop in
-        seconds.
+        ZipDrop helps you transfer photos from your phone to your laptop without
+        cables or extra software.
       </p>
       <div className="mt-10">
   <a

@@ -20,7 +20,7 @@ export default function Page() {
       </p>
 
       <p>
-        In 2026, the expectation is clear: file transfers should be instant, secure, and accessible from any device. This article explores the best approaches to transfer files online and why a code-based solution like ZipDrop is changing the game.
+        In 2026, the expectation is clear: file transfers should be fast, simple, and accessible from any device. This article explores the best approaches to transfer files online and why a code-based solution like ZipDrop is changing the game.
       </p>
 
       <h2>Why Traditional File Transfer Methods Fall Short</h2>
@@ -50,10 +50,10 @@ export default function Page() {
       <ul>
         <li>No account or registration needed.</li>
         <li>Works on any device with a browser.</li>
-        <li>Supports files of all sizes.</li>
+        <li>Supports files up to 1 GB each.</li>
         <li>Transfers are fast and reliable.</li>
         <li>No software or app installation required.</li>
-        <li>Security is built into the process.</li>
+        <li>Access is controlled by a 4-digit code.</li>
       </ul>
 
       <p>
@@ -63,7 +63,7 @@ export default function Page() {
       <h2>The Code-Based Transfer Approach</h2>
 
       <p>
-        One of the most innovative solutions to emerge in recent years is code-based file transfer. Instead of uploading to a third-party server and sending a link, or relying on peer-to-peer connections that may not work behind firewalls, code-based systems use a simple numeric code to pair two devices.
+        One of the most innovative solutions to emerge in recent years is code-based file transfer. The file is uploaded to a server, and the sender receives a short numeric code. The recipient enters that code to retrieve the file. This avoids long links without pretending the file travels directly between devices.
       </p>
 
       <p>
@@ -75,7 +75,7 @@ export default function Page() {
         <li>Select the file you want to send.</li>
         <li>The system generates a unique 4-digit code.</li>
         <li>On the receiving device, open the same tool and enter the code.</li>
-        <li>The file transfers instantly.</li>
+        <li>The recipient downloads the file with the code.</li>
       </ol>
 
       <p>
@@ -132,17 +132,17 @@ export default function Page() {
       </p>
 
       <p>
-        Code-based transfers offer a unique security advantage. Since the code is generated specifically for each transfer and is only shared directly between sender and receiver, there is no publicly accessible link that can be intercepted or guessed. The file is not stored on a server indefinitely, either. Once the transfer is complete, the data is no longer available.
+        Code-based transfers have a simple access model. The code is generated for each transfer and shared with the recipient, and traffic is sent over HTTPS. Files are stored on our server so the recipient can download them; automatic deletion is not yet enforced.
       </p>
 
       <p>
-        This approach provides a level of privacy that link-based sharing services cannot match. Your files remain under your control from the moment you upload until the moment they are downloaded.
+        You control who receives the code, but a 4-digit code is not a substitute for encryption. Do not upload content you would not want stored on a server.
       </p>
 
       <h2>Frequently Asked Questions</h2>
 
       <h3>Is there a file size limit?</h3>
-      <p>ZipDrop supports a wide range of file sizes. Very large files may take longer to transfer depending on your internet speed.</p>
+      <p>ZipDrop supports files up to 1 GB each. Larger files take longer to upload and download.</p>
 
       <h3>Do I need to install anything?</h3>
       <p>No installation is required. Everything runs directly in your browser.</p>
@@ -150,20 +150,20 @@ export default function Page() {
       <h3>Can I transfer files between different operating systems?</h3>
       <p>Yes. ZipDrop works on any device with a modern browser, regardless of the operating system.</p>
 
-      <h3>Is my data secure?</h3>
-      <p>Your files are protected by a unique 4-digit code that only you and the recipient know. Files are not stored indefinitely.</p>
+      <h3>How is my data protected?</h3>
+      <p>Access requires the 4-digit code, and traffic uses HTTPS. Files are stored on our server; automatic deletion is not yet enforced.</p>
 
       <h3>How long does the code stay active?</h3>
-      <p>The code remains active until the file is downloaded or the sender chooses to cancel the transfer.</p>
+      <p>The code stays active while the transfer is stored. Automatic expiration and manual cancellation are not yet available.</p>
 
       <h2>Conclusion</h2>
 
       <p>
-        Transferring files online does not have to be complicated. By choosing the right tool, you can move data between devices in seconds without accounts, cables, or hassle.
+        Transferring files online does not have to be complicated. By choosing the right tool, you can move data between devices without accounts, cables, or hassle.
       </p>
 
       <p>
-        ZipDrop provides a fast, secure, and simple way to transfer files online using a unique 4-digit code. Whether you are sharing documents, photos, videos, or any other type of file, ZipDrop makes the process effortless.
+        ZipDrop provides a fast, free, and simple way to transfer files online using a unique 4-digit code. Whether you are sharing documents, photos, videos, or any other type of file, ZipDrop makes the process effortless.
       </p>
 
       <div className="mt-10">

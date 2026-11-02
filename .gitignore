@@ -7,10 +7,26 @@ backend/node_modules/
 venv/
 backend/venv/
 
-# Environment variables
+# Environment variables / secrets
 .env
+.env.*
+!.env.example
 frontend/.env
 backend/.env
+
+# Local helper scripts (never commit)
+/patch*.js
+/up*.js
+/restore.js
+/show.js
+/orig_EditorShell.tsx
+/check*.js
+/doit*.js
+/fix*.js
+/test-mammoth.js
+
+# Local tool state
+.qoder/
 
 # Build folders
 .next/

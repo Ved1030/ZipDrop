@@ -374,17 +374,6 @@ export default function Home() {
             ))}
           </div>
         </section>
-
-        {/* ── FOOTER ── */}
-        <footer style={{
-          textAlign: "center",
-          fontSize: "12px",
-          color: "var(--text-muted)",
-          animation: "fadeIn 1s 0.6s ease both",
-        }}>
-          <div className="divider" style={{ marginBottom: "16px", width: "300px", margin: "0 auto 16px" }} />
-          Built with ☄ by ZipDrop
-        </footer>
       </main>
     </>
   );

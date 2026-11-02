@@ -1039,3 +1039,90 @@ body {
   margin: 0 !important;
   pointer-events: none;
 }
+
+/* === STATIC PAGES (about, contact, legal) === */
+.legal-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 72px 24px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.legal-page h1 {
+  font-size: clamp(30px, 5vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.legal-page .legal-updated {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.legal-page h2 {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 20px;
+}
+
+.legal-page h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 8px;
+}
+
+.legal-page p,
+.legal-page li {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.legal-page ul,
+.legal-page ol {
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legal-page a {
+  color: var(--cyan-soft);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legal-page strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.legal-page .cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.legal-page .cta {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: var(--cyan);
+  color: #001014;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.legal-page .cta.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}

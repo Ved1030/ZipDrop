@@ -3,8 +3,10 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Script from "next/script";
+import SiteFooter from "@/components/SiteFooter";
+import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
-  metadataBase: new URL("https://zip-drop.vercel.app"),
+  metadataBase: new URL(SITE_URL),
 
   title: {
     default: "ZipDrop – File & Text Sharing",
@@ -56,7 +58,7 @@ export const metadata: Metadata = {
     title: "ZipDrop – File & Text Sharing",
     description:
       "Share files and text with a 4-digit code. Up to 10 files, 1 GB per file, no account needed. Built by Ved Mehta and Virti Panchamia from DJ Sanghvi College of Engineering.",
-    url: "https://zip-drop.vercel.app",
+    url: SITE_URL,
     siteName: "ZipDrop",
     images: [
       {
@@ -91,7 +93,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "ZipDrop",
-    url: "https://zip-drop.vercel.app",
+    url: SITE_URL,
     applicationCategory: "FileSharingApplication",
     operatingSystem: "Web",
     description:
@@ -154,6 +156,7 @@ export default function RootLayout({
 
       <body>
         {children}
+        <SiteFooter />
         <SpeedInsights />
         <Analytics />
       </body>

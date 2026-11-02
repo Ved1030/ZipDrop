@@ -1,157 +1,53 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
+
+const BLOG_SLUGS = [
+  "snapdrop-alternative",
+  "wetransfer-alternative",
+  "share-files-between-devices",
+  "airdrop-alternative",
+  "airdrop-alternative-windows",
+  "airdrop-alternative-android",
+  "how-to-transfer-files-phone-to-laptop",
+  "share-files-without-login",
+  "send-large-files-online",
+  "how-to-share-files-between-phone-and-pc",
+  "best-file-sharing-website",
+  "transfer-files-android-to-pc",
+  "transfer-files-iphone-to-windows",
+  "transfer-files-iphone-to-android",
+  "send-photos-from-phone-to-laptop",
+  "file-transfer-without-usb",
+  "mobile-to-pc-file-transfer",
+  "phone-to-pc-file-transfer",
+  "transfer-files-from-phone-to-pc-wireless",
+  "transfer-files-from-android-to-pc-wireless",
+  "android-file-transfer-windows",
+  "file-transfer-website",
+  "web-file-transfer",
+  "file-sharing-websites",
+  "upload-and-share-files",
+  "send-files-via-link",
+];
+
+const TRUST_PAGES = ["/about", "/contact", "/privacy", "/terms", "/report-abuse"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
+
   return [
-    {
-      url: "https://zip-drop.vercel.app",
-      lastModified: new Date(),
-      priority: 1,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog",
-      lastModified: new Date(),
-      priority: 0.9,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/snapdrop-alternative",
-      lastModified: new Date(),
+    { url: SITE_URL, lastModified: now, priority: 1 },
+    { url: `${SITE_URL}/blog`, lastModified: now, priority: 0.9 },
+    ...BLOG_SLUGS.map((slug) => ({
+      url: `${SITE_URL}/blog/${slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
       priority: 0.8,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/wetransfer-alternative",
-      lastModified: new Date(),
-      priority: 0.8,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/share-files-between-devices",
-      lastModified: new Date(),
-      priority: 0.8,
-    },
-     {
-      url: "https://zip-drop.vercel.app/blog/airdrop-alternative",
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/airdrop-alternative-windows",
-      lastModified: new Date(),
-      
-      priority: 0.8,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/airdrop-alternative-android",
-      lastModified: new Date(),
-     
-      priority: 0.8,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/how-to-transfer-files-phone-to-laptop",
-      lastModified: new Date(),
-      
-      priority: 0.8,
-    },
-    {
-  url: "https://zip-drop.vercel.app/blog/share-files-without-login",
-  lastModified: new Date(),
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/send-large-files-online",
-  lastModified: new Date(),
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/how-to-share-files-between-phone-and-pc",
-  lastModified: new Date(),
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/best-file-sharing-website",
-  lastModified: new Date(),
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/transfer-files-android-to-pc",
-  lastModified: new Date(),
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/transfer-files-iphone-to-windows",
-  lastModified: new Date(),
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/transfer-files-iphone-to-android",
-  lastModified: new Date(),
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/send-photos-from-phone-to-laptop",
-  lastModified: new Date(),
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/file-transfer-without-usb",
-  lastModified: new Date(),
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/mobile-to-pc-file-transfer",
-  lastModified: new Date(),
-  changeFrequency: "weekly",
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/phone-to-pc-file-transfer",
-  lastModified: new Date(),
-  changeFrequency: "weekly",
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/transfer-files-from-phone-to-pc-wireless",
-  lastModified: new Date(),
-  changeFrequency: "weekly",
-  priority: 0.8,
-},
-{
-  url: "https://zip-drop.vercel.app/blog/transfer-files-from-android-to-pc-wireless",
-  lastModified: new Date(),
-  changeFrequency: "weekly",
-  priority: 0.8,
-},
-    {
-      url: "https://zip-drop.vercel.app/blog/android-file-transfer-windows",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/file-transfer-website",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/web-file-transfer",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/file-sharing-websites",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/upload-and-share-files",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: "https://zip-drop.vercel.app/blog/send-files-via-link",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
+    })),
+    ...TRUST_PAGES.map((path) => ({
+      url: `${SITE_URL}${path}`,
+      lastModified: now,
+      priority: 0.4,
+    })),
   ];
 }

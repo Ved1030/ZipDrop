@@ -30,6 +30,14 @@ class MemoryStore {
     this._data.set(doc.file_id, doc);
     return doc;
   }
+  async stats() {
+    let files = 0;
+    for (const v of this._data.values()) {
+      if (Array.isArray(v.files)) files += v.files.length;
+      else if (v.file_name !== "text") files += 1;
+    }
+    return { files, transfers: this._data.size };
+  }
 }
 
 let store;
@@ -57,6 +65,21 @@ function mongoWrapper(model) {
         console.log("MongoDB save failed — switching to in-memory store");
         useFallback = true;
         return fallback.save(doc);
+      }
+    },
+    async stats() {
+      if (useFallback) return fallback.stats();
+      try {
+        const transfers = await model.countDocuments({});
+        const result = await model.aggregate([
+          { $project: { n: { $size: { $ifNull: ["$files", []] } } } },
+          { $group: { _id: null, files: { $sum: "$n" } } },
+        ]);
+        return { files: result[0]?.files || 0, transfers };
+      } catch (err) {
+        console.log("MongoDB stats failed — switching to in-memory store");
+        useFallback = true;
+        return fallback.stats();
       }
     },
   };
@@ -132,6 +155,21 @@ async function generateUniqueCode() {
 
 app.get("/", (req, res) => {
   res.send("File Sharing API Running");
+});
+
+/* --------------------------------
+   Public Stats
+-------------------------------- */
+
+app.get("/stats", async (req, res) => {
+  try {
+    const { files, transfers } = await store.stats();
+    res.set("Cache-Control", "public, max-age=60");
+    res.json({ files, transfers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Stats unavailable" });
+  }
 });
 
 /* --------------------------------

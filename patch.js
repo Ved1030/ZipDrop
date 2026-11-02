@@ -1,0 +1,7 @@
+﻿const fs = require('fs');
+let p = 'frontend/components/editor/DocumentCanvas.tsx';
+let c = fs.readFileSync(p, 'utf8');
+c = c.replace('import TipTapEditor from "./TipTapEditor";', 'import PaginatedEditor from "./PaginatedEditor";');
+c = c.replace('<TipTapEditor editor={editor} />', '<PaginatedEditor editor={editor} showPageBreaks={showPageBreaks} />');
+fs.writeFileSync(p, c);
+console.log('done');

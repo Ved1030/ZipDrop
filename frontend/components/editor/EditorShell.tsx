@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { useEditor } from "@tiptap/react";
-import { editorExtensions } from "@/lib/editor/extensions";
+import type { Editor } from "@tiptap/react";
+import { PageEditorAdapter } from "@/lib/editor/page-editor-adapter";
+import type { PageInfo, PaginatedEditorHandle } from "@/lib/editor/paginated-types";
 import EditorHeader from "./EditorHeader";
 import MenuBar from "./MenuBar";
 import Toolbar from "./Toolbar";
@@ -17,6 +18,8 @@ interface EditorShellProps {
   fileType: string;
   fileSize: string;
   initialContent: string;
+  docxBuffer?: ArrayBuffer | null;
+  loadKey?: number;
   hasFileUrl: boolean;
   recipientCode?: string;
   originalFileUrl?: string;
@@ -39,55 +42,67 @@ function nowFormatted(): string {
 
 const AUTOSAVE_KEY = "zipdrop_editor_autosave";
 
+function readAutosave(): string {
+  try {
+    const saved = localStorage.getItem(AUTOSAVE_KEY);
+    if (!saved) return "";
+    const data = JSON.parse(saved);
+    return typeof data?.content === "string" ? data.content : "";
+  } catch {
+    return "";
+  }
+}
+
 export default function EditorShell({
   fileName,
   fileType,
   fileSize,
   initialContent,
+  docxBuffer = null,
+  loadKey = 0,
   hasFileUrl,
   recipientCode,
   originalFileUrl,
   onBack,
   onFileSelect,
 }: EditorShellProps) {
-  const [content, setContent] = useState(initialContent);
+  const [restoredHtml] = useState(() =>
+    initialContent || docxBuffer ? "" : readAutosave()
+  );
+  const [content, setContent] = useState(() => restoredHtml || initialContent);
+  const [pages, setPages] = useState<PageInfo[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [zoom, setZoom] = useState(100);
   const [showRulers, setShowRulers] = useState(true);
   const [showPageBreaks, setShowPageBreaks] = useState(true);
-  const [pageCount, setPageCount] = useState(1);
   const [activePage, setActivePage] = useState(0);
   const [spellCheck, setSpellCheck] = useState(true);
-  const [overlayVisible, setOverlayVisible] = useState(!initialContent && !hasFileUrl);
+  const [overlayVisible, setOverlayVisible] = useState(
+    !initialContent && !hasFileUrl && !docxBuffer && !restoredHtml
+  );
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [shareCode, setShareCode] = useState("");
   const [shareLoading, setShareLoading] = useState(false);
   const [shareResult, setShareResult] = useState<{ code: string; expiry?: string; link?: string } | null>(null);
 
+  const canvasHandleRef = useRef<PaginatedEditorHandle>(null);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autosaveTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const adapterRef = useRef<PageEditorAdapter | null>(null);
   const createdAt = "Today, " + nowFormatted();
 
-  const editor = useEditor({
-    extensions: editorExtensions,
-    content: initialContent,
-    editorProps: {
-      attributes: {
-        id: "editor",
-        style: `
-          outline: none;
-          min-height: 864px;
-          font-size: 11pt;
-          line-height: 1.7;
-          color: #000;
-          font-family: 'Calibri','Segoe UI',Arial,sans-serif;
-          caret-color: #1a73e8;
-        `,
-      },
-    },
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
+  if (!adapterRef.current) {
+    adapterRef.current = new PageEditorAdapter(() => canvasHandleRef.current);
+  }
+  const editor = adapterRef.current as unknown as Editor;
+
+  const pageCount = pages.length;
+  const words = countWords(content);
+  const chars = countChars(content);
+
+  const handleContentChange = useCallback(
+    (html: string) => {
       setContent(html);
       setIsSaving(true);
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
@@ -95,102 +110,46 @@ export default function EditorShell({
         setIsSaving(false);
         setLastSaved(new Date());
         try {
-          localStorage.setItem(AUTOSAVE_KEY, JSON.stringify({
-            fileName,
-            fileType,
-            content: html,
-            timestamp: Date.now(),
-          }));
-        } catch {}
+          localStorage.setItem(
+            AUTOSAVE_KEY,
+            JSON.stringify({
+              fileName,
+              fileType,
+              content: html,
+              timestamp: Date.now(),
+            })
+          );
+        } catch {
+          /* storage may be unavailable */
+        }
       }, 1200);
     },
-  });
+    [fileName, fileType]
+  );
 
-  // Load from autosave if no initial content
-  useEffect(() => {
-    if (!initialContent && !content) {
-      try {
-        const saved = localStorage.getItem(AUTOSAVE_KEY);
-        if (saved) {
-          const data = JSON.parse(saved);
-          if (data.content && editor) {
-            editor.commands.setContent(data.content);
-            setContent(data.content);
-            setOverlayVisible(false);
-          }
-        }
-      } catch {}
-    }
-  }, [editor]);
-
-  // Push content into TipTap when initialContent changes (async file loading completes)
-  useEffect(() => {
-    if (editor && initialContent && initialContent !== content) {
-      editor.commands.setContent(initialContent, { emitUpdate: false });
-      setContent(initialContent);
-      setOverlayVisible(false);
-    }
-  }, [initialContent, editor]);
-
-  // Calculate page count from content height
-  useEffect(() => {
-    if (!editor) return;
-
-    const updatePageCount = () => {
-      const editorEl = document.querySelector(".tiptap.ProseMirror");
-      if (!editorEl) return;
-      const height = editorEl.scrollHeight;
-      setPageCount(Math.max(1, Math.ceil(height / 1056)));
-    };
-
-    const timer = setTimeout(updatePageCount, 300);
-    let debounceRef: ReturnType<typeof setTimeout> | null = null;
-    const onUpdate = () => {
-      if (debounceRef) clearTimeout(debounceRef);
-      debounceRef = setTimeout(updatePageCount, 300);
-    };
-    editor.on("update", onUpdate);
-    return () => {
-      clearTimeout(timer);
-      if (debounceRef) clearTimeout(debounceRef);
-      editor.off("update", onUpdate);
-    };
-  }, [editor]);
-
-  // Track the active page from canvas scroll position
-  useEffect(() => {
-    const canvas = document.getElementById("editor-canvas");
-    if (!canvas) return;
-    const handleScroll = () => {
-      const scrollTop = canvas.scrollTop;
-      const currentPage = Math.floor(scrollTop / 1056);
-      setActivePage(Math.min(currentPage, pageCount - 1));
-    };
-    canvas.addEventListener("scroll", handleScroll);
-    return () => canvas.removeEventListener("scroll", handleScroll);
-  }, [pageCount]);
-
-  // Cleanup
   useEffect(() => {
     return () => {
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
       if (autosaveTimerRef.current) clearInterval(autosaveTimerRef.current);
+      adapterRef.current?.destroy();
     };
   }, []);
 
-  const words = countWords(content);
-  const chars = countChars(content);
-
   const handleStartBlank = useCallback(() => {
     setOverlayVisible(false);
-    if (editor) editor.commands.setContent("");
     setContent("");
-  }, [editor]);
+    setPages([]);
+    setActivePage(0);
+    canvasHandleRef.current?.setHTML("");
+  }, []);
+
+  const handleScrollToEnd = useCallback(() => {
+    if (pageCount > 0) canvasHandleRef.current?.scrollToPage(pageCount - 1);
+    canvasHandleRef.current?.focus("end");
+  }, [pageCount]);
 
   const handleDownload = useCallback(async (format?: string) => {
-    if (!editor) return;
-    const html = editor.getHTML();
-    console.log("Editor HTML for download:", html);
+    const html = canvasHandleRef.current?.getHTML() || content;
     const name = fileName.replace(/\.[^.]+$/, "") || "document";
     const fmt = format || fileType || "docx";
 
@@ -252,13 +211,13 @@ export default function EditorShell({
       a.download = name + ".html";
       a.click();
     }
-  }, [editor, fileName, fileType]);
+  }, [fileName, fileType, content]);
 
   const handleShareEdited = useCallback(async () => {
-    if (!editor || !shareCode || shareCode.length !== 4) return;
+    if (!shareCode || shareCode.length !== 4) return;
     setShareLoading(true);
     try {
-      const html = editor.getHTML();
+      const html = canvasHandleRef.current?.getHTML() || content;
       const res = await fetch("/api/share-edited", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -287,7 +246,7 @@ export default function EditorShell({
     } finally {
       setShareLoading(false);
     }
-  }, [editor, shareCode, fileName]);
+  }, [shareCode, fileName, content]);
 
   const handleOpenFile = useCallback(() => {
     const input = document.createElement("input");
@@ -306,7 +265,7 @@ export default function EditorShell({
         display: "flex",
         flexDirection: "column",
         height: "100vh",
-        background: "#f0f0f0",
+        background: "#e5e5e5",
         color: "#3c3c3c",
         fontFamily: "'Segoe UI',Arial,sans-serif",
         overflow: "hidden",
@@ -336,12 +295,23 @@ export default function EditorShell({
 
       <div style={{ flex: 1, display: "flex", overflow: "hidden", minWidth: 0 }}>
         <LeftSidebar
-          pageCount={pageCount}
-          editor={editor}
+          pages={pages}
           activePage={activePage}
-          onPageChange={setActivePage}
+          onPageSelect={(index) => canvasHandleRef.current?.scrollToPage(index)}
+          onScrollToEnd={handleScrollToEnd}
         />
-        <DocumentCanvas editor={editor} zoom={zoom} />
+        <DocumentCanvas
+          ref={canvasHandleRef}
+          initialHtml={restoredHtml || initialContent}
+          docxBuffer={docxBuffer}
+          loadKey={loadKey}
+          zoom={zoom}
+          showPageBreaks={showPageBreaks}
+          spellCheck={spellCheck}
+          onPagesChange={setPages}
+          onActivePageChange={setActivePage}
+          onContentChange={handleContentChange}
+        />
         <RightSidebar
           info={{
             fileName,
@@ -362,13 +332,16 @@ export default function EditorShell({
           onTogglePageBreaks={() => setShowPageBreaks(!showPageBreaks)}
           onToggleSpellCheck={() => {
             setSpellCheck(!spellCheck);
-            if (editor) editor.setOptions({ editorProps: { attributes: { spellcheck: String(!spellCheck) } } });
+            adapterRef.current?.setOptions({
+              editorProps: { attributes: { spellcheck: String(!spellCheck) } },
+            });
           }}
         />
       </div>
 
       <StatusBar
         pageCount={pageCount}
+        activePage={activePage}
         wordCount={words}
         charCount={chars}
         zoom={zoom}

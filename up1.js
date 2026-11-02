@@ -1,0 +1,10 @@
+﻿const fs=require('fs');
+let p='frontend/components/editor/DocumentCanvas.tsx';
+let c=fs.readFileSync(p,'utf8');
+c=c.replace(\"background: '#e8e8e8'\", \"background: '#e5e5e5'\");
+c=c.replace(\"padding: '32px 24px 64px'\", \"padding: '24px 24px 64px'\");
+c=c.replace(\"width: '816px'\", \"width: '794px'\");
+c=c.replace(\"minWidth: '816px'\", \"minWidth: '794px'\");
+c=c.replace(\"minHeight: '1056px'\", \"minHeight: '1123px'\");
+c=c.replace(\"boxShadow: '0 2px 8px rgba(0,0,0,0.2)'\", \"boxShadow: '0 2px 8px rgba(0,0,0,0.15)'\");
+fs.writeFileSync(p,c);

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd frontend && ls -la && cat package.json && find . -path ./node_modules -prune -o -type f -print | grep -v '.next' | head -100)"
+    ]
+  }
+}

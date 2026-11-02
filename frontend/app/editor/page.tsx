@@ -61,19 +61,6 @@ function simpleMarkdownToHtml(md: string): string {
   return html;
 }
 
-async function parseDocxClientSide(arrayBuffer: ArrayBuffer): Promise<string> {
-  const mammoth = await import("mammoth");
-  const result = await (mammoth as any).convertToHtml({
-    arrayBuffer,
-    convertImage: (mammoth as any).images.imgElement((image: any) =>
-      image.read("base64").then((data: string) => ({
-        src: `data:${image.contentType};base64,${data}`,
-      }))
-    ),
-  });
-  return result.value || "<p>No content found.</p>";
-}
-
 function EditorPageInner() {
   const searchParams = useSearchParams();
   const fileUrl = searchParams.get("fileUrl") || "";
@@ -88,6 +75,8 @@ function EditorPageInner() {
   const [fileType, setFileType] = useState("docx");
   const [fileSize, setFileSize] = useState("\u2014");
   const [content, setContent] = useState("");
+  const [docxBuffer, setDocxBuffer] = useState<ArrayBuffer | null>(null);
+  const [loadKey, setLoadKey] = useState(0);
 
   const processFile = useCallback(async (url: string, name: string) => {
     try {
@@ -112,29 +101,31 @@ function EditorPageInner() {
       if (ext === "txt") {
         const text = await response.text();
         console.log("[editor] TXT loaded:", text.length, "chars");
+        setDocxBuffer(null);
         setContent(text.split("\n").map((l) => `<p>${l || "&nbsp;"}</p>`).join(""));
       } else if (ext === "md" || ext === "markdown") {
         const text = await response.text();
         console.log("[editor] Markdown loaded:", text.length, "chars");
+        setDocxBuffer(null);
         setContent(simpleMarkdownToHtml(text));
       } else if (ext === "html") {
         const text = await response.text();
         console.log("[editor] HTML loaded:", text.length, "chars");
+        setDocxBuffer(null);
         setContent(text);
       } else if (ext === "docx" || ext === "doc") {
         console.log("[editor] DOCX: downloading binary...");
         const arrayBuffer = await response.arrayBuffer();
         console.log("[editor] DOCX: downloaded", arrayBuffer.byteLength, "bytes");
-
-        console.log("[editor] DOCX: starting mammoth conversion...");
-        const html = await parseDocxClientSide(arrayBuffer);
-        console.log("[editor] DOCX: conversion complete,", html.length, "chars of HTML");
-        setContent(html);
+        setContent("");
+        setDocxBuffer(arrayBuffer);
       } else {
         const text = await response.text();
         console.log("[editor] Unknown format, loading as text:", text.length, "chars");
+        setDocxBuffer(null);
         setContent(text.split("\n").map((l) => `<p>${l || "&nbsp;"}</p>`).join(""));
       }
+      setLoadKey((k) => k + 1);
     } catch (err: any) {
       console.error("[editor] Error:", err.message);
       setError(err.message || "Failed to load file");
@@ -185,6 +176,8 @@ function EditorPageInner() {
       fileType={fileType}
       fileSize={fileSize}
       initialContent={content}
+      docxBuffer={docxBuffer}
+      loadKey={loadKey}
       hasFileUrl={hasFileUrl}
       recipientCode={recipientCode}
       originalFileUrl={fileUrl}

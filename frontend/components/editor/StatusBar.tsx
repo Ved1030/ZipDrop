@@ -2,6 +2,7 @@
 
 interface StatusBarProps {
   pageCount: number;
+  activePage: number;
   wordCount: number;
   charCount: number;
   zoom: number;
@@ -11,12 +12,15 @@ interface StatusBarProps {
 
 export default function StatusBar({
   pageCount,
+  activePage,
   wordCount,
   charCount,
   zoom,
   onZoomChange,
   spellCheck,
 }: StatusBarProps) {
+  const safeCount = Math.max(1, pageCount);
+  const currentPage = Math.min(safeCount, Math.max(1, activePage + 1));
   return (
     <div
       id="statusbar"
@@ -32,7 +36,7 @@ export default function StatusBar({
         alignItems: "center",
       }}
     >
-      <span>Page 1 of {pageCount}</span>
+      <span>Page {currentPage} of {safeCount}</span>
       <span>Words: {wordCount.toLocaleString()}</span>
       <span>Characters: {charCount.toLocaleString()}</span>
       <span>English (US)</span>

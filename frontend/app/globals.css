@@ -954,3 +954,88 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+/* === PRINT STYLES FOR PAGINATION === */
+@media print {
+  body {
+    background: white !important;
+    background-image: none !important;
+  }
+  
+  #editor-canvas {
+    background: white !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  
+  .page-container {
+    gap: 0 !important;
+    display: block !important;
+  }
+  
+  .doc-page {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    padding: 25.4mm !important;
+    box-shadow: none !important;
+    margin: 0 auto 0 !important;
+    page-break-after: always;
+    page-break-inside: avoid;
+    transform: none !important;
+  }
+  
+  .doc-page:last-child {
+    page-break-after: auto;
+  }
+}
+
+/* === PAGINATED DOCX CANVAS (docx-preview pages) === */
+.zd-canvas {
+  background: #e5e5e5 !important;
+  padding: 24px 0 64px !important;
+}
+
+.zd-canvas .docx-wrapper {
+  background: transparent !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0 !important;
+}
+
+.zd-canvas .docx-wrapper > section.docx.zd-page {
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin: 0 auto 24px !important;
+  overflow: hidden !important;
+}
+
+.zd-canvas.zd-hide-breaks .docx-wrapper > section.docx.zd-page {
+  margin-bottom: 0 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #d5d5d5;
+}
+
+.zd-canvas .docx-wrapper > section.docx.zd-page:last-of-type {
+  margin-bottom: 0 !important;
+}
+
+.zd-canvas .zd-page-content {
+  outline: none !important;
+}
+
+.zd-page-content:empty::before {
+  content: "";
+  display: inline-block;
+}
+
+.zd-thumb-viewport {
+  pointer-events: none;
+  user-select: none;
+}
+
+.zd-thumb-viewport section.docx {
+  box-shadow: none !important;
+  margin: 0 !important;
+  pointer-events: none;
+}

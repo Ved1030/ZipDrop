@@ -25,6 +25,7 @@ import {
   VerticalAlign,
   TableLayoutType,
   ShadingType,
+  PageBreak,
 } from "docx";
 
 type TagNode = { type: "tag"; tag: string; attrs: Record<string, string>; children: Node[] };
@@ -135,7 +136,7 @@ function parseFontSize(raw: string): number | undefined {
   const pxMatch = trimmed.match(/^([\d.]+)\s*(?:px)?$/);
   if (pxMatch) {
     const px = parseFloat(pxMatch[1]);
-    if (!isNaN(px)) return Math.round(px * 2);
+    if (!isNaN(px)) return Math.round(px * 1.5);
   }
   return undefined;
 }
@@ -151,7 +152,7 @@ function parseLineHeight(raw: string): number | undefined {
   const pxMatch = trimmed.match(/^([\d.]+)\s*px$/);
   if (pxMatch) {
     const px = parseFloat(pxMatch[1]);
-    if (!isNaN(px) && px > 0) return Math.round((px / 12) * 240);
+    if (!isNaN(px) && px > 0) return Math.round(px * 15);
   }
   return undefined;
 }
@@ -574,6 +575,14 @@ function blockToParagraphs(
   const indent = getIndent(node);
   const style = parseInlineStyle(node.attrs.style || "");
 
+  if (
+    tag === "div" &&
+    (node.attrs["data-page-break"] === "true" ||
+      (node.attrs.class || "").split(/\s+/).includes("page-break"))
+  ) {
+    return [new Paragraph({ children: [new PageBreak()] })];
+  }
+
   if (tag === "h1" || tag === "h2" || tag === "h3" || tag === "h4" || tag === "h5" || tag === "h6") {
     const headingMap: Record<string, (typeof HeadingLevel)[keyof typeof HeadingLevel]> = {
       h1: HeadingLevel.HEADING_1,
@@ -721,10 +730,37 @@ function blockToParagraphs(
       if (mb) pOpts.spacing.after = mb;
     }
 
-    return [new Paragraph(pOpts)];
+    const output: (Paragraph | Table)[] = [];
+    if (style["page-break-before"] === "always") {
+      output.push(new Paragraph({ children: [new PageBreak()] }));
+    }
+    output.push(new Paragraph(pOpts));
+    if (style["page-break-after"] === "always") {
+      output.push(new Paragraph({ children: [new PageBreak()] }));
+    }
+    return output;
   }
 
   return nodesToBlockParagraphs(node.children, numbering);
+}
+
+function collectExportPages(nodes: Node[]): TagNode[] {
+  const pages: TagNode[] = [];
+  const visit = (list: Node[]) => {
+    for (const node of list) {
+      if (node.type !== "tag") continue;
+      if (
+        node.tag === "section" &&
+        (node.attrs.class || "").split(/\s+/).includes("zd-export-page")
+      ) {
+        pages.push(node);
+        continue;
+      }
+      visit(node.children);
+    }
+  };
+  visit(nodes);
+  return pages;
 }
 
 function nodesToBlockParagraphs(
@@ -756,7 +792,36 @@ export async function htmlToDocx(
 
   const num = makeNumbering();
   const nodes = parseHTML(html);
-  const paragraphs = nodesToBlockParagraphs(nodes, num);
+
+  const exportPages = collectExportPages(nodes);
+
+  let paragraphs: (Paragraph | Table)[] = [];
+  const pageSize: { width?: number; height?: number } = {};
+  const pageMargins: { top?: number; right?: number; bottom?: number; left?: number } = {};
+
+  if (exportPages.length > 0) {
+    const pxToTwip = (value: string | undefined): number | undefined => {
+      const px = parseFloat(value || "");
+      return Number.isFinite(px) && px > 0 ? Math.round(px * 15) : undefined;
+    };
+
+    exportPages.forEach((pageNode, index) => {
+      if (index > 0) {
+        paragraphs.push(new Paragraph({ children: [new PageBreak()] }));
+      }
+      paragraphs.push(...nodesToBlockParagraphs(pageNode.children, num));
+    });
+
+    const first = exportPages[0].attrs;
+    pageSize.width = pxToTwip(first["data-page-width"]);
+    pageSize.height = pxToTwip(first["data-page-height"]);
+    pageMargins.top = pxToTwip(first["data-margin-top"]);
+    pageMargins.right = pxToTwip(first["data-margin-right"]);
+    pageMargins.bottom = pxToTwip(first["data-margin-bottom"]);
+    pageMargins.left = pxToTwip(first["data-margin-left"]);
+  } else {
+    paragraphs = nodesToBlockParagraphs(nodes, num);
+  }
 
   if (paragraphs.length === 0) {
     paragraphs.push(new Paragraph({ children: [] }));
@@ -765,6 +830,7 @@ export async function htmlToDocx(
   const defaultFont = styles?.defaultFont || "Calibri";
   const defaultSize = Math.round((styles?.fontSize || 11) * 2);
   const defaultLine = Math.round((styles?.lineHeight || 1.7) * 240);
+  const isExport = exportPages.length > 0;
 
   const doc = new Document({
     numbering: num.numbering,
@@ -779,8 +845,8 @@ export async function htmlToDocx(
           paragraph: {
             spacing: {
               before: 0,
-              after: 120,
-              line: defaultLine,
+              after: isExport ? 0 : 120,
+              line: isExport ? 240 : defaultLine,
             },
           },
         },
@@ -790,11 +856,14 @@ export async function htmlToDocx(
       {
         properties: {
           page: {
+            ...(pageSize.width && pageSize.height
+              ? { size: { width: pageSize.width, height: pageSize.height } }
+              : {}),
             margin: {
-              top: convertInchesToTwip(1),
-              bottom: convertInchesToTwip(1),
-              left: convertInchesToTwip(1.25),
-              right: convertInchesToTwip(1.25),
+              top: pageMargins.top ?? convertInchesToTwip(1),
+              bottom: pageMargins.bottom ?? convertInchesToTwip(1),
+              left: pageMargins.left ?? convertInchesToTwip(1.25),
+              right: pageMargins.right ?? convertInchesToTwip(1.25),
             },
           },
         },

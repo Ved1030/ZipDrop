@@ -146,7 +146,8 @@ export default function TermsPage() {
       <p>
         Questions about these terms can be sent to{" "}
         <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. To report
-        content, use the <a href="/report-abuse">Report Abuse</a> page.
+        misuse or request removal of a file, use the{" "}
+        <a href="/contact">Contact page</a>.
       </p>
     </PageShell>
   );

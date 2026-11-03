@@ -5,7 +5,7 @@ import { CONTACT_EMAIL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contact ZipDrop for feedback, bug reports, privacy or deletion requests, and abuse reports.",
+    "Contact ZipDrop for feedback, bug reports, and privacy or deletion requests.",
 };
 
 export default function ContactPage() {
@@ -35,11 +35,11 @@ export default function ContactPage() {
         kept.
       </p>
 
-      <h2>Abuse reports</h2>
+      <h2>Misuse and removal requests</h2>
       <p>
-        If content on ZipDrop is illegal or harmful, please follow the steps on
-        the <a href="/report-abuse">Report Abuse</a> page so we can act on it
-        quickly.
+        To report misuse or request removal of a file, email{" "}
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> with the 4-digit
+        code.
       </p>
 
       <h2>Security issues</h2>
@@ -56,9 +56,6 @@ export default function ContactPage() {
           href={`mailto:${CONTACT_EMAIL}?subject=ZipDrop%20feedback`}
         >
           Email ZipDrop
-        </a>
-        <a className="cta secondary" href="/report-abuse">
-          Report abuse
         </a>
       </div>
     </PageShell>

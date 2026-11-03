@@ -138,9 +138,9 @@ export default function PrivacyPage() {
       <h2>When we may share information</h2>
       <p>
         We may disclose information if required by law, to respond to a valid
-        legal request, to investigate abuse, or to protect the safety and rights of
-        others. Abuse reports are handled as described on the{" "}
-        <a href="/report-abuse">Report Abuse</a> page.
+        legal request, to investigate misuse, or to protect the safety and rights
+        of others. Misuse reports are handled as described on the{" "}
+        <a href="/contact">Contact page</a>.
       </p>
 
       <h2>Children</h2>

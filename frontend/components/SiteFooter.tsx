@@ -93,7 +93,6 @@ export default function SiteFooter() {
             <p style={headingStyle}>Legal</p>
             <a href="/privacy" style={linkStyle}>Privacy Policy</a>
             <a href="/terms" style={linkStyle}>Terms of Use</a>
-            <a href="/report-abuse" style={linkStyle}>Report Abuse</a>
           </nav>
         </div>
 

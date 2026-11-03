@@ -30,7 +30,7 @@ const BLOG_SLUGS = [
   "send-files-via-link",
 ];
 
-const TRUST_PAGES = ["/about", "/contact", "/privacy", "/terms", "/report-abuse"];
+const TRUST_PAGES = ["/about", "/contact", "/privacy", "/terms"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

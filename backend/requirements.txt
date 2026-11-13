@@ -1,0 +1,11 @@
+# Python dependencies for the PDF -> DOCX helper.
+# pdf_converter.py imports pdf2docx; the remaining packages are its
+# runtime dependencies, listed explicitly so the conversion stack is
+# reproducible and complete inside backend/.venv.
+pdf2docx==0.5.13
+PyMuPDF>=1.26.7
+python-docx>=1.1.2
+fonttools>=4.53.0
+numpy>=1.26.4
+opencv-python-headless>=4.10.0.84
+fire>=0.6.0

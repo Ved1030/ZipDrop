@@ -6,6 +6,11 @@ backend/node_modules/
 # Python
 venv/
 backend/venv/
+.venv/
+backend/.venv/
+backend/.python/
+__pycache__/
+*.pyc
 
 # Environment variables / secrets
 .env

@@ -7,11 +7,49 @@ Called from Node.js backend via subprocess.
 import sys
 import os
 import json
+import platform
 import traceback
-from pdf2docx import Converter
+from importlib.metadata import version, PackageNotFoundError
+
+try:
+    from pdf2docx import Converter
+    PDF2DOCX_IMPORT_ERROR = None
+except Exception as exc:
+    Converter = None
+    PDF2DOCX_IMPORT_ERROR = exc
+
+
+def check_environment():
+    """Report the interpreter and dependency status without converting."""
+    if Converter is None:
+        return {
+            "success": False,
+            "executable": sys.executable,
+            "python_version": platform.python_version(),
+            "error": f"{type(PDF2DOCX_IMPORT_ERROR).__name__}: {PDF2DOCX_IMPORT_ERROR}",
+        }
+
+    try:
+        package_version = version("pdf2docx")
+    except PackageNotFoundError:
+        package_version = "unknown"
+
+    return {
+        "success": True,
+        "executable": sys.executable,
+        "python_version": platform.python_version(),
+        "pdf2docx_version": package_version,
+    }
 
 def convert_pdf_to_docx(input_path, output_path):
     """Convert PDF to DOCX with high fidelity layout preservation."""
+    if Converter is None:
+        return {
+            "success": False,
+            "error": f"pdf2docx import failed: {PDF2DOCX_IMPORT_ERROR}",
+            "traceback": "",
+        }
+
     try:
         cv = Converter(input_path)
         cv.convert(output_path, start=0, end=None)
@@ -21,6 +59,10 @@ def convert_pdf_to_docx(input_path, output_path):
         return {"success": False, "error": str(e), "traceback": traceback.format_exc()}
 
 def main():
+    if len(sys.argv) == 2 and sys.argv[1] == "--check":
+        print(json.dumps(check_environment()))
+        return
+
     if len(sys.argv) != 3:
         print(json.dumps({"success": False, "error": "Usage: python convert.py <input.pdf> <output.docx>"}))
         sys.exit(1)

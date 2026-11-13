@@ -334,10 +334,121 @@ app.post("/share-text", async (req, res) => {
    Convert PDF to DOCX (High-fidelity)
 -------------------------------- */
 
+/* --------------------------------
+   Python environment for PDF conversion
+-------------------------------- */
+
+const PDF_SCRIPT_PATH = path.join(__dirname, "pdf_converter.py");
+const PDF_VENV_PYTHON = path.join(
+  __dirname,
+  ".venv",
+  process.platform === "win32" ? "Scripts" : "bin",
+  process.platform === "win32" ? "python.exe" : "python"
+);
+
+function resolvePdfPython() {
+  if (process.env.PDF_PYTHON_BIN) return process.env.PDF_PYTHON_BIN;
+  if (fs.existsSync(PDF_VENV_PYTHON)) return PDF_VENV_PYTHON;
+  return process.platform === "win32" ? "python" : "python3";
+}
+
+const PDF_PYTHON_BIN = resolvePdfPython();
+
+if (!process.env.PDF_PYTHON_BIN && !fs.existsSync(PDF_VENV_PYTHON)) {
+  console.warn(
+    "[PDF-to-DOCX] backend/.venv is missing; falling back to system Python. Run `npm install` in backend to provision it."
+  );
+}
+
+const pdfTooling = {
+  checked: false,
+  ok: false,
+  pythonVersion: null,
+  pdf2docxVersion: null,
+  error: null,
+};
+
+function lastJsonLine(text) {
+  const lines = text.trim().split(/\r?\n/);
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const line = lines[i].trim();
+    if (!line.startsWith("{")) continue;
+    try {
+      return JSON.parse(line);
+    } catch {
+      // keep scanning towards the start of stdout
+    }
+  }
+  return null;
+}
+
+function checkPdfTooling() {
+  return new Promise((resolve) => {
+    let settled = false;
+
+    const finish = (status) => {
+      if (settled) return;
+      settled = true;
+      Object.assign(pdfTooling, status, { checked: true });
+
+      console.log(`[PDF-to-DOCX] Python interpreter: ${PDF_PYTHON_BIN}`);
+      if (pdfTooling.ok) {
+        console.log(
+          `[PDF-to-DOCX] pdf2docx ${pdfTooling.pdf2docxVersion} import OK (Python ${pdfTooling.pythonVersion})`
+        );
+      } else {
+        console.error(`[PDF-to-DOCX] Dependency check failed: ${pdfTooling.error}`);
+      }
+      resolve(pdfTooling);
+    };
+
+    const proc = spawn(PDF_PYTHON_BIN, [PDF_SCRIPT_PATH, "--check"], {
+      env: { ...process.env, PYTHONUNBUFFERED: "1", PYTHONIOENCODING: "utf-8" },
+    });
+
+    let stdout = "";
+    let stderr = "";
+
+    proc.stdout.on("data", (data) => {
+      stdout += data.toString();
+    });
+
+    proc.stderr.on("data", (data) => {
+      stderr += data.toString();
+    });
+
+    proc.on("error", (err) => {
+      finish({ ok: false, error: `could not start interpreter: ${err.message}` });
+    });
+
+    proc.on("close", (code) => {
+      const result = lastJsonLine(stdout);
+      if (result && result.success) {
+        finish({
+          ok: true,
+          pythonVersion: result.python_version || null,
+          pdf2docxVersion: result.pdf2docx_version || "installed",
+          error: null,
+        });
+        return;
+      }
+
+      const stderrLine = stderr.trim().split(/\r?\n/).filter(Boolean).pop();
+      finish({
+        ok: false,
+        error: result?.error || stderrLine || `interpreter exited with code ${code}`,
+      });
+    });
+  });
+}
+
+checkPdfTooling().catch(() => {});
+
 function convertPdfToDocx(inputPath, outputPath) {
   return new Promise((resolve, reject) => {
-    const scriptPath = path.join(__dirname, "pdf_converter.py");
-    const pythonProcess = spawn("python", [scriptPath, inputPath, outputPath]);
+    const pythonProcess = spawn(PDF_PYTHON_BIN, [PDF_SCRIPT_PATH, inputPath, outputPath], {
+      env: { ...process.env, PYTHONUNBUFFERED: "1", PYTHONIOENCODING: "utf-8" },
+    });
     
     let stdout = "";
     let stderr = "";
@@ -359,10 +470,11 @@ function convertPdfToDocx(inputPath, outputPath) {
       }
       
       try {
-        const lines = stdout.trim().split("\n");
-        const jsonLine = lines[lines.length - 1];
-        const result = JSON.parse(jsonLine);
-        
+        const result = lastJsonLine(stdout);
+        if (!result) {
+          throw new Error("Converter did not return JSON");
+        }
+
         if (result.success) {
           resolve(result.output_path);
         } else {
@@ -429,6 +541,21 @@ app.post("/convert-pdf-to-docx", upload.single("file"), async (req, res) => {
     console.error("[PDF-to-DOCX] Error:", error.message);
     res.status(500).json({ error: error.message || "PDF conversion failed" });
   }
+});
+
+/* --------------------------------
+   PDF conversion health
+-------------------------------- */
+
+app.get("/health/pdf-to-docx", (req, res) => {
+  res.status(pdfTooling.ok ? 200 : 503).json({
+    ok: pdfTooling.ok,
+    checked: pdfTooling.checked,
+    dependency: "pdf2docx",
+    version: pdfTooling.pdf2docxVersion,
+    python_version: pdfTooling.pythonVersion,
+    interpreter: path.basename(PDF_PYTHON_BIN),
+  });
 });
 
 /* --------------------------------

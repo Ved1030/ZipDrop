@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "postinstall": "node backend/scripts/setup-python.mjs"
+  },
   "dependencies": {
     "react-ga4": "^3.0.1"
   }

@@ -15,9 +15,9 @@ export default function TipTapEditor({ editor }: TipTapEditorProps) {
         minHeight: 864,
         fontSize: "11pt",
         lineHeight: 1.7,
-        color: "#000",
+        color: "var(--text-primary)",
         fontFamily: "'Calibri','Segoe UI',Arial,sans-serif",
-        caretColor: "#1a73e8",
+        caretColor: "var(--primary-teal)",
       }}
     >
       <EditorContent editor={editor} />

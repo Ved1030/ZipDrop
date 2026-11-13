@@ -23,7 +23,7 @@ function twipsToPx(t: number): number {
   return (t / 1440) * 96;
 }
 
-const PAGE_SHADOW = "0 2px 12px rgba(0,0,0,0.45)";
+const PAGE_SHADOW = "0 1px 3px rgba(32,43,54,0.10), 0 8px 24px rgba(32,43,54,0.08)";
 
 /* ── Run style → CSS ───────────────────────────────────────────────── */
 
@@ -87,7 +87,7 @@ function InlineRenderer({ items, onTextChange }: { items: InlineContent[]; onTex
         }
         if (item.kind === "hyperlink") {
           return (
-            <a key={i} href={item.anchor || "#"} style={{ color: "#0563C1", textDecoration: "underline" }}>
+            <a key={i} href={item.anchor || "#"} style={{ color: "var(--primary-teal)", textDecoration: "underline" }}>
               {item.runs.map((r, j) => <span key={j} style={runStyleCss(r.properties)}>{r.text}</span>)}
             </a>
           );
@@ -147,7 +147,7 @@ function TableRenderer({ table }: { table: DocxTable }) {
                 colSpan={cell.properties.columnSpan}
                 rowSpan={cell.properties.rowSpan}
                 style={{
-                  border: "1px solid #ccc",
+                  border: "1px solid var(--border)",
                   padding: "4px 8px",
                   verticalAlign: cell.properties.verticalAlign || "top",
                   width: cell.properties.width ? `${twipsToPx(cell.properties.width.value)}px` : undefined,
@@ -222,7 +222,7 @@ function SectionPages({ section, onParagraphEdit }: {
         <div
           key={pageIdx}
           style={{
-            background: "#fff",
+            background: "var(--bg-card)",
             width: pageWidthPx,
             minHeight: pageHeightPx,
             padding: `${marginsPx.top}px ${marginsPx.right}px ${marginsPx.bottom}px ${marginsPx.left}px`,
@@ -294,10 +294,10 @@ export function DocxRenderer({ document: doc, zoom = 100, onDocumentChange }: Do
       ))}
       {doc.sections.length === 0 && (
         <div style={{
-          background: "#fff", width: twipsToPx(11906), minHeight: twipsToPx(16838),
+          background: "var(--bg-card)", width: twipsToPx(11906), minHeight: twipsToPx(16838),
           padding: 96, boxShadow: PAGE_SHADOW, borderRadius: 2, flexShrink: 0,
         }}>
-          <div style={{ color: "#999", fontStyle: "italic" }}>Empty document</div>
+          <div style={{ color: "var(--text-muted)", fontStyle: "italic" }}>Empty document</div>
         </div>
       )}
     </>
@@ -334,21 +334,21 @@ export function DocxEditor({ arrayBuffer, fileName, onBack, onFileSelect }: Docx
     URL.revokeObjectURL(url);
   }, [doc, fileName]);
 
-  if (loading) return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "#1a1a2e" }}><p style={{ color: "#888" }}>Parsing OOXML...</p></div>;
-  if (error) return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "#1a1a2e" }}><p style={{ color: "#ff4444" }}>{error}</p></div>;
+  if (loading) return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "var(--editor-workspace)" }}><p style={{ color: "var(--text-secondary)" }}>Parsing OOXML...</p></div>;
+  if (error) return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "var(--editor-workspace)" }}><p style={{ color: "var(--danger)" }}>{error}</p></div>;
   if (!doc) return null;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh", background: "#1a1a2e", overflow: "hidden" }}>
-      <div style={{ display: "flex", alignItems: "center", padding: "8px 16px", borderBottom: "1px solid #2a2a3e", gap: 12, flexShrink: 0 }}>
-        <button onClick={onBack} style={{ background: "none", border: "none", color: "#888", cursor: "pointer", fontSize: 13 }}>Back</button>
-        <span style={{ color: "#fff", fontSize: 13, fontWeight: 600 }}>{fileName}</span>
-        <span style={{ color: "#666", fontSize: 11, marginLeft: 4 }}>DOCX (OOXML)</span>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh", background: "var(--editor-workspace)", overflow: "hidden" }}>
+      <div style={{ display: "flex", alignItems: "center", padding: "8px 16px", background: "var(--bg-card)", borderBottom: "1px solid var(--border)", gap: 12, flexShrink: 0 }}>
+        <button onClick={onBack} style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 13 }}>Back</button>
+        <span style={{ color: "var(--text-primary)", fontSize: 13, fontWeight: 600 }}>{fileName}</span>
+        <span style={{ color: "var(--text-muted)", fontSize: 11, marginLeft: 4 }}>DOCX (OOXML)</span>
         <div style={{ flex: 1 }} />
-        <span style={{ color: "#666", fontSize: 11 }}>Zoom</span>
+        <span style={{ color: "var(--text-muted)", fontSize: 11 }}>Zoom</span>
         <input type="range" min={50} max={200} value={zoom} onChange={e => setZoom(Number(e.target.value))} style={{ width: 100 }} />
-        <span style={{ color: "#888", fontSize: 11 }}>{zoom}%</span>
-        <button onClick={handleDownload} style={{ background: "#00e5ff", border: "none", borderRadius: 4, padding: "6px 14px", color: "#000", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Download</button>
+        <span style={{ color: "var(--text-secondary)", fontSize: 11 }}>{zoom}%</span>
+        <button onClick={handleDownload} style={{ background: "var(--primary-teal)", border: "none", borderRadius: 4, padding: "6px 14px", color: "#FFFFFF", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Download</button>
       </div>
       <div style={{ flex: 1, overflowY: "auto", padding: "32px 24px", display: "flex", justifyContent: "center" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24, transform: `scale(${zoom / 100})`, transformOrigin: "top center" }}>

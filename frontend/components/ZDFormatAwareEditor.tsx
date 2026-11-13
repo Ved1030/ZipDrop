@@ -91,10 +91,10 @@ export default function ZDFormatAwareEditor({ file, content, onChange }: Props) 
           <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <div className="zd-editor-toolbar" style={{ width: '100%', maxWidth: '680px', display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
               {['bold', 'italic', 'underline', 'createLink'].map(cmd => (
-                <button key={cmd} onClick={() => {
+                <button key={cmd} className="btn-ghost" onClick={() => {
                   const val = cmd === 'createLink' ? prompt("URL:") : null;
                   document.execCommand(cmd, false, val || "");
-                }} style={{ padding: '4px 8px', textTransform: 'capitalize' }}>{cmd.replace('createLink', 'Link')}</button>
+                }} style={{ padding: '6px 10px', textTransform: 'capitalize' }}>{cmd.replace('createLink', 'Link')}</button>
               ))}
             </div>
             <div 
@@ -104,8 +104,8 @@ export default function ZDFormatAwareEditor({ file, content, onChange }: Props) 
               onInput={e => onChange(e.currentTarget.innerHTML)}
               dangerouslySetInnerHTML={{ __html: content }}
               style={{
-                background: 'rgba(255,255,255,0.02)', padding: '40px', width: '100%', maxWidth: '680px',
-                minHeight: '600px', borderRadius: '16px', outline: 'none', lineHeight: 1.6, color: 'var(--text-secondary)'
+                background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '40px', width: '100%', maxWidth: '680px',
+                minHeight: '600px', borderRadius: '16px', outline: 'none', lineHeight: 1.6, color: 'var(--text-primary)'
               }}
             />
           </div>
@@ -115,13 +115,13 @@ export default function ZDFormatAwareEditor({ file, content, onChange }: Props) 
         const rows = content.split('\n').map(r => r.split(','));
         return (
           <div style={{ padding: '24px' }}>
-            <div style={{ display: 'flex', gap: '12px', background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', marginBottom: '16px' }}>
-               <span style={{ color: 'var(--cyan)', fontWeight: 800 }}>f(x)</span>
+            <div style={{ display: 'flex', gap: '12px', background: 'var(--editor-workspace)', border: '1px solid var(--border)', padding: '10px', borderRadius: '8px', marginBottom: '16px' }}>
+               <span style={{ color: 'var(--primary-teal)', fontWeight: 800 }}>f(x)</span>
                <span style={{ color: 'var(--text-muted)', width: '32px' }}>{activeCell}</span>
                <input 
                   type="text" 
                   value={content.split('\n')[0]} 
-                  style={{ flex: 1, background: 'none', border: 'none', outline: 'none', color: 'var(--text-primary)' }} 
+                  style={{ flex: 1, background: 'var(--bg-card)', border: 'none', outline: 'none', color: 'var(--text-primary)' }} 
                />
             </div>
             <div style={{ overflow: 'auto' }}>
@@ -134,7 +134,7 @@ export default function ZDFormatAwareEditor({ file, content, onChange }: Props) 
                           key={j} 
                           contentEditable 
                           onFocus={() => setActiveCell(`${String.fromCharCode(65+j)}${i+1}`)}
-                          style={{ border: '1px solid var(--border-soft)', padding: '10px 16px', minWidth: '100px' }}
+                          style={{ border: '1px solid var(--border)', padding: '10px 16px', minWidth: '100px', color: 'var(--text-primary)' }}
                         >{c}</td>
                       ))}
                     </tr>
@@ -148,7 +148,7 @@ export default function ZDFormatAwareEditor({ file, content, onChange }: Props) 
       case "code":
         return (
           <div style={{ position: 'relative', display: 'flex', minHeight: '100%' }}>
-            <div style={{ width: '40px', background: 'rgba(0,0,0,0.2)', padding: '16px 0', textAlign: 'center', borderRight: '1px solid var(--border-soft)', flexShrink: 0, color: 'var(--text-muted)', fontSize: '11px', fontFamily: 'var(--font-mono)' }}>
+            <div style={{ width: '40px', background: 'var(--editor-workspace)', padding: '16px 0', textAlign: 'center', borderRight: '1px solid var(--border-soft)', flexShrink: 0, color: 'var(--text-muted)', fontSize: '11px', fontFamily: 'var(--font-mono)' }}>
                {content.split('\n').map((_, i) => <div key={i}>{i+1}</div>)}
             </div>
             <pre 
@@ -160,7 +160,7 @@ export default function ZDFormatAwareEditor({ file, content, onChange }: Props) 
                 onChange(text);
                 // Debounced highlight (simplified here)
               }}
-              style={{ flex: 1, padding: '16px', margin: 0, outline: 'none', whiteSpace: 'pre', overflowX: 'auto', fontFamily: 'var(--font-mono)', fontSize: '13px' }}
+              style={{ flex: 1, padding: '16px', margin: 0, outline: 'none', whiteSpace: 'pre', overflowX: 'auto', fontFamily: 'var(--font-mono)', fontSize: '13px', background: 'var(--bg-card)', color: 'var(--text-primary)' }}
             >
               <code id="code-block">{content}</code>
             </pre>
@@ -175,7 +175,7 @@ export default function ZDFormatAwareEditor({ file, content, onChange }: Props) 
                  <button key={f} onClick={() => applyFilter(f)} className="btn-ghost" style={{ fontSize: '11px' }}>{f.replace('(4px)', '')}</button>
                ))}
             </div>
-            <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--border-soft)' }}>
+            <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--border)' }}>
                <canvas ref={canvasRef} style={{ maxWidth: '100%', height: 'auto', transition: 'filter 0.3s' }} />
             </div>
           </div>
@@ -186,7 +186,7 @@ export default function ZDFormatAwareEditor({ file, content, onChange }: Props) 
           <textarea 
             value={content} 
             onChange={e => onChange(e.target.value)}
-            style={{ width: '100%', height: '100%', minHeight: '80vh', padding: '32px', background: 'none', border: 'none', outline: 'none', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: '14px', resize: 'none' }}
+            style={{ width: '100%', height: '100%', minHeight: '80vh', padding: '32px', background: 'var(--bg-card)', border: 'none', outline: 'none', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: '14px', resize: 'none' }}
           />
         );
     }

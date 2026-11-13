@@ -400,7 +400,7 @@ const PaginatedDocumentCanvas = forwardRef<PaginatedEditorHandle, DocumentCanvas
       section.style.flexDirection = "column";
       section.style.flexShrink = "0";
       section.style.boxShadow = propsRef.current.showPageBreaks
-        ? "0 2px 8px rgba(0,0,0,0.2)"
+        ? "0 2px 8px rgba(32,43,54,0.14)"
         : "none";
 
       if (chrome.header) {
@@ -430,7 +430,7 @@ const PaginatedDocumentCanvas = forwardRef<PaginatedEditorHandle, DocumentCanvas
       if (baseStyle.textAlign && baseStyle.textAlign !== "start") {
         article.style.textAlign = baseStyle.textAlign;
       }
-      article.style.caretColor = "#1a73e8";
+      article.style.caretColor = "var(--primary-teal)";
       section.appendChild(article);
 
       chrome.notes.forEach((note) => section.appendChild(note.cloneNode(true)));
@@ -1225,7 +1225,7 @@ const PaginatedDocumentCanvas = forwardRef<PaginatedEditorHandle, DocumentCanvas
     useEffect(() => {
       pagesRef.current.forEach((page) => {
         page.section.style.marginBottom = `${showPageBreaks ? PAGE_GAP : 0}px`;
-        page.section.style.boxShadow = showPageBreaks ? "0 2px 8px rgba(0,0,0,0.2)" : "none";
+        page.section.style.boxShadow = showPageBreaks ? "0 2px 8px rgba(32,43,54,0.14)" : "none";
       });
     }, [showPageBreaks]);
 
@@ -1302,7 +1302,7 @@ const PaginatedDocumentCanvas = forwardRef<PaginatedEditorHandle, DocumentCanvas
           minWidth: 0,
           overflowY: "auto",
           overflowX: "auto",
-          background: "#e5e5e5",
+          background: "var(--editor-workspace)",
           padding: "24px 0 64px",
           position: "relative",
         }}

@@ -157,7 +157,7 @@ export default function Page() {
       <div className="mt-10">
         <a
           href="/"
-          className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700"
+          className="zd-blog-cta"
         >
           Try ZipDrop Now
         </a>
@@ -167,16 +167,16 @@ export default function Page() {
         <h2 className="text-2xl font-semibold mb-4">Related Articles</h2>
         <ul className="space-y-2">
           <li>
-            <a href="/blog/send-large-files-online" className="text-blue-600 hover:underline">Best Way to Send Large Files Online</a>
+            <a href="/blog/send-large-files-online" className="zd-blog-link">Best Way to Send Large Files Online</a>
           </li>
           <li>
-            <a href="/blog/share-files-without-login" className="text-blue-600 hover:underline">How to Share Files Without Login or Registration</a>
+            <a href="/blog/share-files-without-login" className="zd-blog-link">How to Share Files Without Login or Registration</a>
           </li>
           <li>
-            <a href="/blog/snapdrop-alternative" className="text-blue-600 hover:underline">SnapDrop Alternative for Cross-Device File Sharing</a>
+            <a href="/blog/snapdrop-alternative" className="zd-blog-link">SnapDrop Alternative for Cross-Device File Sharing</a>
           </li>
           <li>
-            <a href="/blog/wetransfer-alternative" className="text-blue-600 hover:underline">WeTransfer Alternative for Fast File Transfers</a>
+            <a href="/blog/wetransfer-alternative" className="zd-blog-link">WeTransfer Alternative for Fast File Transfers</a>
           </li>
         </ul>
       </div>

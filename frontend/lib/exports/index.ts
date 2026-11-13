@@ -62,7 +62,7 @@ export function exportHtml(html: string, fileName: string): void {
   const fullHtml = `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><title>${fileName}</title>
-<style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:20px;line-height:1.6;color:#333}</style>
+<style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:20px;line-height:1.6;color:#202B36}</style>
 </head><body>${html}</body></html>`;
   const blob = new Blob([fullHtml], {
     type: "text/html;charset=utf-8",

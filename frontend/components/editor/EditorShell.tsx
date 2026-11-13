@@ -148,7 +148,7 @@ export default function EditorShell({
     canvasHandleRef.current?.focus("end");
   }, [pageCount]);
 
-  const handleDownload = useCallback(async (format?: string) => {
+const handleDownload = useCallback(async (format?: string) => {
     const html = canvasHandleRef.current?.getHTML() || content;
     const name = fileName.replace(/\.[^.]+$/, "") || "document";
     const fmt = format || fileType || "docx";
@@ -180,8 +180,85 @@ export default function EditorShell({
         console.error("DOCX conversion failed:", err);
         alert("Download failed. Please try again.");
       }
+    } else if (fmt === "pdf") {
+      try {
+        const { default: html2canvas } = await import("html2canvas");
+        const { jsPDF } = await import("jspdf");
+
+        const tempContainer = document.createElement("div");
+        tempContainer.style.position = "absolute";
+        tempContainer.style.left = "-9999px";
+        tempContainer.style.top = "0";
+        tempContainer.style.width = "794px";
+        tempContainer.innerHTML = html;
+        document.body.appendChild(tempContainer);
+
+        const pdf = new jsPDF({ unit: "pt", format: "a4" });
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const margin = 72;
+
+        const pageSections = tempContainer.querySelectorAll(".zd-page, section.zd-export-page, [data-page-break]");
+        
+        if (pageSections.length === 0) {
+          tempContainer.innerHTML = `<div class="docx">${html}</div>`;
+        }
+
+        const elementsToRender = pageSections.length > 0 
+          ? Array.from(pageSections) 
+          : [tempContainer.firstElementChild].filter(Boolean) as HTMLElement[];
+
+        for (let i = 0; i < elementsToRender.length; i++) {
+          const element = elementsToRender[i] as HTMLElement;
+          if (i > 0) pdf.addPage();
+          
+          const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            backgroundColor: "#ffffff",
+          } as any);
+
+          const imgData = canvas.toDataURL("image/png");
+          const imgWidth = pdfWidth - margin * 2;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          
+          let yPos = margin;
+          let remainingHeight = imgHeight;
+          
+          while (remainingHeight > 0) {
+            const pageContentHeight = pdfHeight - margin * 2;
+            const clipHeight = Math.min(remainingHeight, pageContentHeight);
+            
+            pdf.addImage(
+              imgData,
+              "PNG",
+              margin,
+              yPos,
+              imgWidth,
+              clipHeight,
+              undefined,
+              "FAST"
+            );
+            
+            remainingHeight -= clipHeight;
+            if (remainingHeight > 0) {
+              pdf.addPage();
+              yPos = margin;
+            } else {
+              yPos += clipHeight;
+            }
+          }
+        }
+
+        tempContainer.remove();
+        pdf.save(name + ".pdf");
+      } catch (err) {
+        console.error("PDF export failed:", err);
+        alert("PDF export failed. Please try again.");
+      }
     } else if (fmt === "txt") {
-      const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+      const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
       const blob = new Blob([text], { type: "text/plain" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -198,7 +275,7 @@ export default function EditorShell({
       md = md.replace(/<br\s*\/?>/g, "\n");
       md = md.replace(/<li>(.*?)<\/li>/g, "- $1\n");
       md = md.replace(/<[^>]+>/g, "");
-      md = md.replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+      md = md.replace(/&nbsp;/g, " ").replace(/&/g, "&");
       const blob = new Blob([md.trim()], { type: "text/markdown" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -265,8 +342,8 @@ export default function EditorShell({
         display: "flex",
         flexDirection: "column",
         height: "100vh",
-        background: "#e5e5e5",
-        color: "#3c3c3c",
+        background: "var(--editor-workspace)",
+        color: "var(--text-primary)",
         fontFamily: "'Segoe UI',Arial,sans-serif",
         overflow: "hidden",
       }}
@@ -365,7 +442,7 @@ export default function EditorShell({
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(10,10,22,0.97)",
+            background: "rgba(32,43,54,0.30)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -375,8 +452,8 @@ export default function EditorShell({
         >
           <div
             style={{
-              background: "#0f0f1a",
-              border: "1px solid #2a2a3e",
+              background: "var(--bg-card)",
+              border: "1px solid var(--border)",
               borderRadius: 12,
               padding: 32,
               width: 400,
@@ -386,13 +463,13 @@ export default function EditorShell({
           >
             {!shareResult ? (
               <>
-                <h3 style={{ fontSize: 16, fontWeight: 600, color: "#fff", marginBottom: 6 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 600, color: "var(--text-primary)", marginBottom: 6 }}>
                   Share Edited Copy
                 </h3>
-                <p style={{ fontSize: 13, color: "#888", marginBottom: 20 }}>
+                <p style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 20 }}>
                   Upload your edited version and generate a new share code. The original file is never overwritten.
                 </p>
-                <label style={{ display: "block", fontSize: 12, color: "#888", marginBottom: 6 }}>
+                <label style={{ display: "block", fontSize: 12, color: "var(--text-secondary)", marginBottom: 6 }}>
                   4-digit share code
                 </label>
                 <input
@@ -404,10 +481,10 @@ export default function EditorShell({
                   style={{
                     width: "100%",
                     padding: "10px 12px",
-                    background: "#1a1a2e",
-                    border: "1px solid #2a2a3e",
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border)",
                     borderRadius: 6,
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontSize: 14,
                     fontFamily: "monospace",
                     letterSpacing: 4,
@@ -421,10 +498,10 @@ export default function EditorShell({
                     disabled={shareLoading}
                     style={{
                       padding: "8px 16px",
-                      background: "none",
-                      border: "1px solid #2a2a3e",
+                      background: "var(--bg-card)",
+                      border: "1px solid var(--border)",
                       borderRadius: 6,
-                      color: "#888",
+                      color: "var(--text-secondary)",
                       fontSize: 13,
                       cursor: "pointer",
                     }}
@@ -436,10 +513,10 @@ export default function EditorShell({
                     disabled={shareLoading || shareCode.length !== 4}
                     style={{
                       padding: "8px 20px",
-                      background: shareCode.length === 4 ? "#00e5ff" : "#2a2a3e",
+                      background: shareCode.length === 4 ? "var(--primary-teal)" : "var(--border)",
                       border: "none",
                       borderRadius: 6,
-                      color: shareCode.length === 4 ? "#000" : "#666",
+                      color: shareCode.length === 4 ? "#FFFFFF" : "var(--text-muted)",
                       fontSize: 13,
                       fontWeight: 600,
                       cursor: shareCode.length === 4 ? "pointer" : "not-allowed",
@@ -451,24 +528,24 @@ export default function EditorShell({
               </>
             ) : (
               <>
-                <h3 style={{ fontSize: 16, fontWeight: 600, color: "#00e5ff", marginBottom: 12 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 600, color: "#078C91", marginBottom: 12 }}>
                   Shared Successfully
                 </h3>
-                <div style={{ background: "#1a1a2e", borderRadius: 8, padding: 16, marginBottom: 16 }}>
+                <div style={{ background: "var(--editor-workspace)", borderRadius: 8, padding: 16, marginBottom: 16 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                    <span style={{ fontSize: 12, color: "#888" }}>Share Code</span>
-                    <span style={{ fontSize: 16, fontWeight: 700, color: "#00e5ff", fontFamily: "monospace", letterSpacing: 2 }}>
+                    <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>Share Code</span>
+                    <span style={{ fontSize: 16, fontWeight: 700, color: "#078C91", fontFamily: "monospace", letterSpacing: 2 }}>
                       {shareResult.code}
                     </span>
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                    <span style={{ fontSize: 12, color: "#888" }}>Expires</span>
-                    <span style={{ fontSize: 12, color: "#fff" }}>{shareResult.expiry}</span>
+                    <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>Expires</span>
+                    <span style={{ fontSize: 12, color: "var(--text-primary)" }}>{shareResult.expiry}</span>
                   </div>
                   {shareResult.link && (
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span style={{ fontSize: 12, color: "#888" }}>Download Link</span>
-                      <a href={shareResult.link} target="_blank" rel="noopener" style={{ fontSize: 12, color: "#00e5ff" }}>
+                      <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>Download Link</span>
+                      <a href={shareResult.link} target="_blank" rel="noopener" style={{ fontSize: 12, color: "#078C91" }}>
                         Open
                       </a>
                     </div>
@@ -479,10 +556,10 @@ export default function EditorShell({
                   style={{
                     width: "100%",
                     padding: "10px",
-                    background: "#00e5ff",
+                    background: "var(--primary-teal)",
                     border: "none",
                     borderRadius: 6,
-                    color: "#000",
+                    color: "#FFFFFF",
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: "pointer",

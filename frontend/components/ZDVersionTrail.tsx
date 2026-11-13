@@ -56,14 +56,14 @@ export default function ZDVersionTrail({ content, onRestore }: Props) {
             padding: '12px', 
             borderRadius: '10px', 
             border: '1px solid var(--border-soft)', 
-            background: i === 0 ? 'rgba(0,229,192,0.05)' : 'none',
-            borderLeft: i === 0 ? '3px solid #00E5C0' : '1px solid var(--border-soft)',
+            background: i === 0 ? 'var(--teal-light)' : 'none',
+            borderLeft: i === 0 ? '3px solid var(--primary-teal)' : '1px solid var(--border-soft)',
             cursor: 'pointer',
             transition: 'all 0.2s'
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: i === 0 ? '#00E5C0' : 'var(--text-primary)' }}>{s.tag}</span>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: i === 0 ? 'var(--primary-teal)' : 'var(--text-primary)' }}>{s.tag}</span>
             <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{getTimeAgo(s.timestamp)}</span>
           </div>
           <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{s.author}</p>

@@ -61,7 +61,7 @@ export default function DocEditor({
           "font-family: Arial, sans-serif",
           "font-size: 11pt",
           "line-height: 1.6",
-          "color: #1A1A1A",
+          "color: #202B36",
         ].join(";"),
       },
     },
@@ -186,22 +186,22 @@ export default function DocEditor({
   }
 
   const btnClass = (active?: boolean) =>
-    `px-2 py-1 text-xs rounded ${active ? "bg-gray-200 text-gray-900" : "text-gray-600 hover:bg-gray-100"} transition-colors`;
+    `px-2 py-1 text-xs rounded ${active ? "bg-[#E5EAEE] text-[#202B36]" : "text-[#647180] hover:bg-[#DDF5F2]"} transition-colors`;
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#E8E7E2]">
-        <div className="text-gray-500 text-sm">Loading document...</div>
+      <div className="flex items-center justify-center min-h-screen bg-[#F7F9FA]">
+        <div className="text-[#647180] text-sm">Loading document...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#E8E7E2] gap-4">
-        <p className="text-gray-500 text-sm">Could not load document content.</p>
-        <p className="text-gray-400 text-xs max-w-md text-center">{error}</p>
-        <a href={fileUrl} download className="text-emerald-600 underline text-sm">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F9FA] gap-4">
+        <p className="text-[#647180] text-sm">Could not load document content.</p>
+        <p className="text-[#8190A0] text-xs max-w-md text-center">{error}</p>
+        <a href={fileUrl} download className="text-[#078C91] underline text-sm">
           Download original
         </a>
       </div>
@@ -209,24 +209,24 @@ export default function DocEditor({
   }
 
   return (
-    <div className="h-screen flex flex-col bg-[#E8E7E2]">
+    <div className="h-screen flex flex-col bg-[#F7F9FA]">
       {/* TOP BAR */}
-      <div className="flex items-center gap-3 px-4 h-12 bg-white border-b border-gray-200 shrink-0">
-        <span className="text-emerald-600 font-bold text-sm tracking-tight">ZipDrop</span>
-        <span className="text-xs text-gray-400 mx-1">/</span>
-        <span className="text-sm text-gray-800 font-medium truncate max-w-[240px]">{filename}</span>
-        <span className="text-[10px] uppercase tracking-wider font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 leading-none">
+      <div className="flex items-center gap-3 px-4 h-12 bg-white border-b border-[#E5EAEE] shrink-0">
+        <span className="text-[#078C91] font-bold text-sm tracking-tight">ZipDrop</span>
+        <span className="text-xs text-[#8190A0] mx-1">/</span>
+        <span className="text-sm text-[#202B36] font-medium truncate max-w-[240px]">{filename}</span>
+        <span className="text-[10px] uppercase tracking-wider font-semibold text-[#078C91] bg-[#DDF5F2] px-1.5 py-0.5 rounded border border-[#DDF5F2] leading-none">
           Editable
         </span>
-        <button onClick={handleClose} className="ml-auto text-gray-400 hover:text-gray-600 text-lg leading-none">&times;</button>
+        <button onClick={handleClose} className="ml-auto text-[#8190A0] hover:text-[#647180] text-lg leading-none">&times;</button>
       </div>
 
       {/* TOOLBAR */}
-      <div className="flex items-center gap-1 px-3 h-10 bg-white border-b border-gray-200 shrink-0 overflow-x-auto">
+      <div className="flex items-center gap-1 px-3 h-10 bg-white border-b border-[#E5EAEE] shrink-0 overflow-x-auto">
         <select
           value={fontFamily}
           onChange={(e) => setFont(e.target.value)}
-          className="text-xs border border-gray-300 rounded px-1.5 py-1 text-gray-700 bg-white w-24"
+          className="text-xs border border-[#E5EAEE] rounded px-1.5 py-1 text-[#202B36] bg-white w-24"
         >
           <option value="Arial">Arial</option>
           <option value="Helvetica">Helvetica</option>
@@ -238,22 +238,22 @@ export default function DocEditor({
         <select
           value={fontSize}
           onChange={(e) => setSize(e.target.value)}
-          className="text-xs border border-gray-300 rounded px-1.5 py-1 text-gray-700 bg-white w-16"
+          className="text-xs border border-[#E5EAEE] rounded px-1.5 py-1 text-[#202B36] bg-white w-16"
         >
           {[8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 28, 36, 48, 72].map((s) => (
             <option key={s} value={String(s)}>{s}</option>
           ))}
         </select>
-        <div className="w-px h-5 bg-gray-200 mx-1" />
+        <div className="w-px h-5 bg-[#E5EAEE] mx-1" />
         <button onClick={toggleBold} className={btnClass(editor?.isActive("bold"))} title="Bold"><b>B</b></button>
         <button onClick={toggleItalic} className={btnClass(editor?.isActive("italic"))} title="Italic"><i>I</i></button>
         <button onClick={toggleUnderline} className={btnClass(editor?.isActive("underline"))} title="Underline"><u>U</u></button>
         <button onClick={toggleStrike} className={btnClass(editor?.isActive("strike"))} title="Strikethrough"><s>S</s></button>
-        <div className="w-px h-5 bg-gray-200 mx-1" />
+        <div className="w-px h-5 bg-[#E5EAEE] mx-1" />
         <button onClick={toggleH1} className={btnClass(editor?.isActive("heading", { level: 1 }))} title="Heading 1">H1</button>
         <button onClick={toggleH2} className={btnClass(editor?.isActive("heading", { level: 2 }))} title="Heading 2">H2</button>
         <button onClick={toggleH3} className={btnClass(editor?.isActive("heading", { level: 3 }))} title="Heading 3">H3</button>
-        <div className="w-px h-5 bg-gray-200 mx-1" />
+        <div className="w-px h-5 bg-[#E5EAEE] mx-1" />
         <button onClick={setAlignLeft} className={btnClass(editor?.isActive("textAlign", "left"))} title="Align left">&#x2190;</button>
         <button onClick={setAlignCenter} className={btnClass(editor?.isActive("textAlign", "center"))} title="Align center">&#x2194;</button>
         <button onClick={setAlignRight} className={btnClass(editor?.isActive("textAlign", "right"))} title="Align right">&#x2192;</button>
@@ -262,36 +262,36 @@ export default function DocEditor({
       {/* MAIN LAYOUT */}
       <div className="flex flex-1 overflow-hidden">
         {/* CANVAS */}
-        <div className="flex-1 overflow-y-auto bg-[#E8E7E2] p-8">
+        <div className="flex-1 overflow-y-auto bg-[#F7F9FA] p-8">
           <div className="max-w-[816px] mx-auto bg-white shadow-lg min-h-[1056px] rounded-sm">
             <EditorContent editor={editor} />
           </div>
         </div>
 
         {/* RIGHT SIDEBAR */}
-        <div className="w-64 shrink-0 bg-white border-l border-gray-200 p-4 overflow-y-auto flex flex-col gap-6">
+        <div className="w-64 shrink-0 bg-white border-l border-[#E5EAEE] p-4 overflow-y-auto flex flex-col gap-6">
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-3">Collaborators</h3>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-xs font-semibold">Y</div>
+            <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[#8190A0] mb-3">Collaborators</h3>
+            <div className="flex items-center gap-2 text-sm text-[#647180]">
+              <div className="w-7 h-7 rounded-full bg-[#DDF5F2] flex items-center justify-center text-[#078C91] text-xs font-semibold">Y</div>
               <span>You (owner)</span>
             </div>
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-3">Version Trail</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[#8190A0] mb-3">Version Trail</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-[#078C91] mt-1.5 shrink-0" />
                 <div>
-                  <p className="text-xs text-gray-700 font-medium">Current version</p>
-                  <p className="text-[11px] text-gray-400">Edited just now</p>
+                  <p className="text-xs text-[#202B36] font-medium">Current version</p>
+                  <p className="text-[11px] text-[#8190A0]">Edited just now</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
                 <div className="w-2 h-2 rounded-full bg-gray-300 mt-1.5 shrink-0" />
                 <div>
-                  <p className="text-xs text-gray-500">Original upload</p>
-                  <p className="text-[11px] text-gray-400">Opened for editing</p>
+                  <p className="text-xs text-[#647180]">Original upload</p>
+                  <p className="text-[11px] text-[#8190A0]">Opened for editing</p>
                 </div>
               </div>
             </div>
@@ -300,22 +300,22 @@ export default function DocEditor({
       </div>
 
       {/* BOTTOM BAR */}
-      <div className="flex items-center justify-between px-4 h-10 bg-white border-t border-gray-200 shrink-0">
-        <span className="text-xs text-gray-400 flex items-center gap-1">
-          <span className={synced ? "text-emerald-500" : "text-amber-500"}>&#x2713;</span>
+      <div className="flex items-center justify-between px-4 h-10 bg-white border-t border-[#E5EAEE] shrink-0">
+        <span className="text-xs text-[#8190A0] flex items-center gap-1">
+          <span className={synced ? "text-[#25A653]" : "text-[#D97706]"}>&#x2713;</span>
           {synced ? "Synced" : "Unsaved changes"}
         </span>
         <div className="flex items-center gap-3">
           <button
             onClick={handleResend}
             disabled={sending}
-            className="text-xs px-3 py-1.5 rounded bg-emerald-500 text-white hover:bg-emerald-600 font-medium disabled:opacity-50"
+            className="text-xs px-3 py-1.5 rounded bg-[#078C91] text-white hover:bg-[#067A7E] font-medium disabled:opacity-50"
           >
             {sending ? "Sending..." : "\u2191 Resend edited file"}
           </button>
           <button
             onClick={handleDownload}
-            className="text-xs px-3 py-1.5 rounded border border-gray-300 text-gray-700 hover:bg-gray-50"
+            className="text-xs px-3 py-1.5 rounded border border-[#E5EAEE] text-[#202B36] hover:bg-[#F7F9FA]"
           >
             {"\u2193"} Download edited
           </button>

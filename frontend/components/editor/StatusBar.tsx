@@ -26,12 +26,12 @@ export default function StatusBar({
       id="statusbar"
       style={{
         background: "#ffffff",
-        borderTop: "1px solid #e0e0e0",
+        borderTop: "1px solid var(--border)",
         padding: "5px 20px",
         display: "flex",
         gap: 24,
         fontSize: 12,
-        color: "#5f6368",
+        color: "var(--text-secondary)",
         flexShrink: 0,
         alignItems: "center",
       }}
@@ -41,7 +41,7 @@ export default function StatusBar({
       <span>Characters: {charCount.toLocaleString()}</span>
       <span>English (US)</span>
       {spellCheck && (
-        <span style={{ color: "#16a34a", display: "flex", alignItems: "center", gap: 4 }}>
+        <span style={{ color: "var(--green-highlight)", display: "flex", alignItems: "center", gap: 4 }}>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
           Spell check
         </span>
@@ -57,10 +57,10 @@ export default function StatusBar({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              border: "1px solid #dadce0",
+              border: "1px solid var(--border)",
               borderRadius: 3,
               cursor: "pointer",
-              background: "#1a73e8",
+              background: "var(--primary-teal)",
               color: "#fff",
               fontSize: 14,
             }}
@@ -75,11 +75,11 @@ export default function StatusBar({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              border: "1px solid #dadce0",
+              border: "1px solid var(--border)",
               borderRadius: 3,
               cursor: "pointer",
               background: "none",
-              color: "#5f6368",
+              color: "var(--text-secondary)",
               fontSize: 14,
             }}
             title="Two page view"
@@ -93,11 +93,11 @@ export default function StatusBar({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              border: "1px solid #dadce0",
+              border: "1px solid var(--border)",
               borderRadius: 3,
               cursor: "pointer",
               background: "none",
-              color: "#5f6368",
+              color: "var(--text-secondary)",
               fontSize: 14,
             }}
             title="Reading view"
@@ -107,13 +107,13 @@ export default function StatusBar({
         </div>
 
         {/* Zoom */}
-        <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#5f6368" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--text-secondary)" }}>
           <button
             onClick={() => onZoomChange(Math.max(50, zoom - 10))}
             style={{
               background: "none",
-              border: "1px solid #dadce0",
-              color: "#3c3c3c",
+              border: "1px solid var(--border)",
+              color: "var(--text-primary)",
               width: 22,
               height: 22,
               borderRadius: 3,
@@ -131,8 +131,8 @@ export default function StatusBar({
             onClick={() => onZoomChange(Math.min(200, zoom + 10))}
             style={{
               background: "none",
-              border: "1px solid #dadce0",
-              color: "#3c3c3c",
+              border: "1px solid var(--border)",
+              color: "var(--text-primary)",
               width: 22,
               height: 22,
               borderRadius: 3,
@@ -147,7 +147,7 @@ export default function StatusBar({
           </button>
         </div>
 
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5f6368" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ cursor: "pointer" }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ cursor: "pointer" }}>
           <circle cx="12" cy="12" r="10" />
           <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
           <line x1="12" y1="17" x2="12.01" y2="17" />

@@ -36,7 +36,7 @@ export default function TextShare() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const MAX_CHARS = 5000;
+  const MAX_CHARS = 50000;
 
   const handleShare = async () => {
     if (!text.trim()) {
@@ -82,7 +82,7 @@ export default function TextShare() {
           bottom: "10px",
           right: "12px",
           fontSize: "11px",
-          color: charPct > 90 ? "#FF6B6B" : "var(--text-muted)",
+          color: charPct > 90 ? "var(--danger)" : "var(--text-muted)",
           fontFamily: "var(--font-mono)",
           transition: "color 0.2s",
         }}>
@@ -92,23 +92,20 @@ export default function TextShare() {
 
       {/* CHAR PROGRESS BAR */}
       {text.length > 0 && (
-        <div style={{ height: "2px", background: "rgba(255,255,255,0.06)", borderRadius: "2px", overflow: "hidden" }}>
+        <div style={{ height: "2px", background: "var(--border)", borderRadius: "2px", overflow: "hidden" }}>
           <div style={{
             height: "100%",
             width: `${Math.min(charPct, 100)}%`,
-            background: charPct > 90
-              ? "linear-gradient(90deg, #FF6B6B, #FF4444)"
-              : "linear-gradient(90deg, var(--cyan), var(--cyan-soft))",
+            background: charPct > 90 ? "var(--danger)" : "var(--primary-teal)",
             borderRadius: "2px",
             transition: "width 0.3s ease, background 0.3s ease",
-            boxShadow: charPct > 90 ? "0 0 8px rgba(255,107,107,0.5)" : "0 0 8px rgba(0,245,255,0.4)",
           }} />
         </div>
       )}
 
       {/* ERROR */}
       {error && (
-        <p style={{ fontSize: "12px", color: "#FF6B6B", padding: "8px 12px", background: "rgba(255,107,107,0.08)", border: "1px solid rgba(255,107,107,0.2)", borderRadius: "8px" }}>
+        <p style={{ fontSize: "12px", color: "var(--danger)", padding: "8px 12px", background: "var(--danger-light)", border: "1px solid rgba(214,69,69,0.20)", borderRadius: "8px" }}>
           {error}
         </p>
       )}
@@ -145,7 +142,7 @@ export default function TextShare() {
           <div className="divider" />
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <p className="section-label">Your share code</p>
-            <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: "11px", color: "var(--cyan-soft)" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: "11px", color: "var(--primary-teal)" }}>
               <CheckIcon size={13} /> Shared
             </span>
           </div>

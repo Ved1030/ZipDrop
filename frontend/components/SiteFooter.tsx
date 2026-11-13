@@ -38,7 +38,7 @@ export default function SiteFooter() {
     <footer
       style={{
         borderTop: "1px solid var(--border-soft)",
-        background: "rgba(11, 11, 11, 0.65)",
+        background: "var(--bg-main)",
       }}
     >
       <div
@@ -76,7 +76,7 @@ export default function SiteFooter() {
             </p>
             <a
               href={`mailto:${CONTACT_EMAIL}?subject=ZipDrop%20feedback`}
-              style={{ ...linkStyle, display: "inline-block", marginTop: "12px", color: "var(--cyan-soft)" }}
+              style={{ ...linkStyle, display: "inline-block", marginTop: "12px", color: "var(--primary-teal)" }}
             >
               Send feedback
             </a>

@@ -69,7 +69,7 @@ function tableHtml(rows: number, cols: number, header: boolean): string {
     for (let c = 0; c < cols; c += 1) {
       const tag = header && r === 0 ? "th" : "td";
       cells.push(
-        `<${tag} style="border:1px solid #c7c7c7;padding:5px 8px;min-width:40px;">&nbsp;</${tag}>`
+        `<${tag} style="border:1px solid #DDE3E7;padding:5px 8px;min-width:40px;">&nbsp;</${tag}>`
       );
     }
     body.push(`<tr>${cells.join("")}</tr>`);

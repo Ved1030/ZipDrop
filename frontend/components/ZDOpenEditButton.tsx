@@ -50,8 +50,8 @@ export default function ZDOpenEditButton({ file }: Props) {
             style={{
               width: "10px",
               height: "10px",
-              border: "1.5px solid rgba(0,229,192,0.3)",
-              borderTopColor: "#00E5C0",
+              border: "1.5px solid rgba(7,140,145,0.24)",
+              borderTopColor: "var(--primary-teal)",
               borderRadius: "50%",
               display: "inline-block",
               animation: "spin 0.7s linear infinite",

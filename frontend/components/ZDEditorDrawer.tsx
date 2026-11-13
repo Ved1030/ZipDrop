@@ -67,7 +67,7 @@ export default function ZDEditorDrawer({ file, onClose, onResend }: Props) {
         className={`zd-overlay ${zd_isOpen ? 'zd-active' : ''}`} 
         onClick={() => { set_zd_isOpen(false); setTimeout(onClose, 300); }}
         style={{
-          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', 
+          position: 'fixed', inset: 0, background: 'rgba(32,43,54,0.30)', 
           zIndex: 499, backdropFilter: 'blur(10px)', opacity: zd_isOpen ? 1 : 0, transition: 'opacity 0.3s'
         }}
       />
@@ -77,15 +77,15 @@ export default function ZDEditorDrawer({ file, onClose, onResend }: Props) {
             position: fixed; right: 0; top: 0; height: 100vh; width: 560px;
             transform: translateX(100%); transition: transform 300ms ease-out;
             z-index: 500; display: flex; flex-direction: column;
-            background: #050D0B; border-left: 0.5px solid var(--border-soft);
+            background: var(--bg-card); border-left: 1px solid var(--border);
           }
           .zd-drawer.zd-open { transform: translateX(0); }
-          .zd-collab-sidebar { width: 180px; flex-shrink: 0; background: rgba(0,0,0,0.2); border-left: 1px solid var(--border-soft); }
+          .zd-collab-sidebar { width: 180px; flex-shrink: 0; background: var(--editor-workspace); border-left: 1px solid var(--border); }
 
           @media (max-width: 768px) {
             .zd-drawer { 
               width: 100%; height: 90vh; top: auto; bottom: 0; right: 0;
-              transform: translateY(100%); border-radius: 16px 16px 0 0; border-left: none; border-top: 1px solid var(--border-soft);
+              transform: translateY(100%); border-radius: 16px 16px 0 0; border-left: none; border-top: 1px solid var(--border);
             }
             .zd-drawer.zd-open { transform: translateY(0); }
             .zd-collab-sidebar { display: none; }
@@ -93,17 +93,17 @@ export default function ZDEditorDrawer({ file, onClose, onResend }: Props) {
         ` }} />
         
         {/* TopBar */}
-        <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border-soft)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-             <span style={{ fontWeight: 700, fontSize: '15px' }}>{file.file_name}</span>
+             <span style={{ fontWeight: 700, fontSize: '15px', color: 'var(--text-primary)' }}>{file.file_name}</span>
              <span className="badge" style={{ fontSize: '10px' }}>EDITABLE</span>
-             <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00E5C0', boxShadow: '0 0 10px #00E5C0' }} />
+             <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary-teal)', boxShadow: 'none' }} />
           </div>
           <button onClick={() => { set_zd_isOpen(false); setTimeout(onClose, 300); }} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '20px' }}>×</button>
         </div>
 
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-           <div style={{ flex: 1, overflow: 'auto', background: '#050D0B' }}>
+           <div style={{ flex: 1, overflow: 'auto', background: 'var(--editor-workspace)' }}>
               <ZDErrorBoundary>
                 <Suspense fallback={<div style={{ padding: '40px', color: 'var(--text-muted)' }}>Loading editor...</div>}>
                    <ZDFormatAwareEditor 
@@ -125,7 +125,7 @@ export default function ZDEditorDrawer({ file, onClose, onResend }: Props) {
         </div>
 
         {/* BottomBar */}
-        <div style={{ padding: '16px 24px', borderTop: '1px solid var(--border-soft)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(0,0,0,0.4)' }}>
+        <div style={{ padding: '16px 24px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-card)' }}>
            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <button 
                 onClick={handleResend}
@@ -137,7 +137,7 @@ export default function ZDEditorDrawer({ file, onClose, onResend }: Props) {
               {zd_newCode && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                    <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>New Code:</span>
-                   <span className="glow-text" style={{ fontSize: '18px', fontWeight: 800, color: 'var(--cyan)' }}>{zd_newCode}</span>
+                   <span className="glow-text" style={{ fontSize: '18px', fontWeight: 800, color: 'var(--primary-teal)' }}>{zd_newCode}</span>
                 </div>
               )}
            </div>

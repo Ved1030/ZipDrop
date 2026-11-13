@@ -9,10 +9,10 @@ const EditorShell = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "#1a1a2e" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "var(--editor-workspace)" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
-          <div style={{ width: 40, height: 40, border: "2px solid #00e5ff22", borderTop: "2px solid #00e5ff", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
-          <p style={{ fontSize: 13, color: "#888" }}>Loading editor...</p>
+          <div style={{ width: 40, height: 40, border: "2px solid var(--teal-light)", borderTop: "2px solid #078C91", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+          <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>Loading editor...</p>
         </div>
       </div>
     ),
@@ -70,6 +70,7 @@ function EditorPageInner() {
   const hasFileUrl = !!fileUrl;
 
   const [loading, setLoading] = useState(true);
+  const [loadingLabel, setLoadingLabel] = useState("Opening document...");
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState(filename || "Untitled document");
   const [fileType, setFileType] = useState("docx");
@@ -77,6 +78,22 @@ function EditorPageInner() {
   const [content, setContent] = useState("");
   const [docxBuffer, setDocxBuffer] = useState<ArrayBuffer | null>(null);
   const [loadKey, setLoadKey] = useState(0);
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://zipdrop.onrender.com";
+
+  const isExternalUrl = (url: string): boolean => {
+    try {
+      const parsed = new URL(url);
+      return parsed.hostname !== window.location.hostname;
+    } catch {
+      return false;
+    }
+  };
+
+  const getProxyUrl = (url: string, filename: string): string => {
+    const params = new URLSearchParams({ url, filename });
+    return `/api/proxy-file?${params.toString()}`;
+  };
 
   const processFile = useCallback(async (url: string, name: string) => {
     try {
@@ -86,19 +103,61 @@ function EditorPageInner() {
       const ext = getExtension(name);
       setFileType(ext);
       setFileName(name);
+      setLoadingLabel(ext === "pdf" ? "Preparing PDF..." : "Opening document...");
 
-      console.log("[editor] Fetching file:", url);
-      const response = await fetch(url);
+      const fetchUrl = isExternalUrl(url) ? getProxyUrl(url, name) : url;
+      console.log("[editor] Fetching file:", fetchUrl);
+      const response = await fetch(fetchUrl);
       console.log("[editor] Response status:", response.status, response.statusText);
 
       if (!response.ok) {
+        if (ext === "pdf" && response.status === 404) {
+          throw new Error(
+            "The PDF could not be found. The share link may have expired or the file was removed."
+          );
+        }
         throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`);
       }
 
       const contentLength = response.headers.get("content-length");
       if (contentLength) setFileSize(formatFileSize(Number(contentLength)));
 
-      if (ext === "txt") {
+      if (ext === "pdf") {
+        setLoadingLabel("Converting PDF to Word (high-fidelity)...");
+        const pdfBuffer = await response.arrayBuffer();
+        const formData = new FormData();
+        formData.append(
+          "file",
+          new Blob([pdfBuffer], { type: "application/pdf" }),
+          name
+        );
+
+        console.log("[editor] Calling backend conversion API:", `${API_URL}/convert-pdf-to-docx`);
+        const conversion = await fetch(`${API_URL}/convert-pdf-to-docx`, {
+          method: "POST",
+          body: formData,
+        });
+
+        console.log("[editor] Conversion response status:", conversion.status, conversion.statusText);
+
+        if (!conversion.ok) {
+          const details = await conversion.json().catch(() => null);
+          throw new Error(
+            details?.error ||
+              `PDF conversion failed: ${conversion.status} ${conversion.statusText}`
+          );
+        }
+
+        setLoadingLabel("Opening Word editor...");
+        const docx = await conversion.arrayBuffer();
+        if (docx.byteLength === 0) {
+          throw new Error("PDF conversion returned an empty document.");
+        }
+        setContent("");
+        setDocxBuffer(docx);
+        setFileName(name.replace(/\.pdf$/i, ".docx"));
+        setFileType("docx");
+      } else if (ext === "txt") {
         const text = await response.text();
         console.log("[editor] TXT loaded:", text.length, "chars");
         setDocxBuffer(null);
@@ -144,27 +203,27 @@ function EditorPageInner() {
 
   if (error) {
     return (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "#1a1a2e", flexDirection: "column", gap: 16 }}>
-        <div style={{ width: 56, height: 56, borderRadius: 12, background: "#ff000015", border: "1px solid #ff000033", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "var(--editor-workspace)", flexDirection: "column", gap: 16 }}>
+        <div style={{ width: 56, height: 56, borderRadius: 12, background: "var(--danger-light)", border: "1px solid rgba(214,69,69,0.20)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" />
             <line x1="15" y1="9" x2="9" y2="15" />
             <line x1="9" y1="9" x2="15" y2="15" />
           </svg>
         </div>
-        <p style={{ color: "#ff4444", fontSize: 15, fontWeight: 600 }}>Unable to open this document</p>
-        <p style={{ color: "#888", fontSize: 13, maxWidth: 400, textAlign: "center" }}>{error}</p>
-        <a href="/" style={{ color: "#00e5ff", fontSize: 13, marginTop: 8 }}>Go to ZipDrop</a>
+        <p style={{ color: "var(--danger)", fontSize: 15, fontWeight: 600 }}>Unable to open this document</p>
+        <p style={{ color: "var(--text-secondary)", fontSize: 13, maxWidth: 400, textAlign: "center" }}>{error}</p>
+        <a href="/" style={{ color: "#078C91", fontSize: 13, marginTop: 8 }}>Go to ZipDrop</a>
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "#1a1a2e" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "var(--editor-workspace)" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
-          <div style={{ width: 40, height: 40, border: "2px solid #00e5ff22", borderTop: "2px solid #00e5ff", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
-          <p style={{ fontSize: 13, color: "#888" }}>Opening document...</p>
+          <div style={{ width: 40, height: 40, border: "2px solid var(--teal-light)", borderTop: "2px solid #078C91", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+          <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>{loadingLabel}</p>
         </div>
       </div>
     );
@@ -194,8 +253,8 @@ export default function EditorPage() {
   return (
     <Suspense
       fallback={
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "#1a1a2e" }}>
-          <div style={{ width: 40, height: 40, border: "2px solid #00e5ff22", borderTop: "2px solid #00e5ff", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "var(--editor-workspace)" }}>
+          <div style={{ width: 40, height: 40, border: "2px solid var(--teal-light)", borderTop: "2px solid #078C91", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
         </div>
       }
     >

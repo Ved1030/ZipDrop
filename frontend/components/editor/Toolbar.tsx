@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback } from "react";
 import type { Editor } from "@tiptap/react";
@@ -67,11 +67,11 @@ function Btn({
         alignItems: "center",
         justifyContent: "center",
         border: "none",
-        background: active ? "#e8f0fe" : "none",
+        background: active ? "var(--teal-light)" : "none",
         borderRadius: 4,
         cursor: disabled ? "not-allowed" : "pointer",
         fontSize: 14,
-        color: disabled ? "#bbb" : active ? "#1a73e8" : "#3c3c3c",
+        color: disabled ? "#AAB6BF" : active ? "var(--primary-teal)" : "var(--text-primary)",
         transition: "all 0.1s",
         opacity: disabled ? 0.4 : 1,
         ...btnStyle,
@@ -83,7 +83,7 @@ function Btn({
 }
 
 function Sep() {
-  return <div style={{ width: 1, height: 22, background: "#e0e0e0", margin: "0 4px" }} />;
+  return <div style={{ width: 1, height: 22, background: "var(--border)", margin: "0 4px" }} />;
 }
 
 function Sel({
@@ -104,12 +104,12 @@ function Sel({
       className="tb-sel"
       style={{
         height: 30,
-        border: "1px solid #dadce0",
+        border: "1px solid var(--border)",
         borderRadius: 4,
         fontSize: 13,
         padding: "0 6px",
         background: "#ffffff",
-        color: "#3c3c3c",
+        color: "var(--text-primary)",
         cursor: "pointer",
         outline: "none",
         width: width || 100,
@@ -180,8 +180,8 @@ export default function Toolbar({ editor, showRulers }: ToolbarProps) {
       <div
         id="toolbar"
         style={{
-          background: "#f8f9fa",
-          borderBottom: "1px solid #e0e0e0",
+          background: "var(--bg-card)",
+          borderBottom: "1px solid var(--border)",
           padding: "5px 12px",
           display: "flex",
           alignItems: "center",
@@ -244,7 +244,7 @@ export default function Toolbar({ editor, showRulers }: ToolbarProps) {
             padding: "0 4px",
             cursor: "pointer",
             fontSize: 13,
-            color: "#3c3c3c",
+            color: "var(--text-primary)",
           }}
         >
           A
@@ -433,8 +433,8 @@ export default function Toolbar({ editor, showRulers }: ToolbarProps) {
         <div
           id="ruler"
           style={{
-            background: "#f8f9fa",
-            borderBottom: "1px solid #e0e0e0",
+            background: "var(--editor-workspace)",
+            borderBottom: "1px solid var(--border)",
             height: 24,
             display: "flex",
             alignItems: "center",
@@ -449,10 +449,10 @@ export default function Toolbar({ editor, showRulers }: ToolbarProps) {
                 key={i}
                 style={{
                   fontSize: 10,
-                  color: "#9aa0a6",
+                  color: "var(--text-muted)",
                   width: 52,
                   textAlign: "center",
-                  borderLeft: "1px solid #e0e0e0",
+                  borderLeft: "1px solid var(--border)",
                   height: 8,
                   display: "flex",
                   alignItems: "flex-end",

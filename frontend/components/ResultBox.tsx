@@ -32,20 +32,20 @@ export default function ResultBox({ link }: { link: string }) {
   return (
     <div style={{
       marginTop: "20px",
-      background: "rgba(255,255,255,0.04)",
-      border: "1px solid rgba(255,255,255,0.1)",
+      background: "var(--bg-card)",
+      border: "1px solid var(--border)",
       borderRadius: "14px",
       padding: "16px",
       animation: "slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
     }}>
-      <p style={{ fontSize: "11px", color: "#6B7A99", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "10px" }}>
+      <p style={{ fontSize: "11px", color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "10px" }}>
         Share Link
       </p>
 
       <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
         <div style={{
           flex: 1,
-          background: "rgba(0,0,0,0.3)",
+          background: "var(--editor-workspace)",
           borderRadius: "10px",
           padding: "10px 14px",
           overflow: "hidden",
@@ -56,7 +56,7 @@ export default function ResultBox({ link }: { link: string }) {
             style={{
               background: "transparent",
               border: "none",
-              color: "#A8B8D0",
+              color: "var(--text-primary)",
               fontSize: "13px",
               width: "100%",
               outline: "none",
@@ -65,7 +65,14 @@ export default function ResultBox({ link }: { link: string }) {
           />
         </div>
 
-        <button onClick={copyLink}>
+        <button
+          onClick={copyLink}
+          className="btn-ghost"
+          style={{
+            padding: "9px 10px",
+            color: copied ? "var(--primary-teal)" : "var(--text-secondary)",
+          }}
+        >
           {copied ? <CheckIcon /> : <CopyIcon />}
         </button>
 

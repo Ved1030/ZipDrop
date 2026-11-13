@@ -45,10 +45,10 @@ export default function UploadCard() {
       style={{
         width: "100%",
         maxWidth: "420px",
-        padding: "28px",
+        padding: "clamp(20px, 2.6vh, 28px)",
         display: "flex",
         flexDirection: "column",
-        gap: "20px",
+        gap: "clamp(16px, 2.2vh, 20px)",
         animation: "fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards",
       }}
     >
@@ -59,13 +59,12 @@ export default function UploadCard() {
             width: 36,
             height: 36,
             borderRadius: "10px",
-            background: "var(--cyan-dim)",
-            border: "1px solid rgba(0,245,255,0.3)",
+            background: "var(--teal-light)",
+            border: "1px solid rgba(7,140,145,0.24)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "var(--cyan)",
-            boxShadow: "0 0 16px rgba(0,245,255,0.2)",
+            color: "var(--primary-teal)",
           }}>
             <ShareArrow />
           </div>
@@ -91,10 +90,10 @@ export default function UploadCard() {
       <div style={{
         display: "flex",
         gap: "4px",
-        background: "rgba(0,0,0,0.35)",
+        background: "var(--editor-workspace)",
         padding: "4px",
         borderRadius: "10px",
-        border: "1px solid var(--border-soft)",
+        border: "1px solid var(--border)",
       }}>
         <button
           className={`tab-btn ${tab === "file" ? "active" : ""}`}

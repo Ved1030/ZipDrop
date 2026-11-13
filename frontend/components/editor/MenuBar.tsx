@@ -65,6 +65,7 @@ export default function MenuBar({
       { label: "New Document", action: onNewDocument },
       { label: "Open File", action: onOpenFile },
       { label: "Download as DOCX", action: () => onDownload("docx") },
+      { label: "Download as PDF", action: () => onDownload("pdf") },
       { label: "Download as TXT", action: () => onDownload("txt") },
     ],
     Edit: [
@@ -93,11 +94,11 @@ export default function MenuBar({
   };
 
   const shellBg = "#ffffff";
-  const shellBorder = "#e0e0e0";
-  const textColor = "#3c3c3c";
-  const activeBg = "#e8f0fe";
+  const shellBorder = "var(--border)";
+  const textColor = "var(--text-primary)";
+  const activeBg = "var(--teal-light)";
   const menuBg = "#ffffff";
-  const hoverBg = "#f1f3f4";
+  const hoverBg = "var(--editor-workspace)";
 
   return (
     <div
@@ -140,7 +141,7 @@ export default function MenuBar({
                 background: menuBg,
                 border: `1px solid ${shellBorder}`,
                 borderRadius: 4,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08)",
+                boxShadow: "0 2px 8px rgba(32,43,54,0.10), 0 8px 24px rgba(32,43,54,0.06)",
                 padding: 4,
                 zIndex: 400,
               }}

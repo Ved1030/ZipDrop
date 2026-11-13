@@ -71,7 +71,7 @@ export default function ZDFormatPreviewCard({ file, onEditClick }: Props) {
                     <td
                       key={j}
                       style={{
-                        border: "0.5px solid var(--border-soft)",
+                        border: "1px solid var(--border)",
                         padding: "2px 6px",
                       }}
                     >
@@ -95,14 +95,14 @@ export default function ZDFormatPreviewCard({ file, onEditClick }: Props) {
             objectFit: "cover",
             borderRadius: "12px",
             marginTop: "12px",
-            border: "1px solid var(--border-soft)",
+            border: "1px solid var(--border)",
           }}
         />
       );
     }
     if (e === "pdf")
       return (
-        <p style={{ fontSize: "11px", color: "var(--cyan)", marginTop: "8px" }}>
+        <p style={{ fontSize: "11px", color: "var(--primary-teal)", marginTop: "8px" }}>
           PDF · open to view
         </p>
       );
@@ -147,8 +147,8 @@ export default function ZDFormatPreviewCard({ file, onEditClick }: Props) {
         marginBottom: "16px",
         padding: "16px",
         borderRadius: "16px",
-        border: "1px solid var(--border-soft)",
-        background: "rgba(0,255,192,0.03)",
+        border: "1px solid var(--border)",
+        background: "var(--bg-card)",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -156,9 +156,9 @@ export default function ZDFormatPreviewCard({ file, onEditClick }: Props) {
           className="badge"
           style={{
             fontSize: "10px",
-            background: "var(--cyan-dim)",
-            color: "var(--cyan)",
-            border: "1px solid var(--cyan)",
+            background: "var(--teal-light)",
+            color: "var(--primary-teal)",
+            border: "1px solid var(--border)",
           }}
         >
           .{ext} · {getFormatLabel()} · {size}
@@ -176,7 +176,7 @@ export default function ZDFormatPreviewCard({ file, onEditClick }: Props) {
           background: "none",
           padding: 0,
           fontSize: "12px",
-          color: "var(--cyan)",
+          color: "var(--primary-teal)",
           fontWeight: 600,
           display: "flex",
           alignItems: "center",

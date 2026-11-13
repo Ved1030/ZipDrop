@@ -22,16 +22,16 @@ function getFormatInfo(ext: string): {
   category: "doc" | "sheet" | "code" | "image" | "pdf" | "other";
 } {
   if (["docx", "doc", "txt", "md"].includes(ext))
-    return { label: "Document", color: "#00E5C0", bg: "rgba(0,229,192,0.12)", category: "doc" };
+    return { label: "Document", color: "var(--primary-teal)", bg: "var(--teal-light)", category: "doc" };
   if (["xlsx", "xls", "csv"].includes(ext))
-    return { label: "Spreadsheet", color: "#00B4E5", bg: "rgba(0,180,229,0.12)", category: "sheet" };
+    return { label: "Spreadsheet", color: "var(--secondary-blue)", bg: "var(--blue-light)", category: "sheet" };
   if (["py", "js", "ts", "jsx", "tsx", "json", "html", "css", "xml"].includes(ext))
-    return { label: "Code", color: "#FFB830", bg: "rgba(255,184,48,0.12)", category: "code" };
+    return { label: "Code", color: "var(--green-highlight)", bg: "var(--green-light)", category: "code" };
   if (["png", "jpg", "jpeg", "webp", "gif"].includes(ext))
-    return { label: "Image", color: "#FF9AAD", bg: "rgba(255,154,173,0.12)", category: "image" };
+    return { label: "Image", color: "var(--purple-highlight)", bg: "var(--purple-light)", category: "image" };
   if (ext === "pdf")
-    return { label: "PDF", color: "#C9A7FF", bg: "rgba(201,167,255,0.12)", category: "pdf" };
-  return { label: "File", color: "#5A8A7A", bg: "rgba(90,138,122,0.12)", category: "other" };
+    return { label: "PDF", color: "var(--secondary-blue)", bg: "var(--blue-light)", category: "pdf" };
+  return { label: "File", color: "var(--text-secondary)", bg: "var(--editor-workspace)", category: "other" };
 }
 
 function formatSize(bytes?: number) {
@@ -78,8 +78,8 @@ function ForwardPopover({ onClose }: { onClose: () => void }) {
         bottom: "calc(100% + 8px)",
         left: "50%",
         transform: "translateX(-50%)",
-        background: "#0D1A16",
-        border: "0.5px solid #1A3028",
+        background: "var(--bg-card)",
+        border: "1px solid var(--border)",
         borderRadius: "10px",
         padding: "10px 14px",
         zIndex: 20,
@@ -88,8 +88,8 @@ function ForwardPopover({ onClose }: { onClose: () => void }) {
         alignItems: "center",
         gap: "8px",
         fontSize: "12px",
-        color: "#A0C8BE",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+        color: "var(--text-secondary)",
+        boxShadow: "0 8px 24px rgba(32,43,54,0.12)",
         animation: "fadeInUp 0.18s ease",
       }}
     >
@@ -99,7 +99,7 @@ function ForwardPopover({ onClose }: { onClose: () => void }) {
           fontFamily: "var(--font-mono)",
           fontSize: "16px",
           fontWeight: 700,
-          color: "#00E5C0",
+          color: "var(--primary-teal)",
           letterSpacing: "0.08em",
         }}
       >
@@ -109,7 +109,7 @@ function ForwardPopover({ onClose }: { onClose: () => void }) {
         onClick={handleCopy}
         style={{
           fontSize: "11px",
-          color: copied ? "#00E5C0" : "#00B4E5",
+          color: copied ? "var(--primary-teal)" : "var(--secondary-blue)",
           background: "none",
           border: "none",
           cursor: "pointer",
@@ -123,7 +123,7 @@ function ForwardPopover({ onClose }: { onClose: () => void }) {
         onClick={onClose}
         style={{
           fontSize: "14px",
-          color: "#3A5848",
+          color: "var(--text-muted)",
           background: "none",
           border: "none",
           cursor: "pointer",
@@ -196,7 +196,7 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
           style={{
             fontFamily: isMono ? "var(--font-mono)" : "var(--font-sans)",
             fontSize: "11px",
-            color: "#5A8A7A",
+            color: "var(--text-secondary)",
             lineHeight: 1.7,
             WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
             maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
@@ -212,13 +212,13 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
     }
     if (["xlsx", "xls"].includes(ext)) {
       return (
-        <p style={{ fontSize: "11px", color: "#5A8A7A" }}>
+        <p style={{ fontSize: "11px", color: "var(--text-secondary)" }}>
           Spreadsheet — Open &amp; Edit to view full contents
         </p>
       );
     }
     if (ext === "pdf") {
-      return <p style={{ fontSize: "11px", color: "#5A8A7A" }}>PDF document — download to view</p>;
+      return <p style={{ fontSize: "11px", color: "var(--text-secondary)" }}>PDF document — download to view</p>;
     }
     return null;
   };
@@ -228,11 +228,12 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
   return (
     <div
       style={{
-        background: "#08120F",
-        border: "0.5px solid #1A3028",
+        background: "var(--bg-card)",
+        border: "1px solid var(--border)",
         borderRadius: "16px",
         overflow: "hidden",
         marginBottom: "16px",
+        boxShadow: "0 1px 2px rgba(32,43,54,0.04)",
       }}
     >
       {/* ── HEADER ── */}
@@ -276,7 +277,7 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
           <p
             style={{
               fontWeight: 500,
-              color: "#E8FFF9",
+              color: "var(--text-primary)",
               fontSize: "13px",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -286,7 +287,7 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
           >
             {file.file_name}
           </p>
-          <p style={{ fontSize: "11px", color: "#5A8A7A", marginTop: "2px" }}>
+          <p style={{ fontSize: "11px", color: "var(--text-secondary)", marginTop: "2px" }}>
             {fmt.label} · {formatSize(file.file_size)}
           </p>
         </div>
@@ -297,9 +298,9 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
             flexShrink: 0,
             padding: "3px 10px",
             borderRadius: "20px",
-            background: "#0D2820",
+            background: fmt.bg,
             color: fmt.color,
-            border: "0.5px solid #1A3028",
+            border: "1px solid var(--border)",
             fontSize: "10px",
             fontWeight: 600,
             letterSpacing: "0.05em",
@@ -315,7 +316,7 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
         <div
           style={{
             padding: "10px 18px",
-            borderTop: "0.5px solid #1A3028",
+            borderTop: "1px solid var(--border)",
           }}
         >
           {previewContent}
@@ -326,7 +327,7 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
       <div
         style={{
           padding: "12px 18px",
-          borderTop: "0.5px solid #1A3028",
+          borderTop: "1px solid var(--border)",
           display: "flex",
           gap: "8px",
         }}
@@ -341,8 +342,8 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
             flex: 1,
             padding: "9px",
             borderRadius: "9px",
-            background: "#00E5C0",
-            color: "#030E10",
+            background: "var(--secondary-blue)",
+            color: "#FFFFFF",
             border: "none",
             fontFamily: "var(--font-head)",
             fontWeight: 700,
@@ -370,9 +371,9 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
             flex: 1,
             padding: "9px",
             borderRadius: "9px",
-            background: "transparent",
-            color: editLoading ? "#3A5848" : "#A0C8BE",
-            border: "0.5px solid #1A3028",
+            background: "var(--bg-card)",
+            color: editLoading ? "var(--text-muted)" : "var(--text-secondary)",
+            border: "1px solid var(--border)",
             fontFamily: "var(--font-head)",
             fontWeight: 600,
             fontSize: "12px",
@@ -385,13 +386,13 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
           }}
           onMouseEnter={(e) => {
             if (!editLoading) {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "#00E5C0";
-              (e.currentTarget as HTMLButtonElement).style.color = "#00E5C0";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--primary-teal)";
+              (e.currentTarget as HTMLButtonElement).style.color = "var(--primary-teal)";
             }
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "#1A3028";
-            (e.currentTarget as HTMLButtonElement).style.color = editLoading ? "#3A5848" : "#A0C8BE";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+            (e.currentTarget as HTMLButtonElement).style.color = editLoading ? "var(--text-muted)" : "var(--text-secondary)";
           }}
         >
           ✏ {editLoading ? "Opening…" : "Open & Edit"}
@@ -405,9 +406,9 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
               width: "100%",
               padding: "9px",
               borderRadius: "9px",
-              background: "transparent",
-              color: showForward ? "#00B4E5" : "#A0C8BE",
-              border: `0.5px solid ${showForward ? "#00B4E5" : "#1A3028"}`,
+              background: "var(--bg-card)",
+              color: showForward ? "var(--secondary-blue)" : "var(--text-secondary)",
+              border: `1px solid ${showForward ? "var(--secondary-blue)" : "var(--border)"}`,
               fontFamily: "var(--font-head)",
               fontWeight: 600,
               fontSize: "12px",
@@ -420,14 +421,14 @@ export default function ZDReceivedFileCard({ file }: { file: ReceivedFile }) {
             }}
             onMouseEnter={(e) => {
               if (!showForward) {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = "#00B4E5";
-                (e.currentTarget as HTMLButtonElement).style.color = "#00B4E5";
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--secondary-blue)";
+                (e.currentTarget as HTMLButtonElement).style.color = "var(--secondary-blue)";
               }
             }}
             onMouseLeave={(e) => {
               if (!showForward) {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = "#1A3028";
-                (e.currentTarget as HTMLButtonElement).style.color = "#A0C8BE";
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+                (e.currentTarget as HTMLButtonElement).style.color = "var(--text-secondary)";
               }
             }}
           >

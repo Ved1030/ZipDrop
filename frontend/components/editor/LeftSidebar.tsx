@@ -30,8 +30,8 @@ export default function LeftSidebar({
         width: "150px",
         minWidth: "150px",
         flexShrink: 0,
-        background: "#f5f5f5",
-        borderRight: "1px solid #e0e0e0",
+        background: "var(--editor-workspace)",
+        borderRight: "1px solid var(--border)",
         overflowY: "auto",
         overflowX: "hidden",
         padding: "12px 8px",
@@ -45,7 +45,7 @@ export default function LeftSidebar({
         style={{
           fontSize: 12,
           fontWeight: 600,
-          color: "#5f6368",
+          color: "var(--text-secondary)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -57,7 +57,7 @@ export default function LeftSidebar({
         <span
           onClick={onScrollToEnd}
           title="Go to end of document"
-          style={{ fontSize: 16, cursor: "pointer", color: "#1a73e8" }}
+          style={{ fontSize: 16, cursor: "pointer", color: "var(--primary-teal)" }}
         >
           +
         </span>
@@ -71,12 +71,12 @@ export default function LeftSidebar({
           title={`Page ${idx + 1}`}
           style={{
             width: "118px",
-            border: idx === activePage ? "2px solid #1a73e8" : "1px solid #ccc",
+            border: idx === activePage ? "2px solid var(--primary-teal)" : "1px solid var(--border)",
             borderRadius: "2px",
             boxShadow:
               idx === activePage
-                ? "0 2px 8px rgba(26,115,232,0.35)"
-                : "0 1px 3px rgba(0,0,0,0.12)",
+                ? "0 2px 8px rgba(7,140,145,0.20)"
+                : "0 1px 3px rgba(32,43,54,0.10)",
             cursor: "pointer",
             flexShrink: 0,
             position: "relative",
@@ -94,8 +94,8 @@ export default function LeftSidebar({
               bottom: 4,
               padding: "1px 5px",
               borderRadius: 3,
-              background: idx === activePage ? "#1a73e8" : "rgba(255,255,255,0.9)",
-              color: idx === activePage ? "#fff" : "#5f6368",
+              background: idx === activePage ? "var(--primary-teal)" : "rgba(255,255,255,0.9)",
+              color: idx === activePage ? "#fff" : "var(--text-secondary)",
               fontSize: 10,
               lineHeight: 1.4,
               fontWeight: 600,

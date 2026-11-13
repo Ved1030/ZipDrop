@@ -23,7 +23,7 @@ export default function UploadOverlay({ onFileSelect, onStartBlank }: UploadOver
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(10,10,22,0.97)",
+        background: "var(--bg-main)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -36,12 +36,12 @@ export default function UploadOverlay({ onFileSelect, onStartBlank }: UploadOver
         id="drop-box"
         onClick={handleClick}
         style={{
-          border: "2px dashed #2a2a3e",
+          border: "2px dashed var(--border)",
           borderRadius: 16,
           padding: "56px 80px",
           textAlign: "center",
           cursor: "pointer",
-          background: "#0f0f1a",
+          background: "var(--bg-card)",
           transition: "border-color 0.2s,background 0.2s",
           maxWidth: 440,
         }}
@@ -49,7 +49,7 @@ export default function UploadOverlay({ onFileSelect, onStartBlank }: UploadOver
       >
         <div
           id="drop-icon"
-          style={{ fontSize: 48, color: "#00e5ff", marginBottom: 16 }}
+          style={{ fontSize: 48, color: "#078C91", marginBottom: 16 }}
         >
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -59,24 +59,24 @@ export default function UploadOverlay({ onFileSelect, onStartBlank }: UploadOver
             <polyline points="10 9 9 9 8 9" />
           </svg>
         </div>
-        <h2 style={{ fontSize: 17, fontWeight: 600, color: "#fff", marginBottom: 6 }}>
+        <h2 style={{ fontSize: 17, fontWeight: 600, color: "var(--text-primary)", marginBottom: 6 }}>
           Open a document to edit
         </h2>
-        <p style={{ fontSize: 13, color: "#888" }}>
+        <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>
           Click to browse — supports .docx and .txt<br />
           or drag &amp; drop a file here
         </p>
       </div>
 
-      <div style={{ fontSize: 13, color: "#444" }}>— or —</div>
+      <div style={{ fontSize: 13, color: "var(--text-muted)" }}>— or —</div>
 
       <button
         onClick={onStartBlank}
         id="blank-btn"
         style={{
           padding: "10px 28px",
-          background: "#00e5ff",
-          color: "#000",
+          background: "#078C91",
+          color: "#FFFFFF",
           border: "none",
           borderRadius: 6,
           fontSize: 14,

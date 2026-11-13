@@ -7,6 +7,9 @@ const multer = require("multer");
 const cron = require("node-cron");
 const archiver = require("archiver");
 const axios = require("axios");
+const { spawn } = require("child_process");
+const path = require("path");
+const fs = require("fs");
 
 const { createClient } = require("@supabase/supabase-js");
 
@@ -328,8 +331,109 @@ app.post("/share-text", async (req, res) => {
 });
 
 /* --------------------------------
-   Receive Data
+   Convert PDF to DOCX (High-fidelity)
 -------------------------------- */
+
+function convertPdfToDocx(inputPath, outputPath) {
+  return new Promise((resolve, reject) => {
+    const scriptPath = path.join(__dirname, "pdf_converter.py");
+    const pythonProcess = spawn("python", [scriptPath, inputPath, outputPath]);
+    
+    let stdout = "";
+    let stderr = "";
+    
+    pythonProcess.stdout.on("data", (data) => {
+      stdout += data.toString();
+    });
+    
+    pythonProcess.stderr.on("data", (data) => {
+      stderr += data.toString();
+    });
+    
+    pythonProcess.on("close", (code) => {
+      if (code !== 0) {
+        console.error("[PDF-to-DOCX] Python process exited with code:", code);
+        console.error("[PDF-to-DOCX] stderr:", stderr);
+        reject(new Error(`Conversion failed with code ${code}: ${stderr}`));
+        return;
+      }
+      
+      try {
+        const lines = stdout.trim().split("\n");
+        const jsonLine = lines[lines.length - 1];
+        const result = JSON.parse(jsonLine);
+        
+        if (result.success) {
+          resolve(result.output_path);
+        } else {
+          reject(new Error(result.error || "Unknown conversion error"));
+        }
+      } catch (parseError) {
+        console.error("[PDF-to-DOCX] Failed to parse result:", stdout);
+        reject(new Error("Conversion failed: invalid response from converter"));
+      }
+    });
+    
+    pythonProcess.on("error", (err) => {
+      console.error("[PDF-to-DOCX] Failed to spawn Python process:", err);
+      reject(new Error("Conversion service unavailable"));
+    });
+  });
+}
+
+app.post("/convert-pdf-to-docx", upload.single("file"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    
+    if (req.file.mimetype !== "application/pdf") {
+      return res.status(400).json({ error: "File must be a PDF" });
+    }
+    
+    const inputPath = path.join(__dirname, "temp", `${Date.now()}-${req.file.originalname}`);
+    const outputPath = path.join(__dirname, "temp", `${Date.now()}-${req.file.originalname.replace(/\.pdf$/i, ".docx")}`);
+    
+    const tempDir = path.dirname(inputPath);
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+    
+    fs.writeFileSync(inputPath, req.file.buffer);
+    
+    try {
+      console.log("[PDF-to-DOCX] Starting conversion for:", req.file.originalname);
+      await convertPdfToDocx(inputPath, outputPath);
+      console.log("[PDF-to-DOCX] Conversion completed");
+      
+      const docxBuffer = fs.readFileSync(outputPath);
+      
+      fs.unlinkSync(inputPath);
+      fs.unlinkSync(outputPath);
+      
+      const filename = req.file.originalname.replace(/\.pdf$/i, ".docx");
+      
+      res.set({
+        "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "Content-Disposition": `attachment; filename="${filename}"`,
+        "Content-Length": docxBuffer.length,
+      });
+      
+      res.send(docxBuffer);
+    } catch (convError) {
+      if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+      if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
+      throw convError;
+    }
+  } catch (error) {
+    console.error("[PDF-to-DOCX] Error:", error.message);
+    res.status(500).json({ error: error.message || "PDF conversion failed" });
+  }
+});
+
+/* --------------------------------
+   Receive Data
+------------------------------- */
 
 app.get("/receive/:code", async (req, res) => {
   try {

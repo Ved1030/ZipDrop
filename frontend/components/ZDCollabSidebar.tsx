@@ -21,7 +21,7 @@ export default function ZDCollabSidebar({ content, onSnapshot }: Props) {
 
   useEffect(() => {
     const names = ['Aarav', 'Riya', 'Tanvir', 'Priya', 'Kabir', 'Sneha', 'Arjun', 'Meera']
-    const colors = ['#00E5C0','#00B4E5','#FFB830','#C9A7FF']
+    const colors = ['var(--primary-teal)','var(--secondary-blue)','var(--green-highlight)','var(--purple-highlight)']
 
     const addPeer = (id: number) => {
       const name = names[Math.floor(Math.random() * names.length)];
@@ -60,13 +60,13 @@ export default function ZDCollabSidebar({ content, onSnapshot }: Props) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {peers.map((p, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: p.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', fontWeight: 800, fontSize: '13px' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: p.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', fontWeight: 800, fontSize: '13px' }}>
                  {p.initials}
               </div>
               <div>
                  <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '2px' }}>{p.name}</p>
                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#00E5C0', boxShadow: '0 0 6px #00E5C0' }} />
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--primary-teal)', boxShadow: 'none' }} />
                     <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{p.status}</span>
                  </div>
               </div>

@@ -120,19 +120,13 @@ export default function FileUpload() {
           style={{ display: "none" }}
           onChange={(e) => addFiles(Array.from(e.target.files || []))}
         />
-        <div style={{ color: dragging ? "var(--cyan)" : "var(--text-muted)", transition: "color 0.2s ease" }}>
+        <div style={{ color: dragging ? "var(--primary-teal)" : "var(--text-muted)", transition: "color 0.2s ease" }}>
           <UploadIcon />
         </div>
-        <p style={{ fontSize: "14px", fontWeight: 500, color: dragging ? "var(--cyan)" : "var(--text-secondary)", transition: "color 0.2s ease", textAlign: "center" }}>
+        <p style={{ fontSize: "14px", fontWeight: 500, color: dragging ? "var(--primary-teal)" : "var(--text-secondary)", transition: "color 0.2s ease", textAlign: "center" }}>
           {dragging ? "Release to drop files" : "Drag & drop files here"}
         </p>
         <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>or click to browse</p>
-
-        {/* Animated glow corners */}
-        <span style={{ position: "absolute", top: 8, left: 8, width: 12, height: 12, borderTop: "2px solid var(--cyan)", borderLeft: "2px solid var(--cyan)", borderRadius: "2px 0 0 0", opacity: dragging ? 1 : 0.3, transition: "opacity 0.2s" }} />
-        <span style={{ position: "absolute", top: 8, right: 8, width: 12, height: 12, borderTop: "2px solid var(--cyan)", borderRight: "2px solid var(--cyan)", borderRadius: "0 2px 0 0", opacity: dragging ? 1 : 0.3, transition: "opacity 0.2s" }} />
-        <span style={{ position: "absolute", bottom: 8, left: 8, width: 12, height: 12, borderBottom: "2px solid var(--cyan)", borderLeft: "2px solid var(--cyan)", borderRadius: "0 0 0 2px", opacity: dragging ? 1 : 0.3, transition: "opacity 0.2s" }} />
-        <span style={{ position: "absolute", bottom: 8, right: 8, width: 12, height: 12, borderBottom: "2px solid var(--cyan)", borderRight: "2px solid var(--cyan)", borderRadius: "0 0 2px 0", opacity: dragging ? 1 : 0.3, transition: "opacity 0.2s" }} />
       </div>
 
       {/* FILE LIST */}
@@ -144,7 +138,7 @@ export default function FileUpload() {
           <div className="file-list">
             {files.map((file, index) => (
               <div key={index} className="file-item">
-                <span style={{ color: "var(--cyan-soft)", flexShrink: 0 }}>
+                <span style={{ color: "var(--primary-teal)", flexShrink: 0 }}>
                   <FileIcon />
                 </span>
                 <span style={{ flex: 1, fontSize: "13px", color: "var(--text-secondary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
@@ -168,7 +162,7 @@ export default function FileUpload() {
 
       {/* ERROR */}
       {error && (
-        <p style={{ fontSize: "12px", color: "#FF6B6B", padding: "8px 12px", background: "rgba(255,107,107,0.08)", border: "1px solid rgba(255,107,107,0.2)", borderRadius: "8px" }}>
+        <p style={{ fontSize: "12px", color: "var(--danger)", padding: "8px 12px", background: "var(--danger-light)", border: "1px solid rgba(214,69,69,0.20)", borderRadius: "8px" }}>
           {error}
         </p>
       )}
@@ -205,7 +199,7 @@ export default function FileUpload() {
           <div className="divider" />
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <p className="section-label">Your share code</p>
-            <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: "11px", color: "var(--cyan-soft)" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: "11px", color: "var(--primary-teal)" }}>
               <CheckIcon size={13} /> Uploaded
             </span>
           </div>
@@ -226,7 +220,7 @@ export default function FileUpload() {
               <p className="section-label">Uploaded files</p>
               {links.map((file, index) => (
                 <div key={index} className="file-item">
-                  <span style={{ color: "var(--cyan-soft)" }}><FileIcon /></span>
+                  <span style={{ color: "var(--primary-teal)" }}><FileIcon /></span>
                   <span style={{ flex: 1, fontSize: "13px", color: "var(--text-secondary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {file.file_name}
                   </span>
@@ -239,3 +233,4 @@ export default function FileUpload() {
     </div>
   );
 }
+

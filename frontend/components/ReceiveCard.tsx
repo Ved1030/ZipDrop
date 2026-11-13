@@ -207,10 +207,10 @@ export default function ReceiveCard({
       style={{
         width: "100%",
         maxWidth: "420px",
-        padding: "28px",
+        padding: "clamp(20px, 2.6vh, 28px)",
         display: "flex",
         flexDirection: "column",
-        gap: "20px",
+        gap: "clamp(16px, 2.2vh, 20px)",
         animation: "fadeInUp 0.6s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both",
       }}
     >
@@ -222,12 +222,12 @@ export default function ReceiveCard({
             width: "40px",
             height: "40px",
             borderRadius: "10px",
-            background: "rgba(0, 245, 255, 0.08)",
-            border: "1px solid rgba(0, 245, 255, 0.2)",
+            background: "var(--blue-light)",
+            border: "1px solid rgba(22, 141, 187, 0.22)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "var(--cyan)",
+            color: "var(--secondary-blue)",
             flexShrink: 0,
           }}>
             <ReceiveHeaderIcon />
@@ -259,9 +259,9 @@ export default function ReceiveCard({
           gap: "5px",
           padding: "5px 10px",
           borderRadius: "20px",
-          background: "rgba(0, 245, 255, 0.07)",
-          border: "1px solid rgba(0, 245, 255, 0.18)",
-          color: "var(--cyan)",
+          background: "var(--blue-light)",
+          border: "1px solid rgba(22, 141, 187, 0.20)",
+          color: "var(--secondary-blue)",
           fontSize: "11px",
           fontWeight: 600,
           letterSpacing: "0.05em",
@@ -305,20 +305,16 @@ export default function ReceiveCard({
                 height: "76px",
                 borderRadius: "14px",
                 background: isFilled
-                  ? "rgba(0, 245, 255, 0.10)"
-                  : "rgba(0, 0, 0, 0.45)",
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
+                  ? "var(--blue-light)"
+                  : "var(--bg-card)",
                 border: isFocused
-                  ? "1.5px solid rgba(0, 245, 255, 0.75)"
+                  ? "1.5px solid var(--secondary-blue)"
                   : isFilled
-                    ? "1.5px solid rgba(0, 245, 255, 0.45)"
-                    : "1.5px solid rgba(0, 245, 255, 0.18)",
+                    ? "1.5px solid rgba(22, 141, 187, 0.42)"
+                    : "1.5px solid var(--border)",
                 boxShadow: isFocused
-                  ? "0 0 0 3px rgba(0,245,255,0.10), 0 0 24px rgba(0,245,255,0.30), inset 0 0 16px rgba(0,245,255,0.06)"
-                  : isFilled
-                    ? "0 0 16px rgba(0,245,255,0.18), inset 0 0 10px rgba(0,245,255,0.05)"
-                    : "inset 0 1px 0 rgba(255,255,255,0.04)",
+                  ? "0 0 0 3px rgba(22, 141, 187, 0.10)"
+                  : "none",
                 cursor: "text",
                 transition: "all 0.2s ease",
                 display: "flex",
@@ -327,16 +323,6 @@ export default function ReceiveCard({
                 overflow: "hidden",
               }}
             >
-              {/* Top gloss shine */}
-              <span style={{
-                position: "absolute",
-                top: 0, left: "10%",
-                width: "80%", height: "40%",
-                background: "linear-gradient(180deg, rgba(255,255,255,0.07) 0%, transparent 100%)",
-                borderRadius: "0 0 50% 50%",
-                pointerEvents: "none",
-              }} />
-
               {/* Invisible input */}
               <input
                 ref={(el) => { inputRefs.current[i] = el; }}
@@ -369,10 +355,7 @@ export default function ReceiveCard({
                 fontFamily: "var(--font-mono)",
                 fontSize: "34px",
                 fontWeight: 700,
-                color: isFilled ? "var(--cyan)" : "rgba(0,245,255,0.2)",
-                textShadow: isFilled
-                  ? "0 0 20px rgba(0,245,255,0.95), 0 0 40px rgba(0,245,255,0.4)"
-                  : "none",
+                color: isFilled ? "var(--secondary-blue)" : "#B9C7D0",
                 letterSpacing: 0,
                 userSelect: "none",
                 pointerEvents: "none",
@@ -392,15 +375,15 @@ export default function ReceiveCard({
       {error && (
         <p style={{
           fontSize: "12px",
-          color: "#ff6b6b",
+          color: "var(--danger)",
           textAlign: "center",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           gap: "5px",
           padding: "8px 12px",
-          background: "rgba(255,107,107,0.07)",
-          border: "1px solid rgba(255,107,107,0.2)",
+          background: "var(--danger-light)",
+          border: "1px solid rgba(214,69,69,0.20)",
           borderRadius: "8px",
           margin: 0,
         }}>
@@ -416,7 +399,7 @@ export default function ReceiveCard({
       {/* ── RECEIVE BUTTON ── */}
       <button
         id="btn-receive"
-        className="btn-cyan"
+        className="btn-blue"
         onClick={receiveFiles}
         disabled={loading || code.length !== 4}
         style={{
@@ -427,7 +410,6 @@ export default function ReceiveCard({
           letterSpacing: "0.04em",
           opacity: loading || code.length !== 4 ? 0.45 : 1,
           cursor: loading || code.length !== 4 ? "not-allowed" : "pointer",
-          background: "linear-gradient(135deg, rgba(0,245,255,0.2) 0%, rgba(34,211,238,0.13) 100%)",
         }}
       >
         <span className="shimmer" />
@@ -467,9 +449,9 @@ export default function ReceiveCard({
                 gap: "5px",
                 fontSize: "12px",
                 fontWeight: 600,
-                color: copied ? "var(--cyan)" : undefined,
-                border: copied ? "1px solid rgba(0,245,255,0.35)" : undefined,
-                background: copied ? "rgba(0,245,255,0.08)" : "rgba(0,0,0,0.4)",
+                color: copied ? "var(--secondary-blue)" : undefined,
+                border: copied ? "1px solid rgba(22,141,187,0.30)" : undefined,
+                background: copied ? "var(--blue-light)" : undefined,
                 transition: "all 0.2s ease",
                 zIndex: 10,
               }}
@@ -516,14 +498,13 @@ export default function ReceiveCard({
           {files.length > 1 && (
             <button
               id="btn-download-zip-bottom"
-              className="btn-cyan"
+              className="btn-blue"
               onClick={downloadZip}
               style={{
                 width: "100%",
                 padding: "13px",
                 fontSize: "14px",
                 fontWeight: 600,
-                background: "linear-gradient(135deg, rgba(0,245,255,0.18) 0%, rgba(34,211,238,0.12) 100%)",
               }}
             >
               <span className="shimmer" />

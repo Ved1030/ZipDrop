@@ -218,7 +218,7 @@ export default function Page() {
       <div className="mt-10">
         <a
           href="/"
-          className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700"
+          className="zd-blog-cta"
         >
           Try ZipDrop Now
         </a>
@@ -228,19 +228,19 @@ export default function Page() {
         <h2 className="text-2xl font-semibold mb-4">Related Articles</h2>
         <ul className="space-y-2">
           <li>
-            <a href="/blog/transfer-files-online" className="text-blue-600 hover:underline">How to Transfer Files Online</a>
+            <a href="/blog/transfer-files-online" className="zd-blog-link">How to Transfer Files Online</a>
           </li>
           <li>
-            <a href="/blog/share-files-online" className="text-blue-600 hover:underline">Best Ways to Share Files Online</a>
+            <a href="/blog/share-files-online" className="zd-blog-link">Best Ways to Share Files Online</a>
           </li>
           <li>
-            <a href="/blog/send-large-files-online" className="text-blue-600 hover:underline">How to Send Large Files Online</a>
+            <a href="/blog/send-large-files-online" className="zd-blog-link">How to Send Large Files Online</a>
           </li>
           <li>
-            <a href="/blog/share-files-without-login" className="text-blue-600 hover:underline">Share Files Without Login</a>
+            <a href="/blog/share-files-without-login" className="zd-blog-link">Share Files Without Login</a>
           </li>
           <li>
-            <a href="/blog/snapdrop-alternative" className="text-blue-600 hover:underline">SnapDrop Alternative for File Sharing</a>
+            <a href="/blog/snapdrop-alternative" className="zd-blog-link">SnapDrop Alternative for File Sharing</a>
           </li>
         </ul>
       </div>

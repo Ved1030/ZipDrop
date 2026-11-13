@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/transfer-files-iphone-to-android" },
   title: "How to Transfer Files From iPhone to Android",
   description:
     "Learn how to transfer files from iPhone to Android quickly without cables, apps, or complicated setup.",

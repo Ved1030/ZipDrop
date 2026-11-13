@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/how-to-share-files-between-phone-and-pc" },
   title: "How to Share Files Between Phone and PC",
   description:
     "Learn how to transfer files between your phone and PC without cables.",

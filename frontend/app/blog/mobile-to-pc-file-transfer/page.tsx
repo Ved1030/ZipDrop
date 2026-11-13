@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/mobile-to-pc-file-transfer" },
   title: "Mobile to PC File Transfer: Fastest Ways to Send Files in 2026",
   description:
     "Need to transfer files from your mobile to PC? Learn the fastest ways to send photos, videos, and documents between devices without cables or cloud accounts.",

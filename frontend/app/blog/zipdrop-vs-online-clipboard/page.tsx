@@ -70,7 +70,11 @@ export default function Page() {
         another using a short numeric code and no account. The gap is the
         payload and the lifetime. Online Clipboard is optimised for tiny,
         ephemeral clipboard content; ZipDrop is optimised for file-sized
-        transfers that should still be there a day later.
+        transfers that should still be there a day later. The{" "}
+        <Link className="zd-blog-link" href="/online-clipboard">
+          free online clipboard
+        </Link>{" "}
+        guide covers the full send-and-retrieve flow.
       </p>
 
       <h2>At a glance</h2>

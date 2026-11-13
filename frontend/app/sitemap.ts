@@ -1,4 +1,4 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 
 const BLOG_SLUGS = [
@@ -28,26 +28,66 @@ const BLOG_SLUGS = [
   "file-sharing-websites",
   "upload-and-share-files",
   "send-files-via-link",
+  "free-file-transfer-online",
+  "send-files-online-free",
+  "share-files-online",
+  "share-large-files-online",
+  "transfer-files-online",
+  "online-clipboard",
+  "online-clipboard-alternatives",
+  "online-clipboard-without-login",
+  "zipdrop-vs-online-clipboard",
+  "share-text-files-between-devices",
 ];
+
+const CLIPBOARD_GUIDES = new Set([
+  "online-clipboard",
+  "online-clipboard-alternatives",
+  "online-clipboard-without-login",
+  "zipdrop-vs-online-clipboard",
+  "share-text-files-between-devices",
+]);
 
 const TRUST_PAGES = ["/about", "/contact", "/privacy", "/terms"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  const contentUpdated = new Date("2026-11-13");
 
   return [
-    { url: SITE_URL, lastModified: now, priority: 1 },
-    { url: `${SITE_URL}/blog`, lastModified: now, priority: 0.9 },
+    {
+      url: SITE_URL,
+      lastModified: contentUpdated,
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    {
+      url: `${SITE_URL}/online-clipboard`,
+      lastModified: contentUpdated,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/blog`,
+      lastModified: contentUpdated,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
     ...BLOG_SLUGS.map((slug) => ({
       url: `${SITE_URL}/blog/${slug}`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
+      lastModified: CLIPBOARD_GUIDES.has(slug) ? contentUpdated : undefined,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
+    {
+      url: `${SITE_URL}/editor`,
+      lastModified: contentUpdated,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
     ...TRUST_PAGES.map((path) => ({
       url: `${SITE_URL}${path}`,
-      lastModified: now,
-      priority: 0.4,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
     })),
   ];
 }

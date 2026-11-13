@@ -1,4 +1,5 @@
 export const metadata = {
+  alternates: { canonical: "/blog/airdrop-alternative-android" },
   title: "Best AirDrop Alternative for Android Users",
   description:
     "Looking for an AirDrop alternative for Android? ZipDrop lets Android users share files with any device using a browser and a 4-digit code.",

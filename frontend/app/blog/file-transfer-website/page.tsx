@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/file-transfer-website" },
   title: "Best File Transfer Website: What to Look For in 2026",
   description:
     "Looking for a reliable file transfer website? Learn what to check and how ZipDrop works: up to 10 files, 1 GB per file, and a 4-digit code. No login required.",

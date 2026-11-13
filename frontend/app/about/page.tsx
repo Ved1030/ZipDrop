@@ -3,6 +3,7 @@ import PageShell from "@/components/PageShell";
 import { AUTHORS, CONTACT_EMAIL, GITHUB_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "About",
   description:
     "About ZipDrop: a free, browser-based file and text sharing site built by Ved Mehta and Virti Panchamia, and what it does and does not do.",

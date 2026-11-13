@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Best Snapdrop Alternative in 2026",
+  description:
+    "Looking for a Snapdrop alternative? ZipDrop shares files and text between devices with a 4-digit code, no app or account, up to 10 files of 1 GB each.",
+  alternates: { canonical: "/blog/snapdrop-alternative" },
+};
+
 export default function Page() {
   return (
     <main style={{ maxWidth: "800px", margin: "50px auto", padding: "20px" }}>

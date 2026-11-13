@@ -1,4 +1,5 @@
 export const metadata = {
+  alternates: { canonical: "/blog/how-to-transfer-files-phone-to-laptop" },
   title: "How to Transfer Files From Phone to Laptop Without USB",
   description:
     "Learn how to transfer files from your phone to your laptop without USB cables using ZipDrop.",

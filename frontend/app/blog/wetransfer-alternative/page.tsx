@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Free WeTransfer Alternative for Fast File Sharing",
+  description:
+    "A free WeTransfer alternative that needs no account: share up to 10 files of 1 GB each between devices with a 4-digit code in your browser.",
+  alternates: { canonical: "/blog/wetransfer-alternative" },
+};
+
 export default function Page() {
   return (
     <main style={{ maxWidth: "800px", margin: "50px auto", padding: "20px" }}>

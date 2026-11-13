@@ -1,4 +1,5 @@
 export const metadata = {
+  alternates: { canonical: "/blog/airdrop-alternative-windows" },
   title: "Best AirDrop Alternative for Windows in 2026",
   description:
     "Looking for an AirDrop alternative for Windows? ZipDrop works in any browser: share up to 10 files of 1 GB each with a 4-digit code.",

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/transfer-files-from-android-to-pc-wireless" },
   title: "How to Transfer Files from Android to PC Wirelessly Without Apps",
   description:
     "Learn how to transfer files from Android to PC wirelessly without USB cables or apps. ZipDrop takes up to 10 files and 1 GB per file, using a 4-digit code.",

@@ -3,6 +3,7 @@ import PageShell from "@/components/PageShell";
 import { CONTACT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact",
   description:
     "Contact ZipDrop for feedback, bug reports, and privacy or deletion requests.",

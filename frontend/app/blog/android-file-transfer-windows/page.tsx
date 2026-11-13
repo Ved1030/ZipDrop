@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/android-file-transfer-windows" },
   title: "Android File Transfer Windows: Quick Guide for 2026",
   description:
     "Looking for an Android file transfer Windows solution? Skip the cables and cloud account. Transfer files between Android and PC with a 4-digit code.",

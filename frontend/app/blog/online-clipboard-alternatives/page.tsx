@@ -1,3 +1,4 @@
+import Link from "next/link";
 import BlogArticle, { blogMetadata, Table } from "@/components/BlogArticle";
 
 const meta = {
@@ -93,7 +94,11 @@ export default function Page() {
         <a className="zd-blog-link" href="/blog/zipdrop-vs-online-clipboard">
           how it compares to Online Clipboard
         </a>
-        .
+        . See how to{" "}
+        <Link className="zd-blog-link" href="/online-clipboard">
+          use ZipDrop as an online clipboard
+        </Link>{" "}
+        step by step.
       </p>
 
       <h2>Online Clipboard (online-clipboard.online)</h2>

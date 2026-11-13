@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/transfer-files-online" },
   title: "How to Transfer Files Online Fast in 2026",
   description:
     "Learn how to transfer files online between any devices quickly. No account needed, no software install, just a simple code.",

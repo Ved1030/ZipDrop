@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/transfer-files-from-phone-to-pc-wireless" },
   title: "How to Transfer Files from Phone to PC Wirelessly in 2026",
   description:
     "Learn how to transfer files from phone to PC wirelessly without installing software. ZipDrop works on any device with a browser, no account needed.",

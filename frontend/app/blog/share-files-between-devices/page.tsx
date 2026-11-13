@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "How to Share Files Between Devices (No App Needed)",
+  description:
+    "Share files between phones, laptops and tablets with a 4-digit code. ZipDrop works in the browser with no app or account, up to 10 files of 1 GB each.",
+  alternates: { canonical: "/blog/share-files-between-devices" },
+};
+
 export default function Page() {
   return (
     <main style={{ maxWidth: "800px", margin: "50px auto", padding: "20px" }}>

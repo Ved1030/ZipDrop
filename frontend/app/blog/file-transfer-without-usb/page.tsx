@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/file-transfer-without-usb" },
   title: "How to Transfer Files Without a USB Cable",
   description:
     "Discover how to transfer files between devices without using USB cables.",

@@ -85,6 +85,8 @@ export default function SiteFooter() {
           <nav aria-label="Site" style={columnStyle}>
             <p style={headingStyle}>Site</p>
             <a href="/" style={linkStyle}>Home</a>
+            <a href="/online-clipboard" style={linkStyle}>Online clipboard</a>
+            <a href="/blog" style={linkStyle}>Guides</a>
             <a href="/about" style={linkStyle}>About</a>
             <a href="/contact" style={linkStyle}>Contact</a>
           </nav>

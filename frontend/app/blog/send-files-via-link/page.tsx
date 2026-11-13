@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/send-files-via-link" },
   title: "Send Files via Link vs a 4-Digit Code (2026 Guide)",
   description:
     "Compare sharing a file link with a 4-digit code. ZipDrop does not generate a shareable link yet: you upload up to 10 files, get a 4-digit code, and the recipient enters it on the site.",

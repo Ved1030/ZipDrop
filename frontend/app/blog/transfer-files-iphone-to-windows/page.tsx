@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/transfer-files-iphone-to-windows" },
   title: "How to Transfer Files From iPhone to Windows",
   description:
     "Learn how to transfer files from iPhone to Windows quickly without cables or complicated software.",

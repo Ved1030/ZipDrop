@@ -1,4 +1,5 @@
 export const metadata = {
+  alternates: { canonical: "/blog/airdrop-alternative" },
   title: "Best AirDrop Alternative",
   description:
     "Looking for an AirDrop alternative? ZipDrop works in any browser: upload up to 10 files of 1 GB each and share a 4-digit code.",

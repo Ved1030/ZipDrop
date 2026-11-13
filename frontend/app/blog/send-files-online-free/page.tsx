@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/send-files-online-free" },
   title: "How to Send Files Online Free in 2026",
   description:
     "Learn how to send files online free with no account, no software, and no hidden fees. ZipDrop supports up to 10 files and 1 GB per file.",

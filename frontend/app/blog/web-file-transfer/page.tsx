@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/web-file-transfer" },
   title: "Web File Transfer — Send Files Instantly Through Your Browser",
   description:
     "Learn how web file transfer tools work and why ZipDrop is the easiest way to send files between devices using only a browser.",

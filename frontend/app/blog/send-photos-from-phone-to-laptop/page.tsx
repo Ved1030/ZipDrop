@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/send-photos-from-phone-to-laptop" },
   title: "How to Send Photos From Phone to Laptop",
   description:
     "Learn how to transfer photos from your phone to your laptop quickly without cables or extra software.",

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/share-files-without-login" },
   title: "How to Share Files Without Login or Registration",
   description:
     "Learn how to share files without creating an account, installing software, or logging in. ZipDrop uses a 4-digit code, up to 1 GB per file.",

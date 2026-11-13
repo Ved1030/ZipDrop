@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog/share-large-files-online" },
   title: "How to Share Large Files Online Without Compression",
   description:
     "Learn how to share large files online without compression or accounts. ZipDrop takes up to 10 files at 1 GB each, sent through our server with a 4-digit code.",

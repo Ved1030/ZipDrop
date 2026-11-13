@@ -44,8 +44,11 @@ export default function Page() {
           <strong>Short answer:</strong> a no-login online clipboard lets you
           paste text or upload files, receive a short code, and retrieve the
           content on another device — all without an account. ZipDrop does this
-          with a 4-digit code, so you can move text and files between phone and
-          PC in under a minute.
+          with a 4-digit code, so you can{" "}
+          <Link className="zd-blog-link" href="/online-clipboard">
+            share text and files between devices
+          </Link>{" "}
+          in under a minute.
         </>
       }
       related={[

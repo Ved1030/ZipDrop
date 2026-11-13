@@ -3,6 +3,7 @@ import PageShell from "@/components/PageShell";
 import { CONTACT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy",
   description:
     "How ZipDrop handles your files and data: where files are stored, which third-party services are used, what is logged, and how retention currently works.",

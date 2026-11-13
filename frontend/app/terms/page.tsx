@@ -3,6 +3,7 @@ import PageShell from "@/components/PageShell";
 import { CONTACT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/terms" },
   title: "Terms of Use",
   description:
     "The terms that apply when you use ZipDrop: acceptable use, file limits, storage and retention, and the limits of the service.",

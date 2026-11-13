@@ -828,6 +828,7 @@ async function main() {
       cwd: PORTABLE_DIR,
       env: { ...process.env, HOME: process.env.HOME || PORTABLE_DIR },
       encoding: "utf8",
+      maxBuffer: 16 * 1024 * 1024,
       timeout: 10 * 60 * 1000,
     });
 

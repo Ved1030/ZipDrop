@@ -27,6 +27,7 @@ const VENV_PYTHON = path.join(
   IS_WINDOWS ? "python.exe" : "python"
 );
 const STAMP = path.join(VENV_DIR, ".requirements.sha256");
+const UV_BIN_DIR = path.join(BACKEND_DIR, ".uv");
 const MIN_PYTHON = [3, 10];
 
 function log(message) {
@@ -45,7 +46,7 @@ function capture(command, args) {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
     env: process.env,
-    timeout: 30000,
+    timeout: 120000,
   });
 }
 
@@ -106,8 +107,15 @@ function findBasePython() {
 
 function locateUv() {
   if (capture("uv", ["--version"]).status === 0) return "uv";
-  const local = path.join(os.homedir(), ".local", "bin", IS_WINDOWS ? "uv.exe" : "uv");
-  return fs.existsSync(local) ? local : null;
+  const local = path.join(UV_BIN_DIR, IS_WINDOWS ? "uv.exe" : "uv");
+  if (fs.existsSync(local)) return local;
+  const homeLocal = path.join(
+    os.homedir(),
+    ".local",
+    "bin",
+    IS_WINDOWS ? "uv.exe" : "uv"
+  );
+  return fs.existsSync(homeLocal) ? homeLocal : null;
 }
 
 function setupWithUv() {
@@ -120,7 +128,7 @@ function setupWithUv() {
     log("installing uv to provision a managed Python");
     const installer = path.join(os.tmpdir(), `uv-install-${process.pid}.sh`);
     if (run("curl", ["-LsSf", "https://astral.sh/uv/install.sh", "-o", installer]).status === 0) {
-      run("sh", [installer]);
+      run("sh", [installer], { UV_INSTALL_DIR: UV_BIN_DIR });
       try {
         fs.unlinkSync(installer);
       } catch {

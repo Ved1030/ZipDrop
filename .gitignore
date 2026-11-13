@@ -9,6 +9,7 @@ backend/venv/
 .venv/
 backend/.venv/
 backend/.python/
+backend/.uv/
 __pycache__/
 *.pyc
 

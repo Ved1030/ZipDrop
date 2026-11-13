@@ -26,6 +26,31 @@ export default function BlogPage() {
         Best AirDrop Alternative
       </a>
     </li>
+        <li>
+          <a href="/blog/online-clipboard">
+            Online Clipboard: Copy and Paste Between Your Phone and PC
+          </a>
+        </li>
+        <li>
+          <a href="/blog/online-clipboard-alternatives">
+            Online Clipboard Alternatives
+          </a>
+        </li>
+        <li>
+          <a href="/blog/zipdrop-vs-online-clipboard">
+            ZipDrop vs Online Clipboard
+          </a>
+        </li>
+        <li>
+          <a href="/blog/online-clipboard-without-login">
+            Online Clipboard Without Login
+          </a>
+        </li>
+        <li>
+          <a href="/blog/share-text-files-between-devices">
+            How to Share Text and Files Between Devices
+          </a>
+        </li>
       </ul>
     </main>
   );

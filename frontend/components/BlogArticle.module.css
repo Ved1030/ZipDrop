@@ -1,0 +1,176 @@
+.article {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.breadcrumb a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--primary-teal);
+}
+
+.article h1 {
+  margin-top: 16px;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.meta {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.lede {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: var(--teal-light);
+  border-left: 3px solid var(--primary-teal);
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.article h2 {
+  margin-top: 36px;
+  font-size: 22px;
+  line-height: 1.3;
+}
+
+.article h3 {
+  margin-top: 24px;
+  font-size: 17px;
+}
+
+.article p,
+.article ul,
+.article ol {
+  margin-top: 14px;
+}
+
+.article ul,
+.article ol {
+  padding-left: 22px;
+}
+
+.article li + li {
+  margin-top: 6px;
+}
+
+.article a:global(.zd-blog-link) {
+  color: var(--primary-teal);
+}
+
+.note {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-left: 3px solid var(--border);
+  background: var(--bg-main);
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.tableWrap {
+  margin-top: 18px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th,
+.table td {
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+
+.table thead th {
+  background: var(--bg-main);
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.table tbody th {
+  font-weight: 600;
+}
+
+.table tr:last-child th,
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.faq details {
+  margin-top: 10px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-card);
+}
+
+.faq summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.faq p {
+  margin-top: 8px;
+  color: var(--text-secondary);
+}
+
+.author {
+  margin-top: 32px;
+  padding: 16px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.cta {
+  margin-top: 28px;
+}
+
+.related {
+  list-style: none;
+  padding-left: 0;
+}
+
+@media (max-width: 640px) {
+  .article {
+    padding: 24px 16px 48px;
+  }
+
+  .table {
+    font-size: 13px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 10px;
+  }
+}

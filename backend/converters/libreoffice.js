@@ -7,6 +7,7 @@
  */
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { spawn, spawnSync } = require('child_process');
 const { pathToFileURL } = require('url');
@@ -15,8 +16,81 @@ const { ConversionError, ERROR_CODES } = require('./types');
 const IS_WINDOWS = process.platform === 'win32';
 const VERSION_TIMEOUT_MS = 15000;
 const CONVERSION_TIMEOUT_MS = 180000;
+const PORTABLE_DIR = path.join(__dirname, '..', '.libreoffice');
+const PORTABLE_DEPS_DIR = path.join(PORTABLE_DIR, 'deps');
+const PORTABLE_MANIFEST = path.join(PORTABLE_DIR, 'manifest.json');
 
 let cached = null;
+let portableManifestCache;
+
+function readPortableManifest() {
+  if (portableManifestCache !== undefined) return portableManifestCache;
+  try {
+    portableManifestCache = JSON.parse(fs.readFileSync(PORTABLE_MANIFEST, 'utf8'));
+  } catch {
+    portableManifestCache = null;
+  }
+  return portableManifestCache;
+}
+
+function findPortableExecutable() {
+  const manifest = readPortableManifest();
+  if (manifest && manifest.executable && executableExists(manifest.executable)) {
+    return manifest.executable;
+  }
+
+  const optDirectory = path.join(PORTABLE_DIR, 'squashfs-root', 'opt');
+  try {
+    for (const entry of fs.readdirSync(optDirectory)) {
+      const candidate = path.join(optDirectory, entry, 'program', 'soffice');
+      if (executableExists(candidate)) return candidate;
+    }
+  } catch {
+    // portable runtime is not installed
+  }
+  return null;
+}
+
+function isPortableExecutable(executable) {
+  if (!executable) return false;
+  const portableRoot = path.resolve(PORTABLE_DIR) + path.sep;
+  try {
+    return fs.realpathSync(executable).startsWith(portableRoot);
+  } catch {
+    return path.resolve(executable).startsWith(portableRoot);
+  }
+}
+
+function getPortableDepsDir(executable) {
+  if (!executable || !isPortableExecutable(executable)) return null;
+  const manifest = readPortableManifest();
+  for (const candidate of [manifest && manifest.depsDir, PORTABLE_DEPS_DIR]) {
+    if (candidate && fs.existsSync(candidate)) return candidate;
+  }
+  return null;
+}
+
+function findNixStoreLibreOffice() {
+  if (IS_WINDOWS) return null;
+  try {
+    const entries = fs
+      .readdirSync('/nix/store')
+      .filter((entry) => /-libreoffice-[\d]/.test(entry))
+      .sort()
+      .reverse();
+    for (const entry of entries) {
+      for (const candidate of [
+        path.join('/nix/store', entry, 'bin', 'soffice'),
+        path.join('/nix/store', entry, 'lib', 'libreoffice', 'program', 'soffice'),
+      ]) {
+        if (executableExists(candidate)) return candidate;
+      }
+    }
+  } catch {
+    // /nix/store is absent outside Nix environments
+  }
+  return null;
+}
 
 function executableExists(candidate) {
   try {
@@ -71,6 +145,9 @@ function getCommonPaths() {
     "/usr/local/bin/soffice",
     "/snap/bin/libreoffice",
     "/opt/libreoffice/program/soffice",
+    "/nix/var/nix/profiles/default/bin/soffice",
+    path.join(os.homedir(), ".nix-profile", "bin", "soffice"),
+    "/run/current-system/sw/bin/soffice",
     path.join(__dirname, "..", ".libreoffice", "squashfs-root", "AppRun"),
     path.join(__dirname, "..", ".libreoffice", "program", "soffice"),
   ];
@@ -104,6 +181,16 @@ function collectCandidates() {
     for (const directory of pathDirectories) {
       push(path.join(directory, name), "PATH");
     }
+  }
+
+  const portable = findPortableExecutable();
+  if (portable) {
+    push(portable, "portable");
+  }
+
+  const nixStore = findNixStoreLibreOffice();
+  if (nixStore) {
+    push(nixStore, "nix store");
   }
 
   for (const candidate of getCommonPaths()) {
@@ -146,13 +233,135 @@ function getVersionProbeExecutable(executable) {
   return executable;
 }
 
-function runProcess(command, args, { timeoutMs }) {
+function ensureWritableDirectory(preferred, fallback) {
+  const candidates = [preferred, fallback, path.join(os.tmpdir(), "zipdrop-lo-home")].filter(Boolean);
+  for (const directory of candidates) {
+    try {
+      fs.mkdirSync(directory, { recursive: true });
+      fs.accessSync(directory, fs.constants.W_OK);
+      return directory;
+    } catch {
+      // try the next candidate
+    }
+  }
+  return os.tmpdir();
+}
+
+function escapeXml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function writeRuntimeFontConfig(depsDir, baseDir) {
+  const confDirectory = path.join(depsDir, "etc", "fonts", "conf.d");
+  const fontDirectories = [
+    path.join(depsDir, "usr", "share", "fonts"),
+    path.join(depsDir, "usr", "local", "share", "fonts"),
+    "/usr/share/fonts",
+    "/usr/local/share/fonts",
+  ].filter((directory) => fs.existsSync(directory));
+
+  if (!fontDirectories.length && !fs.existsSync(confDirectory)) return null;
+
+  try {
+    const configDirectory = path.join(baseDir, "fontconfig");
+    const cacheDirectory = path.join(configDirectory, "cache");
+    fs.mkdirSync(cacheDirectory, { recursive: true });
+
+    const lines = ['<?xml version="1.0"?>', "<fontconfig>"];
+    for (const directory of fontDirectories) {
+      lines.push(`  <dir>${escapeXml(directory)}</dir>`);
+    }
+    lines.push(`  <cachedir>${escapeXml(cacheDirectory)}</cachedir>`);
+    if (fs.existsSync(confDirectory)) {
+      lines.push(`  <include ignore_missing="yes">${escapeXml(confDirectory)}</include>`);
+    }
+    lines.push("</fontconfig>", "");
+
+    const configFile = path.join(configDirectory, "fonts.conf");
+    fs.writeFileSync(configFile, lines.join("\n"));
+    return configFile;
+  } catch (error) {
+    console.warn(`[LibreOffice] Could not prepare font configuration: ${error.message}`);
+    return null;
+  }
+}
+
+function getPortableLibraryDirectories(depsDir, executable) {
+  const programDir = path.dirname(executable);
+  return [
+    path.join(depsDir, "usr", "lib", "x86_64-linux-gnu"),
+    path.join(depsDir, "lib", "x86_64-linux-gnu"),
+    path.join(depsDir, "usr", "lib", "x86_64-linux-gnu", "nss"),
+    path.join(depsDir, "lib", "x86_64-linux-gnu", "nss"),
+    path.join(depsDir, "usr", "lib"),
+    path.join(depsDir, "lib"),
+    programDir,
+    path.join(programDir, "..", "ure", "lib"),
+  ].filter((directory) => fs.existsSync(directory));
+}
+
+function buildProcessEnv(executable, profileDir) {
+  const env = { ...process.env };
+
+  if (process.platform === "linux") {
+    env.SAL_USE_VCLPLUGIN = "svp";
+    env.LANG = env.LANG || "C.UTF-8";
+  }
+
+  if (IS_WINDOWS) return env;
+
+  const baseDir = profileDir
+    ? path.dirname(profileDir)
+    : path.join(os.tmpdir(), "zipdrop-lo");
+  const depsDir = getPortableDepsDir(executable);
+  const home = depsDir
+    ? ensureWritableDirectory(path.join(baseDir, "home"), env.HOME)
+    : ensureWritableDirectory(env.HOME, path.join(baseDir, "home"));
+  const cacheHome = path.join(home, ".cache");
+
+  env.HOME = home;
+  env.XDG_CACHE_HOME = cacheHome;
+  env.TMPDIR = ensureWritableDirectory(env.TMPDIR, os.tmpdir());
+
+  try {
+    fs.mkdirSync(cacheHome, { recursive: true });
+  } catch {
+    // non-fatal; LibreOffice falls back to its own defaults
+  }
+
+  if (depsDir) {
+    const libraryDirectories = getPortableLibraryDirectories(depsDir, executable);
+    env.LD_LIBRARY_PATH = [...libraryDirectories, env.LD_LIBRARY_PATH]
+      .filter(Boolean)
+      .join(":");
+
+    const fontConfig = writeRuntimeFontConfig(depsDir, baseDir);
+    if (fontConfig) {
+      env.FONTCONFIG_FILE = fontConfig;
+      env.FONTCONFIG_PATH = path.dirname(fontConfig);
+    }
+  }
+
+  return env;
+}
+
+function extractMissingLibraries(stderr = "") {
+  const missing = new Set();
+  const pattern = /error while loading shared libraries: ([^:\s]+)/g;
+  let match;
+  while ((match = pattern.exec(stderr))) {
+    missing.add(match[1]);
+  }
+  return [...missing];
+}
+
+function runProcess(command, args, { timeoutMs, profileDir } = {}) {
   return new Promise((resolve, reject) => {
     let proc;
-    const env = { ...process.env };
-    if (process.platform === "linux") {
-      env.SAL_USE_VCLPLUGIN = "svp";
-    }
+    const env = buildProcessEnv(command, profileDir);
     try {
       proc = spawn(command, args, {
         env,
@@ -237,16 +446,77 @@ async function queryVersion(executable) {
       ok: result.code === 0 && Boolean(version),
       version,
       exitCode: result.code,
+      stderr: result.stderr,
       error: result.code === 0 ? null : `version command exited with code ${result.code}`,
     };
   } catch (error) {
-    return { ok: false, version: null, exitCode: null, error: error.message };
+    return {
+      ok: false,
+      version: null,
+      exitCode: null,
+      stderr: error.stderr || "",
+      error: error.message,
+    };
+  }
+}
+
+async function verifyConversion() {
+  const detection = detectLibreOffice();
+  if (!detection.executable) {
+    return { ok: false, error: "LibreOffice is not available" };
+  }
+
+  const fixture = path.resolve(
+    __dirname,
+    "..",
+    "..",
+    "eval-word2pdf",
+    "fixtures",
+    "01_simple_text.docx"
+  );
+  if (!fs.existsSync(fixture)) {
+    return { ok: null, error: null };
+  }
+
+  const workDir = fs.mkdtempSync(path.join(os.tmpdir(), "zipdrop-lo-smoke-"));
+  const profileDir = path.join(workDir, "profile");
+  const inputPath = path.join(workDir, "smoke.docx");
+
+  try {
+    fs.copyFileSync(fixture, inputPath);
+    await convertToPdf({
+      executable: detection.executable,
+      inputPath,
+      outputDir: workDir,
+      profileDir,
+      timeoutMs: 120000,
+    });
+    validatePdfBuffer(fs.readFileSync(path.join(workDir, "smoke.pdf")));
+    return { ok: true, error: null };
+  } catch (error) {
+    const detail =
+      error && error.details && error.details.safeDetail
+        ? error.details.safeDetail
+        : "Conversion smoke test failed";
+    return { ok: false, error: detail };
+  } finally {
+    fs.rmSync(workDir, { recursive: true, force: true });
   }
 }
 
 async function logDiagnostics(logger = console) {
   const detection = detectLibreOffice();
+  const diagnostics = {
+    version: null,
+    versionOk: false,
+    conversionOk: null,
+    conversionError: null,
+    portable: isPortableExecutable(detection.executable),
+    depsDir: getPortableDepsDir(detection.executable),
+  };
+
   logger.log(`[LibreOffice] OS: ${process.platform} ${process.arch}`);
+  logger.log(`[LibreOffice] Temp directory: ${os.tmpdir()}`);
 
   if (!detection.executable) {
     logger.error("[LibreOffice] Executable not found. Checked:");
@@ -254,23 +524,47 @@ async function logDiagnostics(logger = console) {
     logger.error(
       "[LibreOffice] Set LIBREOFFICE_PATH or install LibreOffice (soffice) on the server."
     );
-    cached.diagnostics = { version: null, versionOk: false };
+    cached.diagnostics = diagnostics;
     return { ok: false, version: null };
   }
 
   logger.log(
     `[LibreOffice] Executable: ${detection.executable} (found via ${detection.source})`
   );
+  if (diagnostics.portable) {
+    logger.log(
+      `[LibreOffice] Portable runtime; bundled libraries: ${diagnostics.depsDir || "none"}`
+    );
+  }
 
   const version = await queryVersion(detection.executable);
+  diagnostics.version = version.version;
+  diagnostics.versionOk = version.ok;
+
   if (version.ok) {
     logger.log(`[LibreOffice] Version: ${version.version}`);
   } else {
+    const firstErrorLine = (version.stderr || "").trim().split(/\r?\n/)[0];
     logger.warn(
-      `[LibreOffice] Version check failed (${version.error}); conversion will still be attempted.`
+      `[LibreOffice] Version check failed (${version.error}${
+        firstErrorLine ? `: ${firstErrorLine}` : ""
+      }); attempting a smoke conversion anyway.`
     );
   }
-  cached.diagnostics = { version: version.version, versionOk: version.ok };
+
+  const conversion = await verifyConversion();
+  diagnostics.conversionOk = conversion.ok;
+  diagnostics.conversionError = conversion.error;
+
+  if (conversion.ok) {
+    logger.log("[LibreOffice] Conversion smoke test: ok");
+  } else if (conversion.ok === false) {
+    logger.warn(`[LibreOffice] Conversion smoke test failed: ${conversion.error}`);
+  } else {
+    logger.log("[LibreOffice] Conversion smoke test skipped (fixture unavailable)");
+  }
+
+  cached.diagnostics = diagnostics;
   return { ok: true, version: version.version };
 }
 
@@ -281,6 +575,10 @@ function getStatus() {
     available: Boolean(detection.executable),
     version: diagnostics.version || null,
     versionOk: Boolean(diagnostics.versionOk),
+    conversionOk:
+      diagnostics.conversionOk === undefined ? null : diagnostics.conversionOk,
+    conversionError: diagnostics.conversionError || null,
+    portable: Boolean(diagnostics.portable),
     source: detection.source,
     checkedCount: detection.checked.length,
   };
@@ -322,30 +620,44 @@ async function convertToPdf({ executable, inputPath, outputDir, profileDir, time
 
   let result;
   try {
-    result = await runProcess(executable, args, { timeoutMs });
+    result = await runProcess(executable, args, { timeoutMs, profileDir });
   } catch (error) {
     if (error.timedOut) {
       throw new ConversionError(
         "PDF conversion timed out",
         ERROR_CODES.CONVERSION_FAILED,
-        { stderr: error.stderr }
+        { stderr: error.stderr, safeDetail: "LibreOffice timed out" }
       );
     }
     throw new ConversionError(
       "PDF conversion service unavailable",
       ERROR_CODES.MISSING_DEPENDENCY,
-      { error: error.message }
+      { error: error.message, safeDetail: "LibreOffice could not be started" }
     );
   }
 
   if (result.code !== 0) {
+    const missingLibraries = extractMissingLibraries(result.stderr);
+    const safeDetail = missingLibraries.length
+      ? `Missing runtime library: ${missingLibraries.join(", ")}`
+      : `LibreOffice exited with code ${result.code}`;
+
     console.error(
-      `[LibreOffice] Conversion failed (code=${result.code} signal=${result.signal}): ${result.stderr || result.stdout}`
+      `[LibreOffice] Conversion failed (code=${result.code} signal=${result.signal}): ${
+        result.stderr || result.stdout
+      }`
     );
     throw new ConversionError(
-      "PDF conversion failed",
-      ERROR_CODES.CONVERSION_FAILED,
-      { code: result.code, signal: result.signal, stderr: result.stderr }
+      missingLibraries.length
+        ? "Document conversion is temporarily unavailable"
+        : "PDF conversion failed",
+      missingLibraries.length ? ERROR_CODES.MISSING_DEPENDENCY : ERROR_CODES.CONVERSION_FAILED,
+      {
+        code: result.code,
+        signal: result.signal,
+        stderr: result.stderr,
+        safeDetail,
+      }
     );
   }
 
@@ -369,6 +681,7 @@ module.exports = {
   detectLibreOffice,
   logDiagnostics,
   getStatus,
+  verifyConversion,
   requireLibreOffice,
   convertToPdf,
   validatePdfBuffer,

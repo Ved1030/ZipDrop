@@ -588,12 +588,16 @@ app.get("/health/conversions", (req, res) => {
 /* Path-safe LibreOffice health check */
 app.get("/health/word-to-pdf", (req, res) => {
   const status = libreoffice.getStatus();
-  res.status(status.available ? 200 : 503).json({
-    ok: status.available,
+  const healthy = status.available && status.conversionOk !== false;
+  res.status(healthy ? 200 : 503).json({
+    ok: healthy,
     dependency: "libreoffice",
     version: status.version,
     version_ok: status.versionOk,
+    conversion_ok: status.conversionOk,
+    conversion_error: status.conversionError,
     detected_via: status.source,
+    portable: status.portable,
   });
 });
 
@@ -665,7 +669,10 @@ async function handleConversion(req, res, conversionKey) {
                    error.code === 'MISSING_DEPENDENCY' ? 503 : 500;
     res.status(status).json({ 
       error: error.message || "Conversion failed",
-      code: error.code 
+      code: error.code,
+      ...(error.details && error.details.safeDetail
+        ? { detail: error.details.safeDetail }
+        : {})
     });
   }
 }

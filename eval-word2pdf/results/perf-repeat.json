@@ -1,0 +1,81 @@
+{
+  "warm_batch": {
+    "word2pdf": [
+      {
+        "wall_seconds": 9.1051,
+        "peak_rss_mb": 94.4,
+        "seconds": 7.8151
+      },
+      {
+        "wall_seconds": 9.3433,
+        "peak_rss_mb": 93.6,
+        "seconds": 8.2363
+      },
+      {
+        "wall_seconds": 9.112,
+        "peak_rss_mb": 95.9,
+        "seconds": 8.0788
+      }
+    ],
+    "office2pdf": [
+      {
+        "wall_seconds": 16.4536,
+        "peak_rss_mb": 133.9,
+        "seconds": 15.6031
+      },
+      {
+        "wall_seconds": 15.7993,
+        "peak_rss_mb": 135.8,
+        "seconds": 14.9454
+      },
+      {
+        "wall_seconds": 16.9814,
+        "peak_rss_mb": 135.2,
+        "seconds": 16.2499
+      }
+    ]
+  },
+  "concurrency": {
+    "word2pdf": [
+      {
+        "wall_seconds": 2.3883,
+        "peak_total_rss_mb": 63.2,
+        "ok": true
+      },
+      {
+        "wall_seconds": 2.2175,
+        "peak_total_rss_mb": 63.7,
+        "ok": true
+      },
+      {
+        "wall_seconds": 2.4268,
+        "peak_total_rss_mb": 63.4,
+        "ok": true
+      }
+    ],
+    "office2pdf": [
+      {
+        "wall_seconds": 5.043,
+        "peak_total_rss_mb": 75.5,
+        "ok": true
+      },
+      {
+        "wall_seconds": 4.7431,
+        "peak_total_rss_mb": 75.5,
+        "ok": true
+      },
+      {
+        "wall_seconds": 4.5848,
+        "peak_total_rss_mb": 74.8,
+        "ok": true
+      }
+    ],
+    "libreoffice": [
+      {
+        "wall_seconds": 17.5321,
+        "peak_total_rss_mb": 259.6,
+        "ok": true
+      }
+    ]
+  }
+}

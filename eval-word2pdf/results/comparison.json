@@ -1,0 +1,3849 @@
+{
+  "reports": [
+    {
+      "fixture": "01_simple_text",
+      "baseline": {
+        "pages": 1,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 409,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri",
+          "DAAAAA+SymbolMT"
+        ],
+        "pdf_bytes": 50151
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 59447,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 409,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 0.9927,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9961,
+              "ssim": 0.9858,
+              "correlation": 0.8458,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9858,
+          "mean_pixel_similarity": 0.9961,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri",
+            "DAAAAA+SymbolMT"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 39019,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 409,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 0.9927,
+          "fonts": [
+            "AIHRCX+Calibri-Bold",
+            "ZRCBFG+Calibri"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9968,
+              "ssim": 0.9863,
+              "correlation": 0.8717,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9863,
+          "mean_pixel_similarity": 0.9968,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri",
+            "DAAAAA+SymbolMT"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "02_fonts_sizes",
+      "baseline": {
+        "pages": 1,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 183,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri",
+          "DAAAAA+Arial-BoldMT",
+          "EAAAAA+TimesNewRomanPS-ItalicMT",
+          "FAAAAA+CourierNewPSMT",
+          "GAAAAA+Georgia-BoldItalic",
+          "HAAAAA+Verdana",
+          "IAAAAA+Tahoma",
+          "JAAAAA+SegoeUI-Bold",
+          "KAAAAA+Calibri"
+        ],
+        "pdf_bytes": 107532
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 263913,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 183,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Arial-BoldMT",
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "AAAAAA+CourierNewPSMT",
+            "AAAAAA+Georgia-BoldItalic",
+            "AAAAAA+SegoeUI-Bold",
+            "AAAAAA+Tahoma",
+            "AAAAAA+TimesNewRomanPS-ItalicMT",
+            "AAAAAA+Verdana",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.999,
+              "ssim": 0.999,
+              "correlation": 0.9802,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.999,
+          "mean_pixel_similarity": 0.999,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri",
+            "DAAAAA+Arial-BoldMT",
+            "EAAAAA+TimesNewRomanPS-ItalicMT",
+            "FAAAAA+CourierNewPSMT",
+            "GAAAAA+Georgia-BoldItalic",
+            "HAAAAA+Verdana",
+            "IAAAAA+Tahoma",
+            "JAAAAA+SegoeUI-Bold",
+            "KAAAAA+Calibri"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 102130,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 183,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "FMSURR+Arial-BoldMT",
+            "IQLJNO+SegoeUI-Bold",
+            "JRBYVC+CourierNewPSMT",
+            "LADCOB+TimesNewRomanPS-ItalicMT",
+            "MKQAZH+Calibri",
+            "UCMSNE+Tahoma",
+            "UFBQZN+Verdana",
+            "WBODHV+Georgia-BoldItalic",
+            "YHFXPG+Calibri-Bold"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9998,
+              "ssim": 0.9999,
+              "correlation": 0.9983,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9999,
+          "mean_pixel_similarity": 0.9998,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri",
+            "DAAAAA+Arial-BoldMT",
+            "EAAAAA+TimesNewRomanPS-ItalicMT",
+            "FAAAAA+CourierNewPSMT",
+            "GAAAAA+Georgia-BoldItalic",
+            "HAAAAA+Verdana",
+            "IAAAAA+Tahoma",
+            "JAAAAA+SegoeUI-Bold",
+            "KAAAAA+Calibri"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "03_tables_merged",
+      "baseline": {
+        "pages": 1,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 210,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri-Bold",
+          "DAAAAA+Calibri"
+        ],
+        "pdf_bytes": 54073
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 60015,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 210,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9903,
+              "ssim": 0.8958,
+              "correlation": 0.8661,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.8958,
+          "mean_pixel_similarity": 0.9903,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri-Bold",
+            "DAAAAA+Calibri"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 37784,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 210,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 0.819,
+          "fonts": [
+            "FRNLFI+Calibri",
+            "MVKVTI+Calibri-Bold"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9806,
+              "ssim": 0.7606,
+              "correlation": 0.3926,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.7606,
+          "mean_pixel_similarity": 0.9806,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri-Bold",
+            "DAAAAA+Calibri"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "04_images",
+      "baseline": {
+        "pages": 1,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 145,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri"
+        ],
+        "pdf_bytes": 62792
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 93115,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 145,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9696,
+              "ssim": 0.893,
+              "correlation": 0.8326,
+              "reference_count": 3,
+              "candidate_count": 3,
+              "matched": 3,
+              "mean_iou": 0.9115,
+              "largest_iou": 0.9412,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.893,
+          "mean_pixel_similarity": 0.9696,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 88875,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 145,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "GLAJFS+Calibri-Bold",
+            "HZVGLW+Calibri"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9697,
+              "ssim": 0.8931,
+              "correlation": 0.8332,
+              "reference_count": 3,
+              "candidate_count": 3,
+              "matched": 3,
+              "mean_iou": 0.911,
+              "largest_iou": 0.9404,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.8931,
+          "mean_pixel_similarity": 0.9697,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "05_headers_footers",
+      "baseline": {
+        "pages": 2,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 569,
+        "fonts": [
+          "BAAAAA+Arial-BoldMT",
+          "CAAAAA+Arial-ItalicMT",
+          "DAAAAA+Calibri-Bold",
+          "EAAAAA+Calibri"
+        ],
+        "pdf_bytes": 51276
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 120031,
+          "ok": true,
+          "pages": 2,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 569,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Arial-BoldMT",
+            "AAAAAA+Arial-ItalicMT",
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9976,
+              "ssim": 0.9957,
+              "correlation": 0.9337,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9997,
+              "ssim": 0.9998,
+              "correlation": 0.9824,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9978,
+          "mean_pixel_similarity": 0.9987,
+          "header_footer_checks": {
+            "ZipDrop Header": true,
+            "internal evaluation copy": true
+          },
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Arial-BoldMT",
+            "CAAAAA+Arial-ItalicMT",
+            "DAAAAA+Calibri-Bold",
+            "EAAAAA+Calibri"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 57310,
+          "ok": true,
+          "pages": 2,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 569,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 0.8348,
+          "fonts": [
+            "LGMHKR+Arial-BoldMT",
+            "LUELML+Calibri-Bold",
+            "TZYTQL+Arial-ItalicMT",
+            "XKFHCF+Calibri"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9979,
+              "ssim": 0.9958,
+              "correlation": 0.9428,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9997,
+              "ssim": 0.9998,
+              "correlation": 0.9868,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9978,
+          "mean_pixel_similarity": 0.9988,
+          "header_footer_checks": {
+            "ZipDrop Header": true,
+            "internal evaluation copy": true
+          },
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Arial-BoldMT",
+            "CAAAAA+Arial-ItalicMT",
+            "DAAAAA+Calibri-Bold",
+            "EAAAAA+Calibri"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "06_page_numbers",
+      "baseline": {
+        "pages": 3,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 4251,
+        "fonts": [
+          "BAAAAA+Calibri",
+          "CAAAAA+Calibri",
+          "DAAAAA+Calibri-Bold"
+        ],
+        "pdf_bytes": 54361
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 61086,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 4251,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9883,
+              "ssim": 0.9942,
+              "correlation": 0.8906,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9881,
+              "ssim": 0.9955,
+              "correlation": 0.9029,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9945,
+              "ssim": 0.9988,
+              "correlation": 0.9421,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9962,
+          "mean_pixel_similarity": 0.9903,
+          "header_footer_checks": {
+            "Page 1 of": true,
+            "Page 2 of": true
+          },
+          "page_number_matches": [
+            [
+              "1",
+              "3"
+            ],
+            [
+              "2",
+              "3"
+            ],
+            [
+              "3",
+              "3"
+            ]
+          ],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri",
+            "CAAAAA+Calibri",
+            "DAAAAA+Calibri-Bold"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 38396,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 4251,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 0.9967,
+          "fonts": [
+            "LUDECX+Calibri",
+            "LYGIAC+Calibri-Bold"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9927,
+              "ssim": 0.9977,
+              "correlation": 0.9473,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9911,
+              "ssim": 0.9969,
+              "correlation": 0.9348,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9957,
+              "ssim": 0.9994,
+              "correlation": 0.9587,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.998,
+          "mean_pixel_similarity": 0.9932,
+          "header_footer_checks": {
+            "Page 1 of": true,
+            "Page 2 of": true
+          },
+          "page_number_matches": [
+            [
+              "1",
+              "3"
+            ],
+            [
+              "2",
+              "3"
+            ],
+            [
+              "3",
+              "3"
+            ]
+          ],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri",
+            "CAAAAA+Calibri",
+            "DAAAAA+Calibri-Bold"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "07_multipage",
+      "baseline": {
+        "pages": 3,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 7024,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri-Bold",
+          "DAAAAA+Calibri"
+        ],
+        "pdf_bytes": 53646
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 61988,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 7024,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9841,
+              "ssim": 0.9925,
+              "correlation": 0.9014,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9826,
+              "ssim": 0.9945,
+              "correlation": 0.906,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9895,
+              "ssim": 0.9971,
+              "correlation": 0.94,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9947,
+          "mean_pixel_similarity": 0.9854,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri-Bold",
+            "DAAAAA+Calibri"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 39888,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 7024,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "OGFBXZ+Calibri",
+            "WBPSLM+Calibri-Bold"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9903,
+              "ssim": 0.9982,
+              "correlation": 0.954,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9878,
+              "ssim": 0.998,
+              "correlation": 0.9461,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9889,
+              "ssim": 0.9964,
+              "correlation": 0.9342,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9975,
+          "mean_pixel_similarity": 0.989,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri-Bold",
+            "DAAAAA+Calibri"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "08_page_breaks",
+      "baseline": {
+        "pages": 3,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 170,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri"
+        ],
+        "pdf_bytes": 31082
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 60015,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 170,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 1.0,
+              "ssim": 1.0,
+              "correlation": 0.9963,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9996,
+              "ssim": 0.9996,
+              "correlation": 0.9316,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9996,
+              "ssim": 0.9994,
+              "correlation": 0.9129,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9997,
+          "mean_pixel_similarity": 0.9997,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 31801,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 170,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "QSHSAE+Calibri",
+            "QWCUJX+Calibri-Bold"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 1.0,
+              "ssim": 1.0,
+              "correlation": 0.9963,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9998,
+              "ssim": 0.9999,
+              "correlation": 0.988,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9998,
+              "ssim": 0.9999,
+              "correlation": 0.9813,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9999,
+          "mean_pixel_similarity": 0.9999,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "09_orientations",
+      "baseline": {
+        "pages": 3,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ],
+          [
+            792.0,
+            612.0
+          ],
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 310,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri"
+        ],
+        "pdf_bytes": 44020
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 61034,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              792.0,
+              612.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 310,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9998,
+              "ssim": 0.9997,
+              "correlation": 0.9728,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9974,
+              "ssim": 0.9925,
+              "correlation": 0.9057,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                792.0,
+                612.0
+              ],
+              "candidate_size": [
+                792.0,
+                612.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9976,
+              "ssim": 0.6612,
+              "correlation": 0.008,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.8845,
+          "mean_pixel_similarity": 0.9983,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 36942,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              792.0,
+              612.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 310,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "BAWKMJ+Calibri-Bold",
+            "UFVUOC+Calibri"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9999,
+              "ssim": 1.0,
+              "correlation": 0.9953,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9878,
+              "ssim": 0.6369,
+              "correlation": 0.1387,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                792.0,
+                612.0
+              ],
+              "candidate_size": [
+                792.0,
+                612.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9977,
+              "ssim": 0.6208,
+              "correlation": 0.0155,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.7526,
+          "mean_pixel_similarity": 0.9951,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "10_devanagari",
+      "baseline": {
+        "pages": 1,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 462,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+NirmalaUI",
+          "DAAAAA+Calibri-Italic",
+          "EAAAAA+NirmalaUI"
+        ],
+        "pdf_bytes": 58162
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 86852,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 460,
+          "token_recall": 0.991,
+          "token_precision": 0.991,
+          "text_similarity": 0.9978,
+          "fonts": [
+            "AAAAAA+Calibri-Bold",
+            "AAAAAA+Calibri-Italic",
+            "AAAAAA+NirmalaUI-0",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9879,
+              "ssim": 0.9092,
+              "correlation": 0.6364,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9092,
+          "mean_pixel_similarity": 0.9879,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "devanagari_checks": {
+            "\u0939\u093f\u0928\u094d\u0926\u0940": true,
+            "\u091c\u093c\u093f\u092a\u0921\u094d\u0930\u0949\u092a": true,
+            "\u092d\u093e\u0930\u0924": true,
+            "\u0928\u092e\u0938\u094d\u0924\u0947": true,
+            "\u0938\u0930\u094d\u0935\u0947": true,
+            "\u0938\u0902\u092f\u0941\u0915\u094d\u0924\u093e\u0915\u094d\u0937\u0930": true
+          },
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+NirmalaUI",
+            "DAAAAA+Calibri-Italic",
+            "EAAAAA+NirmalaUI"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 52042,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 462,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "OVOJCU+NirmalaUI",
+            "WVPUNL+Calibri-Bold",
+            "XRUSKG+Calibri-Italic"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9984,
+              "ssim": 0.9992,
+              "correlation": 0.9742,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9992,
+          "mean_pixel_similarity": 0.9984,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "devanagari_checks": {
+            "\u0939\u093f\u0928\u094d\u0926\u0940": true,
+            "\u091c\u093c\u093f\u092a\u0921\u094d\u0930\u0949\u092a": true,
+            "\u092d\u093e\u0930\u0924": true,
+            "\u0928\u092e\u0938\u094d\u0924\u0947": true,
+            "\u0938\u0930\u094d\u0935\u0947": true,
+            "\u0938\u0902\u092f\u0941\u0915\u094d\u0924\u093e\u0915\u094d\u0937\u0930": true
+          },
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+NirmalaUI",
+            "DAAAAA+Calibri-Italic",
+            "EAAAAA+NirmalaUI"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "11_floating_images",
+      "baseline": {
+        "pages": 1,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 533,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri"
+        ],
+        "pdf_bytes": 44260
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 75715,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 533,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9876,
+              "ssim": 0.9335,
+              "correlation": 0.8046,
+              "reference_count": 1,
+              "candidate_count": 1,
+              "matched": 1,
+              "mean_iou": 0.9985,
+              "largest_iou": 0.9985,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9335,
+          "mean_pixel_similarity": 0.9876,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 75945,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 533,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "NEMWQK+Calibri",
+            "TMSFTF+Calibri-Bold"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9605,
+              "ssim": 0.4606,
+              "correlation": 0.3418,
+              "reference_count": 1,
+              "candidate_count": 1,
+              "matched": 0,
+              "mean_iou": 0.0,
+              "largest_iou": 0.4248,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.4606,
+          "mean_pixel_similarity": 0.9605,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "12_nested_tables",
+      "baseline": {
+        "pages": 1,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 212,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri",
+          "DAAAAA+Calibri-Bold"
+        ],
+        "pdf_bytes": 43938
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 59577,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 212,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9959,
+              "ssim": 0.9497,
+              "correlation": 0.8704,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9497,
+          "mean_pixel_similarity": 0.9959,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri",
+            "DAAAAA+Calibri-Bold"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 32920,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 212,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "MKJKPR+Calibri",
+            "WWNXTQ+Calibri-Bold"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9896,
+              "ssim": 0.7622,
+              "correlation": 0.2903,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.7622,
+          "mean_pixel_similarity": 0.9896,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri",
+            "DAAAAA+Calibri-Bold"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "13_kitchen_sink",
+      "baseline": {
+        "pages": 3,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            792.0,
+            612.0
+          ]
+        ],
+        "text_chars": 675,
+        "fonts": [
+          "BAAAAA+Calibri",
+          "CAAAAA+Calibri",
+          "DAAAAA+Calibri-Bold",
+          "EAAAAA+Calibri-Bold",
+          "FAAAAA+NirmalaUI"
+        ],
+        "pdf_bytes": 98689
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 103015,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              792.0,
+              612.0
+            ]
+          ],
+          "text_chars": 675,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "AAAAAA+NirmalaUI-0",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9793,
+              "ssim": 0.8629,
+              "correlation": 0.7821,
+              "reference_count": 2,
+              "candidate_count": 2,
+              "matched": 2,
+              "mean_iou": 0.9412,
+              "largest_iou": 0.9454,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9985,
+              "ssim": 0.9418,
+              "correlation": 0.7413,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9976,
+              "ssim": 0.9874,
+              "correlation": 0.9201,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                792.0,
+                612.0
+              ],
+              "candidate_size": [
+                792.0,
+                612.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9307,
+          "mean_pixel_similarity": 0.9918,
+          "header_footer_checks": {
+            "Kitchen Sink Header": true
+          },
+          "page_number_matches": [
+            [
+              "1",
+              "3"
+            ],
+            [
+              "2",
+              "3"
+            ],
+            [
+              "3",
+              "3"
+            ]
+          ],
+          "devanagari_checks": {
+            "\u0928\u092e\u0938\u094d\u0924\u0947 \u0926\u0941\u0928\u093f\u092f\u093e": true
+          },
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri",
+            "CAAAAA+Calibri",
+            "DAAAAA+Calibri-Bold",
+            "EAAAAA+Calibri-Bold",
+            "FAAAAA+NirmalaUI"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 65381,
+          "ok": true,
+          "pages": 3,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              792.0,
+              612.0
+            ]
+          ],
+          "text_chars": 675,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 0.7541,
+          "fonts": [
+            "PRJLVS+Calibri-Bold",
+            "QEUICO+NirmalaUI",
+            "WSLRKD+Calibri"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9265,
+              "ssim": 0.1224,
+              "correlation": 0.0846,
+              "reference_count": 2,
+              "candidate_count": 2,
+              "matched": 0,
+              "mean_iou": 0.0,
+              "largest_iou": 0.3544,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9998,
+              "ssim": 0.9999,
+              "correlation": 0.9909,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9922,
+              "ssim": 0.8774,
+              "correlation": 0.3939,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                792.0,
+                612.0
+              ],
+              "candidate_size": [
+                792.0,
+                612.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.6666,
+          "mean_pixel_similarity": 0.9728,
+          "header_footer_checks": {
+            "Kitchen Sink Header": true
+          },
+          "page_number_matches": [
+            [
+              "1",
+              "3"
+            ],
+            [
+              "2",
+              "3"
+            ],
+            [
+              "3",
+              "3"
+            ]
+          ],
+          "devanagari_checks": {
+            "\u0928\u092e\u0938\u094d\u0924\u0947 \u0926\u0941\u0928\u093f\u092f\u093e": true
+          },
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri",
+            "CAAAAA+Calibri",
+            "DAAAAA+Calibri-Bold",
+            "EAAAAA+Calibri-Bold",
+            "FAAAAA+NirmalaUI"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "14_perf_large",
+      "baseline": {
+        "pages": 24,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ],
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 58909,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri-Bold",
+          "DAAAAA+Calibri"
+        ],
+        "pdf_bytes": 209515
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 104182,
+          "ok": true,
+          "pages": 24,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 58909,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "AAAAAA+Calibri",
+            "AAAAAA+Calibri-Bold",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.982,
+              "ssim": 0.9908,
+              "correlation": 0.8979,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9793,
+              "ssim": 0.9921,
+              "correlation": 0.8873,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9785,
+              "ssim": 0.9917,
+              "correlation": 0.8815,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9792,
+              "ssim": 0.993,
+              "correlation": 0.887,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9828,
+              "ssim": 0.9909,
+              "correlation": 0.9129,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9782,
+              "ssim": 0.9939,
+              "correlation": 0.8789,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9789,
+              "ssim": 0.9941,
+              "correlation": 0.8848,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9822,
+              "ssim": 0.9914,
+              "correlation": 0.8962,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9486,
+              "ssim": 0.7821,
+              "correlation": 0.5283,
+              "reference_count": 1,
+              "candidate_count": 1,
+              "matched": 1,
+              "mean_iou": 0.9385,
+              "largest_iou": 0.9385,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9835,
+              "ssim": 0.9921,
+              "correlation": 0.9196,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9782,
+              "ssim": 0.9938,
+              "correlation": 0.8796,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9778,
+              "ssim": 0.9937,
+              "correlation": 0.8768,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9785,
+              "ssim": 0.9941,
+              "correlation": 0.8821,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9731,
+              "ssim": 0.9766,
+              "correlation": 0.8422,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9074,
+              "ssim": 0.1666,
+              "correlation": 0.0162,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9257,
+              "ssim": 0.4525,
+              "correlation": 0.2397,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9395,
+              "ssim": 0.4852,
+              "correlation": 0.4291,
+              "reference_count": 1,
+              "candidate_count": 1,
+              "matched": 0,
+              "mean_iou": 0.0,
+              "largest_iou": 0.4692,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9687,
+              "ssim": 0.9472,
+              "correlation": 0.7737,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9613,
+              "ssim": 0.9041,
+              "correlation": 0.6764,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9718,
+              "ssim": 0.94,
+              "correlation": 0.7968,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9155,
+              "ssim": 0.427,
+              "correlation": 0.122,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9698,
+              "ssim": 0.9252,
+              "correlation": 0.7796,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9693,
+              "ssim": 0.9263,
+              "correlation": 0.7774,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9804,
+              "ssim": 0.7396,
+              "correlation": 0.5933,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.8577,
+          "mean_pixel_similarity": 0.9663,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri-Bold",
+            "DAAAAA+Calibri"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 87242,
+          "ok": true,
+          "pages": 24,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ],
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 58909,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "FOGBLQ+Calibri",
+            "ZURWAT+Calibri-Bold"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9888,
+              "ssim": 0.9964,
+              "correlation": 0.9491,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9866,
+              "ssim": 0.9976,
+              "correlation": 0.9398,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9861,
+              "ssim": 0.9972,
+              "correlation": 0.9359,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9854,
+              "ssim": 0.997,
+              "correlation": 0.9309,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9476,
+              "ssim": 0.6971,
+              "correlation": 0.4869,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9864,
+              "ssim": 0.9981,
+              "correlation": 0.9382,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9857,
+              "ssim": 0.9974,
+              "correlation": 0.933,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9873,
+              "ssim": 0.9965,
+              "correlation": 0.9359,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9468,
+              "ssim": 0.7716,
+              "correlation": 0.5052,
+              "reference_count": 1,
+              "candidate_count": 1,
+              "matched": 1,
+              "mean_iou": 0.9385,
+              "largest_iou": 0.9385,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9398,
+              "ssim": 0.6294,
+              "correlation": 0.3978,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9868,
+              "ssim": 0.9984,
+              "correlation": 0.9423,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.986,
+              "ssim": 0.998,
+              "correlation": 0.9364,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9854,
+              "ssim": 0.9974,
+              "correlation": 0.9311,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9752,
+              "ssim": 0.9676,
+              "correlation": 0.8424,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9114,
+              "ssim": 0.1753,
+              "correlation": 0.0501,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9757,
+              "ssim": 0.9307,
+              "correlation": 0.8233,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9376,
+              "ssim": 0.4704,
+              "correlation": 0.4034,
+              "reference_count": 1,
+              "candidate_count": 1,
+              "matched": 0,
+              "mean_iou": 0.0,
+              "largest_iou": 0.4714,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9759,
+              "ssim": 0.9409,
+              "correlation": 0.825,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9578,
+              "ssim": 0.8155,
+              "correlation": 0.6197,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9753,
+              "ssim": 0.9284,
+              "correlation": 0.8194,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9823,
+              "ssim": 0.988,
+              "correlation": 0.8959,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9761,
+              "ssim": 0.9293,
+              "correlation": 0.8256,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9756,
+              "ssim": 0.9308,
+              "correlation": 0.8233,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            },
+            {
+              "pixel_similarity": 0.9788,
+              "ssim": 0.7218,
+              "correlation": 0.552,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.8696,
+          "mean_pixel_similarity": 0.9717,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri-Bold",
+            "DAAAAA+Calibri"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "15_indian_languages",
+      "baseline": {
+        "pages": 1,
+        "page_sizes": [
+          [
+            612.0,
+            792.0
+          ]
+        ],
+        "text_chars": 323,
+        "fonts": [
+          "BAAAAA+Calibri-Bold",
+          "CAAAAA+Calibri-Bold",
+          "DAAAAA+NirmalaUI"
+        ],
+        "pdf_bytes": 60561
+      },
+      "engines": {
+        "word2pdf": {
+          "pdf_bytes": 74539,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 321,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 0.9969,
+          "fonts": [
+            "AAAAAA+Calibri-Bold",
+            "AAAAAA+NirmalaUI-0",
+            "Helvetica"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.9909,
+              "ssim": 0.9499,
+              "correlation": 0.7416,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9499,
+          "mean_pixel_similarity": 0.9909,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri-Bold",
+            "DAAAAA+NirmalaUI"
+          ]
+        },
+        "office2pdf": {
+          "pdf_bytes": 51544,
+          "ok": true,
+          "pages": 1,
+          "page_count_match": true,
+          "page_sizes": [
+            [
+              612.0,
+              792.0
+            ]
+          ],
+          "text_chars": 323,
+          "token_recall": 1.0,
+          "token_precision": 1.0,
+          "text_similarity": 1.0,
+          "fonts": [
+            "TNHCDB+NirmalaUI",
+            "YLQODE+Calibri-Bold"
+          ],
+          "page_metrics": [
+            {
+              "pixel_similarity": 0.998,
+              "ssim": 0.9972,
+              "correlation": 0.9685,
+              "reference_count": 0,
+              "candidate_count": 0,
+              "matched": 0,
+              "mean_iou": null,
+              "largest_iou": null,
+              "baseline_size": [
+                612.0,
+                792.0
+              ],
+              "candidate_size": [
+                612.0,
+                792.0
+              ],
+              "same_orientation": true
+            }
+          ],
+          "mean_ssim": 0.9972,
+          "mean_pixel_similarity": 0.998,
+          "header_footer_checks": {},
+          "page_number_matches": [],
+          "fonts_missing_vs_baseline": [
+            "BAAAAA+Calibri-Bold",
+            "CAAAAA+Calibri-Bold",
+            "DAAAAA+NirmalaUI"
+          ]
+        }
+      }
+    }
+  ],
+  "warnings": {
+    "word2pdf/01_simple_text": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/02_fonts_sizes": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/03_tables_merged": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/04_images": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/05_headers_footers": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/06_page_numbers": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/07_multipage": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/08_page_breaks": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/09_orientations": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/10_devanagari": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/11_floating_images": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/12_nested_tables": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/13_kitchen_sink": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/14_perf_large": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "word2pdf/15_indian_languages": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/01_simple_text": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/02_fonts_sizes": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/03_tables_merged": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/04_images": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/05_headers_footers": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/06_page_numbers": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/07_multipage": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/08_page_breaks": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/09_orientations": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/10_devanagari": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/11_floating_images": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/12_nested_tables": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/13_kitchen_sink": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/14_perf_large": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "office2pdf/15_indian_languages": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/01_simple_text": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/02_fonts_sizes": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/03_tables_merged": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/04_images": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/05_headers_footers": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/06_page_numbers": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/07_multipage": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/08_page_breaks": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/09_orientations": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/10_devanagari": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/11_floating_images": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/12_nested_tables": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/13_kitchen_sink": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/14_perf_large": {
+      "warnings": [],
+      "missing_fonts": []
+    },
+    "libreoffice/15_indian_languages": {
+      "warnings": [],
+      "missing_fonts": []
+    }
+  }
+}

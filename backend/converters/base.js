@@ -28,11 +28,28 @@ class BaseConverter {
     return path.join(this.tempDir, `${uuidv4()}.${extension}`);
   }
 
+  generateTempProfileDir() {
+    const profileDir = path.join(this.tempDir, `lo-profile-${uuidv4()}`);
+    fs.mkdirSync(profileDir, { recursive: true });
+    return profileDir;
+  }
+
+  generateTempWorkDir() {
+    const workDir = path.join(this.tempDir, `convert-${uuidv4()}`);
+    fs.mkdirSync(workDir, { recursive: true });
+    return workDir;
+  }
+
   cleanupTempFiles(...paths) {
     for (const filePath of paths) {
       try {
         if (filePath && fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
+          const stat = fs.statSync(filePath);
+          if (stat.isDirectory()) {
+            fs.rmSync(filePath, { recursive: true, force: true });
+          } else {
+            fs.unlinkSync(filePath);
+          }
         }
       } catch (err) {
         console.warn(`[Converter] Failed to cleanup temp file ${filePath}:`, err.message);
@@ -40,13 +57,31 @@ class BaseConverter {
     }
   }
 
+  getSpawnOptions(options = {}) {
+    const spawnOptions = {
+      env: { ...process.env, ...options.env },
+      cwd: options.cwd || process.cwd(),
+      timeout: options.timeout || 120000,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: true,
+    };
+
+    if (process.platform === 'win32') {
+      const CREATE_NO_WINDOW = 0x08000000;
+      spawnOptions.windowsVerbatimArguments = false;
+      spawnOptions.windowsHide = true;
+      // Use spawnSync-compatible creationflags via child_process.spawn options
+      // Note: Node.js doesn't expose creationflags directly in spawn options,
+      // but windowsHide: true achieves the same effect in modern Node.js
+    }
+
+    return spawnOptions;
+  }
+
   async runCommand(command, args, options = {}) {
     return new Promise((resolve, reject) => {
-      const proc = spawn(command, args, {
-        env: { ...process.env, ...options.env },
-        cwd: options.cwd || process.cwd(),
-        timeout: options.timeout || 120000,
-      });
+      const spawnOptions = this.getSpawnOptions(options);
+      const proc = spawn(command, args, spawnOptions);
 
       let stdout = '';
       let stderr = '';

@@ -563,7 +563,13 @@ app.get("/health/pdf-to-docx", (req, res) => {
 ------------------------------- */
 
 const { getRouter } = require("./converters");
+const libreoffice = require("./converters/libreoffice");
 const router = getRouter();
+
+/* LibreOffice startup diagnostics (non-fatal) */
+libreoffice.logDiagnostics().catch((error) => {
+  console.error("[LibreOffice] Diagnostic check failed:", error.message);
+});
 
 /* Health check for all conversions */
 app.get("/health/conversions", (req, res) => {
@@ -576,6 +582,18 @@ app.get("/health/conversions", (req, res) => {
       category: c.category,
     })),
     categories: router.getCategories(),
+  });
+});
+
+/* Path-safe LibreOffice health check */
+app.get("/health/word-to-pdf", (req, res) => {
+  const status = libreoffice.getStatus();
+  res.status(status.available ? 200 : 503).json({
+    ok: status.available,
+    dependency: "libreoffice",
+    version: status.version,
+    version_ok: status.versionOk,
+    detected_via: status.source,
   });
 });
 

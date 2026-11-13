@@ -1,0 +1,30 @@
+{
+  "word2pdf": {
+    "fixtures": 15,
+    "page_count_exact": 15,
+    "pages_ref": 49,
+    "pages_cand": 49,
+    "mean_token_recall": 0.9994,
+    "mean_token_precision": 0.9994,
+    "mean_fixture_ssim": 0.9451,
+    "median_fixture_ssim": 0.9497,
+    "mean_page_ssim": 0.9084,
+    "mean_fixture_pixel": 0.9899,
+    "min_fixture_ssim": 0.8577,
+    "fixtures_ssim_ge_095": 6
+  },
+  "office2pdf": {
+    "fixtures": 15,
+    "page_count_exact": 15,
+    "pages_ref": 49,
+    "pages_cand": 49,
+    "mean_token_recall": 1.0,
+    "mean_token_precision": 1.0,
+    "mean_fixture_ssim": 0.8761,
+    "median_fixture_ssim": 0.9863,
+    "mean_page_ssim": 0.8769,
+    "mean_fixture_pixel": 0.9876,
+    "min_fixture_ssim": 0.4606,
+    "fixtures_ssim_ge_095": 8
+  }
+}

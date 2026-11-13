@@ -7,6 +7,11 @@ const fs = require('fs');
 const path = require('path');
 const { BaseConverter } = require('./base');
 const { ConversionError, ERROR_CODES } = require('./types');
+const {
+  requireLibreOffice,
+  convertToPdf,
+  validatePdfBuffer,
+} = require('./libreoffice');
 
 const EXCEL_SIGNATURES = [
   { offset: 0, bytes: [0x50, 0x4B, 0x03, 0x04], format: 'xlsx' }, // PK (ZIP-based)
@@ -22,24 +27,6 @@ class OfficeToPdfConverter extends BaseConverter {
   constructor() {
     super();
     this.maxFileSize = this.getMaxFileSize('office');
-    this.libreOfficePath = this.findLibreOffice();
-  }
-
-  findLibreOffice() {
-    const candidates = [
-      '/usr/bin/libreoffice',
-      '/usr/bin/soffice',
-      'C:\\Program Files\\LibreOffice\\program\\soffice.exe',
-      'C:\\Program Files (x86)\\LibreOffice\\program\\soffice.exe',
-      '/Applications/LibreOffice.app/Contents/MacOS/soffice',
-    ];
-
-    for (const candidate of candidates) {
-      if (fs.existsSync(candidate)) {
-        return candidate;
-      }
-    }
-    return 'libreoffice';
   }
 
   getSignatures(inputFormat) {
@@ -61,57 +48,27 @@ class OfficeToPdfConverter extends BaseConverter {
     }
 
     const inputExt = inputFormat === 'xls' || inputFormat === 'ppt' ? inputFormat : inputFormat.replace('x', '');
-    const inputPath = this.generateTempPath(inputExt);
-    const outputDir = this.tempDir;
+    const workDir = this.generateTempWorkDir();
+    const inputPath = path.join(workDir, `input.${inputExt}`);
+    const outputPath = path.join(workDir, 'input.pdf');
+    const profileDir = path.join(workDir, 'profile');
 
     try {
       fs.writeFileSync(inputPath, inputBuffer);
 
-      await this.checkLibreOffice();
-
-      // Build LibreOffice arguments
-      const args = [
-        '--headless',
-        '--nologo',
-        '--norestore',
-        '--nolockcheck',
-        '--convert-to', 'pdf',
-        '--outdir', outputDir,
-      ];
-
-      // Add Excel-specific options
-      if (inputFormat === 'xlsx' || inputFormat === 'xls') {
-        // Could add filter options for sheet selection, print area, etc.
-      }
-
-      args.push(inputPath);
-
-      await this.runCommand(this.libreOfficePath, args, {
-        timeout: 180000,
+      const executable = requireLibreOffice('Office to PDF');
+      await convertToPdf({
+        executable,
+        inputPath,
+        outputDir: workDir,
+        profileDir,
       });
 
-      // Find output PDF
-      const outputName = path.basename(inputPath, `.${inputExt}`) + '.pdf';
-      const outputPath = path.join(outputDir, outputName);
-
       const outputBuffer = await this.readOutputBuffer(outputPath);
+      validatePdfBuffer(outputBuffer);
       return outputBuffer;
     } finally {
-      this.cleanupTempFiles(inputPath);
-      const outputName = path.basename(inputPath, `.${inputExt}`) + '.pdf';
-      this.cleanupTempFiles(path.join(this.tempDir, outputName));
-    }
-  }
-
-  async checkLibreOffice() {
-    try {
-      await this.runCommand(this.libreOfficePath, ['--version'], { timeout: 10000 });
-    } catch (err) {
-      throw new ConversionError(
-        'LibreOffice not available for Office to PDF conversion',
-        ERROR_CODES.MISSING_DEPENDENCY,
-        { originalError: err.message }
-      );
+      this.cleanupTempFiles(workDir);
     }
   }
 }

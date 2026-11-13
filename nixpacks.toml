@@ -1,8 +1,8 @@
 [phases.setup]
-nixPkgs = ["nodejs", "python3", "libreoffice", "cairo", "pkg-config", "gdk-pixbuf", "glib"]
+nixPkgs = ["nodejs", "python3", "libreoffice", "cairo", "pkg-config", "gdk-pixbuf", "glib", "fontconfig", "freetype"]
 
 [phases.install]
-cmds = ["npm install"]
+cmds = ["npm install --prefix backend"]
 
 [start]
-cmd = "node server.js"
+cmd = "node backend/server.js"

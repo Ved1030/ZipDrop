@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "postinstall": "node backend/scripts/setup-python.mjs"
+    "postinstall": "node backend/scripts/setup-python.mjs && node backend/scripts/setup-libreoffice.mjs"
   },
   "dependencies": {
     "react-ga4": "^3.0.1"

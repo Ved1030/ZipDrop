@@ -1,0 +1,12 @@
+# Evaluation environments and generated artifacts
+venv-*/
+cache/
+outputs/
+fixtures-legacy/
+lo-profile*/
+results/renders/
+results/contact/
+results/*.log
+results/batch-*.out
+results/batch-*.json
+__pycache__/

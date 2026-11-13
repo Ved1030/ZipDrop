@@ -9,3 +9,13 @@ fonttools>=4.53.0
 numpy>=1.26.4
 opencv-python-headless>=4.10.0.84
 fire>=0.6.0
+
+# PDF to Image conversion (PyMuPDF/fitz - no Poppler required)
+pillow>=10.0.0
+
+# Image to PDF conversion (img2pdf + pillow + cairosvg for SVG)
+img2pdf>=0.4.4
+cairosvg>=2.7.1
+
+# Note: LibreOffice must be installed system-wide for Word/Excel/PPT to PDF
+# On Render/Nixpacks: add 'libreoffice' to nixPkgs

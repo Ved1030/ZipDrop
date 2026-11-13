@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowDownToLine, Code2, Gauge, Laptop, Lock, ShieldCheck, Upload } from "lucide-react";
+import Link from "next/link";
+import { ArrowDownToLine, Code2, Gauge, Laptop, Lock, ShieldCheck, Upload, FileText, Image, Table, Settings } from "lucide-react";
 import UploadCard from "../components/UploadCard";
 import ReceiveCard from "../components/ReceiveCard";
 
@@ -43,7 +44,6 @@ function ZipDropLogo() {
 }
 
 
-
 /* ─── Stats strip ──────────────────────── */
 
 function StatsStrip() {
@@ -72,7 +72,7 @@ function StatsStrip() {
   ];
 
   return (
-    <section style={{ animation: "fadeInUp 0.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both" }}>
+    <section id="stats" style={{ animation: "fadeInUp 0.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both" }}>
       <div style={{
         display: "flex",
         gap: "32px",
@@ -111,9 +111,122 @@ const BENEFITS = [
   { title: "Cross-Device", desc: "Works on phone, tablet and PC.", icon: Laptop },
 ];
 
+/* ─── Conversion Tools Card ──────────────── */
+
+function ConversionToolsCard() {
+  return (
+    <Link
+      href="/conversion"
+      style={{
+        textDecoration: "none",
+        color: "inherit",
+        width: "100%",
+        maxWidth: "420px",
+        display: "block",
+      }}
+    >
+      <div
+        className="glass-card"
+        style={{
+          width: "100%",
+          maxWidth: "420px",
+          padding: "clamp(20px, 2.6vh, 28px)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "clamp(16px, 2.2vh, 20px)",
+          animation: "fadeInUp 0.6s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both",
+        }}
+      >
+        {/* CARD HEADER */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{
+              width: 36,
+              height: 36,
+              borderRadius: "10px",
+              background: "var(--purple-light)",
+              border: "1px solid rgba(135,59,197,0.24)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--purple-highlight)",
+            }}>
+              <Settings size={18} strokeWidth={2} aria-hidden="true" />
+            </div>
+            <div>
+              <h2 style={{ fontSize: "18px", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1 }}>
+                Convert
+              </h2>
+              <p style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "2px" }}>
+                Professional file conversion tools
+              </p>
+            </div>
+          </div>
+          <span className="badge">
+            <span className="badge-dot" style={{ background: "var(--purple-highlight)" }} />
+            New
+          </span>
+        </div>
+
+        {/* DIVIDER */}
+        <div className="divider" />
+
+        {/* TOOL PREVIEW */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {[
+            { icon: FileText, label: "PDF to Word", desc: "Editable DOCX with layout preservation", color: "var(--secondary-blue)" },
+            { icon: FileText, label: "Word to PDF", desc: "High-fidelity PDF from DOCX/DOC", color: "var(--primary-teal)" },
+            { icon: Image, label: "PDF to JPG/PNG", desc: "Rasterize pages at custom DPI", color: "var(--green-highlight)" },
+            { icon: Image, label: "Images to PDF", desc: "Combine multiple images into one PDF", color: "var(--purple-highlight)" },
+          ].map((tool, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "10px", background: "var(--editor-workspace)", border: "1px solid var(--border)", borderRadius: "10px", transition: "all 0.2s ease" }}>
+              <div style={{ width: 36, height: 36, borderRadius: "9px", background: tool.color + "20", border: `1px solid ${tool.color}40`, display: "flex", alignItems: "center", justifyContent: "center", color: tool.color, flexShrink: 0 }}>
+                <tool.icon size={18} strokeWidth={2} aria-hidden="true" />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {tool.label}
+                </p>
+                <p style={{ fontSize: "11px", color: "var(--text-muted)", margin: "2px 0 0" }}>
+                  {tool.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA BUTTON */}
+        <div
+          className="btn-cyan"
+          style={{
+            width: "100%",
+            padding: "14px",
+            fontSize: "15px",
+            fontWeight: 700,
+            letterSpacing: "0.02em",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+          }}
+        >
+          <span className="shimmer" />
+          Open Conversion Tools
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+/* ─── How It Works ────────────────────── */
+
 function HowItWorks() {
   return (
-    <section className="hiw" style={{ animation: "fadeInUp 0.8s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both" }}>
+    <section id="how-it-works" className="hiw" style={{ animation: "fadeInUp 0.8s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both" }}>
       <h2 style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-muted)", letterSpacing: "0.12em", textTransform: "uppercase" }}>
         How it works
       </h2>
@@ -173,7 +286,6 @@ export default function Home() {
       <ParticleBackground />
 
 
-
       <main
         style={{
           position: "relative",
@@ -190,17 +302,15 @@ export default function Home() {
         }}
       >
         {/* ── HERO SECTION ── */}
-        <section
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "clamp(8px, 1.4vh, 12px)",
-            textAlign: "center",
-            maxWidth: "640px",
-            animation: "fadeInDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards",
-          }}
-        >
+        <section id="home" style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "clamp(8px, 1.4vh, 12px)",
+          textAlign: "center",
+          maxWidth: "640px",
+          animation: "fadeInDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+        }}>
           {/* Top badge */}
           <div className="badge" style={{ fontSize: "11px", padding: "5px 14px" }}>
             <span className="badge-dot" />
@@ -248,22 +358,21 @@ export default function Home() {
         </section>
 
         {/* ── CARDS SECTION ── */}
-        <section
-          style={{
-            display: "flex",
-            gap: "24px",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            width: "100%",
-            maxWidth: "900px",
-          }}
-        >
+        <section id="tools" style={{
+          display: "flex",
+          gap: "24px",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          width: "100%",
+          maxWidth: "900px",
+        }}>
           <UploadCard />
           <ReceiveCard 
             onFileReceived={(file: any) => set_zd_currentFile(file)}
             set_zd_editorOpen={set_zd_editorOpen}
             set_zd_currentFile={set_zd_currentFile}
           />
+          <ConversionToolsCard />
         </section>
 
         {/* Editor opens in a new tab via ZDOpenEditButton — no drawer */}

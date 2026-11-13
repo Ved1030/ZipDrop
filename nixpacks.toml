@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs"]
+nixPkgs = ["nodejs", "python3", "libreoffice", "cairo", "pkg-config", "gdk-pixbuf", "glib"]
 
 [phases.install]
 cmds = ["npm install"]

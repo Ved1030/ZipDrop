@@ -545,7 +545,7 @@ app.post("/convert-pdf-to-docx", upload.single("file"), async (req, res) => {
 
 /* --------------------------------
    PDF conversion health
--------------------------------- */
+------------------------------- */
 
 app.get("/health/pdf-to-docx", (req, res) => {
   res.status(pdfTooling.ok ? 200 : 503).json({
@@ -556,6 +556,178 @@ app.get("/health/pdf-to-docx", (req, res) => {
     python_version: pdfTooling.pythonVersion,
     interpreter: path.basename(PDF_PYTHON_BIN),
   });
+});
+
+/* --------------------------------
+   Conversion Router & Endpoints
+------------------------------- */
+
+const { getRouter } = require("./converters");
+const router = getRouter();
+
+/* Health check for all conversions */
+app.get("/health/conversions", (req, res) => {
+  const conversions = router.getSupportedConversions();
+  res.json({
+    conversions: conversions.map(c => ({
+      key: c.key,
+      input: c.inputFormat,
+      output: c.outputFormat,
+      category: c.category,
+    })),
+    categories: router.getCategories(),
+  });
+});
+
+/* Generic conversion endpoint */
+async function handleConversion(req, res, conversionKey) {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    // Parse conversion key to get input/output formats
+    const match = conversionKey.match(/^(.+)-to-(.+)$/);
+    if (!match) {
+      return res.status(400).json({ error: "Invalid conversion key" });
+    }
+
+    const [, inputFormat, outputFormat] = match;
+    const options = { ...req.body };
+    
+    // Convert string options to proper types
+    if (options.dpi) options.dpi = parseInt(options.dpi);
+    if (options.quality) options.quality = parseInt(options.quality);
+    if (options.grayscale) options.grayscale = options.grayscale === 'true';
+    if (options.pages) options.pages = options.pages;
+    if (options.mode) options.mode = options.mode;
+
+    const outputBuffer = await router.convert({
+      inputBuffer: req.file.buffer,
+      inputFormat,
+      outputFormat,
+      options,
+    });
+
+    // Detect if result is a ZIP file (PK header)
+    const isZip = outputBuffer.length >= 4 && 
+      outputBuffer[0] === 0x50 && outputBuffer[1] === 0x4B && 
+      (outputBuffer[2] === 0x03 || outputBuffer[2] === 0x05 || outputBuffer[2] === 0x07);
+
+    let filename, mimeType;
+    
+    if (isZip) {
+      // Multi-page PDF converted to ZIP
+      const baseName = req.file.originalname.replace(
+        new RegExp(`\\.${inputFormat}$`, 'i'),
+        ''
+      );
+      filename = `${baseName}_${outputFormat}.zip`;
+      mimeType = 'application/zip';
+    } else {
+      // Single page - return image directly
+      filename = req.file.originalname.replace(
+        new RegExp(`\\.${inputFormat}$`, 'i'),
+        `.${outputFormat}`
+      );
+      mimeType = router.getConverter(conversionKey).getMimeType(outputFormat);
+    }
+
+    res.set({
+      "Content-Type": mimeType,
+      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Content-Length": outputBuffer.length,
+    });
+
+    res.send(outputBuffer);
+  } catch (error) {
+    console.error(`[${conversionKey}] Error:`, error.message);
+    const status = error.code === 'INVALID_INPUT' || error.code === 'UNSUPPORTED_FORMAT' ? 400 :
+                   error.code === 'FILE_TOO_LARGE' ? 413 :
+                   error.code === 'MISSING_DEPENDENCY' ? 503 : 500;
+    res.status(status).json({ 
+      error: error.message || "Conversion failed",
+      code: error.code 
+    });
+  }
+}
+
+/* Phase 1 Conversion Endpoints */
+
+// PDF to Word (with mode option)
+app.post("/convert/pdf-to-word", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'pdf-to-docx');
+});
+
+// Word to PDF
+app.post("/convert/word-to-pdf", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'docx-to-pdf');
+});
+
+// PDF to JPG
+app.post("/convert/pdf-to-jpg", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'pdf-to-jpg');
+});
+
+// PDF to PNG
+app.post("/convert/pdf-to-png", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'pdf-to-png');
+});
+
+// JPG to PDF
+app.post("/convert/jpg-to-pdf", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'jpg-to-pdf');
+});
+
+// PNG to PDF
+app.post("/convert/png-to-pdf", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'png-to-pdf');
+});
+
+// Multiple images to PDF
+app.post("/convert/images-to-pdf", upload.array("files", 20), async (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: "No files uploaded" });
+    }
+
+    const options = { ...req.body };
+    if (options.pageSize) options.pageSize = options.pageSize;
+    if (options.orientation) options.orientation = options.orientation;
+    if (options.margin) options.margin = parseFloat(options.margin);
+
+    const buffers = req.files.map(f => f.buffer);
+    const formats = req.files.map(f => {
+      const ext = f.originalname.split('.').pop().toLowerCase();
+      return ext === 'jpeg' ? 'jpg' : ext;
+    });
+
+    const outputBuffer = await router.convertMultiple({
+      inputBuffers: buffers,
+      inputFormats: formats,
+      outputFormat: 'pdf',
+      options,
+    });
+
+    const filename = 'converted.pdf';
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Content-Length": outputBuffer.length,
+    });
+
+    res.send(outputBuffer);
+  } catch (error) {
+    console.error("[images-to-pdf] Error:", error.message);
+    const status = error.code === 'INVALID_INPUT' || error.code === 'UNSUPPORTED_FORMAT' ? 400 :
+                   error.code === 'FILE_TOO_LARGE' ? 413 :
+                   error.code === 'MISSING_DEPENDENCY' ? 503 : 500;
+    res.status(status).json({ 
+      error: error.message || "Conversion failed",
+      code: error.code 
+    });
+  }
 });
 
 /* --------------------------------

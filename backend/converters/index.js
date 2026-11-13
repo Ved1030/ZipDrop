@@ -9,6 +9,7 @@ const { PdfToWordConverter } = require('./pdf-to-word');
 const { WordToPdfConverter } = require('./word-to-pdf');
 const { PdfToImageConverter } = require('./pdf-to-image');
 const { ImageToPdfConverter } = require('./image-to-pdf');
+const { ImageToImageConverter } = require('./image-to-image');
 const { OfficeToPdfConverter } = require('./office-to-pdf');
 
 class ConversionRouter {
@@ -35,6 +36,14 @@ class ConversionRouter {
     this.converters.set('png-to-pdf', new ImageToPdfConverter());
     this.converters.set('webp-to-pdf', new ImageToPdfConverter());
     this.converters.set('images-to-pdf', new ImageToPdfConverter());
+    
+    // Image to Image
+    this.converters.set('jpg-to-png', new ImageToImageConverter());
+    this.converters.set('png-to-jpg', new ImageToImageConverter());
+    this.converters.set('webp-to-jpg', new ImageToImageConverter());
+    this.converters.set('jpg-to-webp', new ImageToImageConverter());
+    this.converters.set('png-to-webp', new ImageToImageConverter());
+    this.converters.set('svg-to-png', new ImageToImageConverter());
   }
 
   getConverter(conversionKey) {

@@ -689,6 +689,16 @@ app.post("/convert/word-to-pdf", upload.single("file"), async (req, res) => {
   await handleConversion(req, res, 'docx-to-pdf');
 });
 
+// Excel to PDF
+app.post("/convert/excel-to-pdf", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'xlsx-to-pdf');
+});
+
+// PowerPoint to PDF
+app.post("/convert/powerpoint-to-pdf", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'pptx-to-pdf');
+});
+
 // PDF to JPG
 app.post("/convert/pdf-to-jpg", upload.single("file"), async (req, res) => {
   await handleConversion(req, res, 'pdf-to-jpg');
@@ -753,6 +763,38 @@ app.post("/convert/images-to-pdf", upload.array("files", 20), async (req, res) =
       code: error.code 
     });
   }
+});
+
+/* Image to Image Conversion Endpoints */
+
+// JPG to PNG
+app.post("/convert/jpg-to-png", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'jpg-to-png');
+});
+
+// PNG to JPG
+app.post("/convert/png-to-jpg", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'png-to-jpg');
+});
+
+// WEBP to JPG
+app.post("/convert/webp-to-jpg", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'webp-to-jpg');
+});
+
+// JPG to WEBP
+app.post("/convert/jpg-to-webp", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'jpg-to-webp');
+});
+
+// PNG to WEBP
+app.post("/convert/png-to-webp", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'png-to-webp');
+});
+
+// SVG to PNG
+app.post("/convert/svg-to-png", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'svg-to-png');
 });
 
 /* --------------------------------

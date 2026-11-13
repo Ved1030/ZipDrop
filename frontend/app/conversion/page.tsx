@@ -46,8 +46,8 @@ const CONVERSION_CATEGORIES = [
     bg: "var(--teal-light)",
     tools: [
       { id: "word-to-pdf", name: "Word to PDF", description: "Convert DOCX/DOC to PDF preserving formatting", from: "DOCX", to: "PDF" },
-      { id: "excel-to-pdf", name: "Excel to PDF", description: "Convert XLSX/XLS to PDF with sheet fidelity", from: "XLSX", to: "PDF", comingSoon: true },
-      { id: "ppt-to-pdf", name: "PowerPoint to PDF", description: "Convert PPTX/PPT to PDF preserving slides", from: "PPTX", to: "PDF", comingSoon: true },
+      { id: "excel-to-pdf", name: "Excel to PDF", description: "Convert XLSX/XLS to PDF with sheet fidelity", from: "XLSX", to: "PDF" },
+      { id: "ppt-to-pdf", name: "PowerPoint to PDF", description: "Convert PPTX/PPT to PDF preserving slides", from: "PPTX", to: "PDF" },
     ],
   },
   {
@@ -73,10 +73,10 @@ const CONVERSION_CATEGORIES = [
     tools: [
       { id: "jpg-to-png", name: "JPG to PNG", description: "Convert JPG to lossless PNG with transparency", from: "JPG", to: "PNG" },
       { id: "png-to-jpg", name: "PNG to JPG", description: "Convert PNG to compressed JPG", from: "PNG", to: "JPG" },
-      { id: "webp-to-jpg", name: "WEBP to JPG", description: "Convert WEBP to widely compatible JPG", from: "WEBP", to: "JPG", comingSoon: true },
-      { id: "jpg-to-webp", name: "JPG to WEBP", description: "Convert JPG to modern WEBP format", from: "JPG", to: "WEBP", comingSoon: true },
-      { id: "png-to-webp", name: "PNG to WEBP", description: "Convert PNG to WEBP with transparency", from: "PNG", to: "WEBP", comingSoon: true },
-      { id: "svg-to-png", name: "SVG to PNG", description: "Rasterize vector SVG to PNG", from: "SVG", to: "PNG", comingSoon: true },
+      { id: "webp-to-jpg", name: "WEBP to JPG", description: "Convert WEBP to widely compatible JPG", from: "WEBP", to: "JPG" },
+      { id: "jpg-to-webp", name: "JPG to WEBP", description: "Convert JPG to modern WEBP format", from: "JPG", to: "WEBP" },
+      { id: "png-to-webp", name: "PNG to WEBP", description: "Convert PNG to WEBP with transparency", from: "PNG", to: "WEBP" },
+      { id: "svg-to-png", name: "SVG to PNG", description: "Rasterize vector SVG to PNG", from: "SVG", to: "PNG" },
       { id: "images-to-pdf", name: "Images to PDF", description: "Combine multiple images into a single PDF", from: "Images", to: "PDF" },
     ],
   },
@@ -450,7 +450,7 @@ export default function ConversionToolsPage() {
             </div>
           </div>
           <p style={{ fontSize: "12px", color: "var(--text-muted)", margin: 0 }}>
-            Phase 1 includes: PDF↔Word, PDF→JPG/PNG, Images→PDF. More tools coming in Phase 2.
+            Phase 1 includes: PDF↔Word, PDF→JPG/PNG, Images→PDF, and all 7 Image Conversion tools (JPG↔PNG, JPG↔WEBP, PNG↔WEBP, WEBP→JPG, SVG→PNG).
           </p>
         </div>
       </div>

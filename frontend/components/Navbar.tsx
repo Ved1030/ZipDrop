@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Menu, X, HelpCircle, ChevronRight } from "lucide-react";
-import { BrandLogo } from "./BrandLogo";
+import ZipDropLogo from "./brand/ZipDropLogo";
 import { MegaMenu, ToolsDropdownButton } from "./navbar/MegaMenu";
 
 const NAV_LINKS = [
@@ -108,10 +108,7 @@ export default function Navbar() {
           onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--teal-light)")}
           onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
         >
-          <BrandLogo size={36} showText={false} />
-          <span style={{ fontSize: "18px", fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
-            ZipDrop
-          </span>
+          <ZipDropLogo size="small" />
         </Link>
 
         {/* Desktop Navigation */}

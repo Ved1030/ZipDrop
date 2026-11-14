@@ -7,7 +7,7 @@ import {
   CONTACT_EMAIL,
   GITHUB_URL,
 } from "@/lib/site";
-import { BrandLogo } from "./BrandLogo";
+import ZipDropLogo from "./brand/ZipDropLogo";
 
 const linkStyle: CSSProperties = {
   color: "var(--text-secondary)",
@@ -64,10 +64,7 @@ export default function SiteFooter() {
           {/* Left section - Brand */}
           <div style={{ maxWidth: "320px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
-              <BrandLogo size={40} showText={false} />
-              <span style={{ fontSize: "22px", fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
-                ZipDrop
-              </span>
+              <ZipDropLogo size="small" />
             </div>
             <p
               style={{

@@ -2,87 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Converted PDF</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-    body {
-        background: #f0f0f0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        min-height: 100vh;
-        padding: 20px;
-    }
-    .document {
-        max-width: 100%;
-        margin: 0 auto;
-    }
-    .page {
-        background: white;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        margin: 20px auto;
-        position: relative;
-        overflow: hidden;
-        transform-origin: top center;
-    }
-    .page-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    .page img {
-        position: absolute;
-        object-fit: cover;
-    }
-    .page span {
-        position: absolute;
-        white-space: pre;
-    }
-    @media print {
-        body { background: white; padding: 0; }
-        .page { box-shadow: none; margin: 0; page-break-after: always; }
-    }
-    /* Responsive scaling */
-    @media (max-width: 800px) {
-        .page {
-            transform: scale(0.8);
-        }
-    }
-    @media (max-width: 600px) {
-        .page {
-            transform: scale(0.6);
-        }
-    }
-    @media (max-width: 400px) {
-        .page {
-            transform: scale(0.45);
-        }
-    }
-    </style>
-    
+<title>Converted Document</title>
+<style>
+body { font-family: "Calibri", "Arial", sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+td, th { border: 1px solid #ccc; padding: 8px; }
+th { background-color: #f2f2f2; font-weight: bold; }
+img { max-width: 100%; height: auto; }
+h1, h2, h3, h4, h5, h6 { color: #333; }
+h1 { font-size: 2em; } h2 { font-size: 1.5em; } h3 { font-size: 1.3em; }
+</style>
 </head>
 <body>
-<div class="document">
-<div class="page" id="page-1" style="width: 595.0pt; height: 842.0pt; position: relative;">
-<div class="page-bg" style="width: 100%; height: 100%; background: white; position: absolute; top: 0; left: 0;"></div>
-<span style="position: absolute; left: 50.0pt; top: 24.19999885559082pt; font-size: 24.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">Test PDF for conversion</span>
-<span style="position: absolute; left: 50.0pt; top: 84.94999694824219pt; font-size: 14.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">This is a simple test document.</span>
-<span style="position: absolute; left: 50.0pt; top: 114.94999694824219pt; font-size: 14.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">It has some text content.</span>
-<span style="position: absolute; left: 50.0pt; top: 167.10000610351562pt; font-size: 12.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">Name</span>
-<span style="position: absolute; left: 82.00399780273438pt; top: 167.10000610351562pt; font-size: 12.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">	Age	City</span>
-<span style="position: absolute; left: 50.0pt; top: 187.10000610351562pt; font-size: 12.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">John</span>
-<span style="position: absolute; left: 76.01600646972656pt; top: 187.10000610351562pt; font-size: 12.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">	25	New York</span>
-<span style="position: absolute; left: 50.0pt; top: 207.10000610351562pt; font-size: 12.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">Jane</span>
-<span style="position: absolute; left: 76.01600646972656pt; top: 207.10000610351562pt; font-size: 12.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">	30	London</span>
-<span style="position: absolute; left: 50.0pt; top: 227.10000610351562pt; font-size: 12.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">Bob</span>
-<span style="position: absolute; left: 71.34800720214844pt; top: 227.10000610351562pt; font-size: 12.0pt; font-family: 'Helvetica', sans-serif; color: #000000; font-weight: normal; font-style: normal; text-decoration: none; white-space: pre; line-height: 1;">	35	Paris</span>
-</div>
-</div>
+<p>Test Document</p>
+<h1 style="text-align: left">Introduction</h1>
+<p>This is a <span style="font-weight: bold">test document</span> with <span style="font-style: italic; color: #0070c0">formatting</span>.</p>
+<h2>Features</h2>
+<p>Feature one</p>
+<p>Feature two</p>
+<p>Feature three</p>
+<p>Step one</p>
+<p>Step two</p>
+<p>Step three</p>
+<table style="border-collapse: collapse; width: 100%; margin: 10px 0;"><tr><td><p><span style="font-weight: bold">Name</span></p></td><td><p><span style="font-weight: bold">Age</span></p></td><td><p><span style="font-weight: bold">City</span></p></td></tr><tr><td><p>John</p></td><td><p>25</p></td><td><p>New York</p></td></tr><tr><td><p>Jane</p></td><td><p>30</p></td><td><p>London</p></td></tr><tr><td><p>Bob</p></td><td><p>35</p></td><td><p>Paris</p></td></tr></table>
+<p>This is the end of the test document.</p>
 </body>
 </html>

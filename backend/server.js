@@ -734,6 +734,21 @@ app.post("/convert/pdf-to-pdfa", upload.single("file"), async (req, res) => {
   await handleConversion(req, res, 'pdf-to-pdfa');
 });
 
+// Word to Text
+app.post("/convert/word-to-text", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'docx-to-txt');
+});
+
+// Word to HTML
+app.post("/convert/word-to-html", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'docx-to-html');
+});
+
+// Excel to CSV
+app.post("/convert/excel-to-csv", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'xlsx-to-csv');
+});
+
 // JPG to PDF
 app.post("/convert/jpg-to-pdf", upload.single("file"), async (req, res) => {
   await handleConversion(req, res, 'jpg-to-pdf');

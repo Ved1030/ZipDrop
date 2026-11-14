@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Converted Document</title>
+<style>
+body { font-family: "Calibri", "Arial", sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+td, th { border: 1px solid #ccc; padding: 8px; }
+th { background-color: #f2f2f2; font-weight: bold; }
+img { max-width: 100%; height: auto; }
+h1, h2, h3, h4, h5, h6 { color: #333; }
+h1 { font-size: 2em; } h2 { font-size: 1.5em; } h3 { font-size: 1.3em; }
+</style>
+</head>
+<body>
+<p>Test Document</p>
+<h1 style="text-align: left">Introduction</h1>
+<p>This is a <span style="font-weight: bold">test document</span> with <span style="font-style: italic; color: #0070c0">formatting</span>.</p>
+<h2>Features</h2>
+<p>Feature one</p>
+<p>Feature two</p>
+<p>Feature three</p>
+<p>Step one</p>
+<p>Step two</p>
+<p>Step three</p>
+<table style="border-collapse: collapse; width: 100%; margin: 10px 0;"><tr><td><p><span style="font-weight: bold">Name</span></p></td><td><p><span style="font-weight: bold">Age</span></p></td><td><p><span style="font-weight: bold">City</span></p></td></tr><tr><td><p>John</p></td><td><p>25</p></td><td><p>New York</p></td></tr><tr><td><p>Jane</p></td><td><p>30</p></td><td><p>London</p></td></tr><tr><td><p>Bob</p></td><td><p>35</p></td><td><p>Paris</p></td></tr></table>
+<p>This is the end of the test document.</p>
+</body>
+</html>

@@ -58,9 +58,9 @@ const CONVERSION_CATEGORIES = [
     color: "var(--green-highlight)",
     bg: "var(--green-light)",
     tools: [
-      { id: "word-to-txt", name: "Word to Text", description: "Extract plain text from Word documents", from: "DOCX", to: "TXT", comingSoon: true },
-      { id: "word-to-html", name: "Word to HTML", description: "Convert DOCX to clean HTML", from: "DOCX", to: "HTML", comingSoon: true },
-      { id: "excel-to-csv", name: "Excel to CSV", description: "Convert spreadsheets to CSV format", from: "XLSX", to: "CSV", comingSoon: true },
+      { id: "word-to-txt", name: "Word to Text", description: "Extract plain text from Word documents", from: "DOCX", to: "TXT" },
+      { id: "word-to-html", name: "Word to HTML", description: "Convert DOCX to clean HTML", from: "DOCX", to: "HTML" },
+      { id: "excel-to-csv", name: "Excel to CSV", description: "Convert spreadsheets to CSV format", from: "XLSX", to: "CSV" },
     ],
   },
   {

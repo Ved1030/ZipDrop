@@ -16,6 +16,9 @@ const { PdfToPptxConverter } = require('./pdf-to-pptx');
 const { PdfToTextConverter } = require('./pdf-to-text');
 const { PdfToHtmlConverter } = require('./pdf-to-html');
 const { PdfToPdfaConverter } = require('./pdf-to-pdfa');
+const { WordToTextConverter } = require('./word-to-text');
+const { WordToHtmlConverter } = require('./word-to-html');
+const { ExcelToCsvConverter } = require('./excel-to-csv');
 
 class ConversionRouter {
   constructor() {
@@ -50,6 +53,15 @@ class ConversionRouter {
 
     // PDF to PDF/A
     this.converters.set('pdf-to-pdfa', new PdfToPdfaConverter());
+
+    // Word to Text
+    this.converters.set('docx-to-txt', new WordToTextConverter());
+
+    // Word to HTML
+    this.converters.set('docx-to-html', new WordToHtmlConverter());
+
+    // Excel to CSV
+    this.converters.set('xlsx-to-csv', new ExcelToCsvConverter());
 
     // Images to PDF
     this.converters.set('jpg-to-pdf', new ImageToPdfConverter());

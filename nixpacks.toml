@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs", "python3", "libreoffice", "cairo", "pkg-config", "gdk-pixbuf", "glib", "fontconfig", "freetype"]
+nixPkgs = ["nodejs", "python3", "libreoffice", "ghostscript", "cairo", "pkg-config", "gdk-pixbuf", "glib", "fontconfig", "freetype"]
 
 [phases.install]
 cmds = ["npm install --prefix backend"]

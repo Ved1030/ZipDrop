@@ -17,5 +17,21 @@ pillow>=10.0.0
 img2pdf>=0.4.4
 cairosvg>=2.7.1
 
+# PDF to Excel - table extraction
+pdfplumber>=0.11.0
+openpyxl>=3.1.0
+
+# PDF to PowerPoint
+python-pptx>=1.0.0
+
+# PDF to Text - uses PyMuPDF (already installed)
+
+# PDF to HTML - uses PyMuPDF (already installed)
+
+# PDF to PDF/A - requires Ghostscript system package (not pip installable)
+# ghostscript will be installed via nixPkgs
+
 # Note: LibreOffice must be installed system-wide for Word/Excel/PPT to PDF
 # On Render/Nixpacks: add 'libreoffice' to nixPkgs
+# Note: Ghostscript must be installed system-wide for PDF/A conversion
+# On Render/Nixpacks: add 'ghostscript' to nixPkgs

@@ -28,13 +28,13 @@ const CONVERSION_CATEGORIES = [
     bg: "var(--blue-light)",
     tools: [
       { id: "pdf-to-word", name: "PDF to Word", description: "Convert PDF to editable DOCX with layout preservation", from: "PDF", to: "DOCX", modes: ["Editable", "Visual Fidelity"] },
-      { id: "pdf-to-excel", name: "PDF to Excel", description: "Extract tables from PDF to XLSX spreadsheets", from: "PDF", to: "XLSX", comingSoon: true },
-      { id: "pdf-to-ppt", name: "PDF to PowerPoint", description: "Convert PDF pages to editable PPTX slides", from: "PDF", to: "PPTX", comingSoon: true },
+      { id: "pdf-to-excel", name: "PDF to Excel", description: "Extract tables from PDF to XLSX spreadsheets", from: "PDF", to: "XLSX" },
+      { id: "pdf-to-ppt", name: "PDF to PowerPoint", description: "Convert PDF pages to editable PPTX slides", from: "PDF", to: "PPTX", modes: ["Editable", "Visual Fidelity"] },
       { id: "pdf-to-jpg", name: "PDF to JPG", description: "Rasterize PDF pages to high-quality JPG images", from: "PDF", to: "JPG" },
       { id: "pdf-to-png", name: "PDF to PNG", description: "Rasterize PDF pages to PNG with transparency support", from: "PDF", to: "PNG" },
-      { id: "pdf-to-txt", name: "PDF to Text", description: "Extract plain text from PDF documents", from: "PDF", to: "TXT", comingSoon: true },
-      { id: "pdf-to-html", name: "PDF to HTML", description: "Convert PDF to structured HTML", from: "PDF", to: "HTML", comingSoon: true },
-      { id: "pdf-to-pdfa", name: "PDF to PDF/A", description: "Convert to archival PDF/A standard", from: "PDF", to: "PDF/A", comingSoon: true },
+      { id: "pdf-to-txt", name: "PDF to Text", description: "Extract plain text from PDF documents", from: "PDF", to: "TXT" },
+      { id: "pdf-to-html", name: "PDF to HTML", description: "Convert PDF to structured HTML with layout preservation", from: "PDF", to: "HTML" },
+      { id: "pdf-to-pdfa", name: "PDF to PDF/A", description: "Convert to archival PDF/A standard", from: "PDF", to: "PDF/A" },
     ],
   },
   {
@@ -450,7 +450,7 @@ export default function ConversionToolsPage() {
             </div>
           </div>
           <p style={{ fontSize: "12px", color: "var(--text-muted)", margin: 0 }}>
-            Phase 1 includes: PDF↔Word, PDF→JPG/PNG, Images→PDF, and all 7 Image Conversion tools (JPG↔PNG, JPG↔WEBP, PNG↔WEBP, WEBP→JPG, SVG→PNG).
+            Phase 1 includes: PDF→Word/Excel/PPT/Text/HTML/PDF/A, PDF→JPG/PNG, Images→PDF, and all 7 Image Conversion tools (JPG↔PNG, JPG↔WEBP, PNG↔WEBP, WEBP→JPG, SVG→PNG).
           </p>
         </div>
       </div>

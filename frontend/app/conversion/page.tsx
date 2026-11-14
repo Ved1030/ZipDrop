@@ -279,7 +279,7 @@ export default function ConversionToolsPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {CONVERSION_CATEGORIES.map((category) => {
             const isExpanded = expandedCategories.includes(category.id);
-            const activeTools = category.tools.filter(t => !t.comingSoon).length;
+            const activeTools = category.tools.filter(t => !('comingSoon' in t && t.comingSoon)).length;
             const totalTools = category.tools.length;
 
             return (
@@ -380,7 +380,7 @@ export default function ConversionToolsPage() {
                           tool={tool}
                           categoryColor={category.color}
                           onClick={() => {
-                            if (!tool.comingSoon) {
+                            if (!('comingSoon' in tool && tool.comingSoon)) {
                               window.location.href = `/conversion/${tool.id}`;
                             }
                           }}

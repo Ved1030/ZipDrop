@@ -31,7 +31,19 @@ python-pptx>=1.0.0
 # PDF to PDF/A - requires Ghostscript system package (not pip installable)
 # ghostscript will be installed via nixPkgs
 
-# Note: LibreOffice must be installed system-wide for Word/Excel/PPT to PDF
+# Text to PDF
+reportlab>=4.0.0
+
+# HTML to PDF - Playwright
+playwright>=1.40.0
+
+# CSV to Excel
+chardet>=5.0.0
+
+# RTF to Word - uses LibreOffice (system package)
+
+# Note: LibreOffice must be installed system-wide for Word/Excel/PPT to PDF and RTF to Word
 # On Render/Nixpacks: add 'libreoffice' to nixPkgs
 # Note: Ghostscript must be installed system-wide for PDF/A conversion
 # On Render/Nixpacks: add 'ghostscript' to nixPkgs
+# Note: Playwright requires chromium - installed via playwright install-deps

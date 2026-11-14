@@ -1,8 +1,8 @@
 [phases.setup]
-nixPkgs = ["nodejs", "python3", "libreoffice", "ghostscript", "cairo", "pkg-config", "gdk-pixbuf", "glib", "fontconfig", "freetype"]
+nixPkgs = ["nodejs", "python3", "libreoffice", "ghostscript", "cairo", "pkg-config", "gdk-pixbuf", "glib", "fontconfig", "freetype", "nss", "nspr", "atk", "cups", "dbus", "libxkbfile", "libxcomposite", "libxdamage", "libxrandr", "libgbm", "libasound", "pango", "cairo", "gtk3"]
 
 [phases.install]
-cmds = ["npm install --prefix backend"]
+cmds = ["npm install --prefix backend", "cd backend && python -m playwright install chromium --with-deps"]
 
 [start]
 cmd = "node backend/server.js"

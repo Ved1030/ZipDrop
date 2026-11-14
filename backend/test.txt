@@ -1,0 +1,17 @@
+Hello World
+This is a test text file.
+
+It has multiple paragraphs.
+
+And some Indian language text: नमस्ते दुनिया
+
+Also Chinese: 你好世界
+
+And Arabic: مرحبا بالعالم
+
+Special characters: áéíóú ñ ü
+
+A very long line that should wrap automatically when converted to PDF because it exceeds the page width and needs to be broken into multiple lines for proper display in the PDF document.
+
+Page break test:
+This should appear on a new page if the content is long enough.

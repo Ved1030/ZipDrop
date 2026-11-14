@@ -621,6 +621,7 @@ async function handleConversion(req, res, conversionKey) {
     if (options.dpi) options.dpi = parseInt(options.dpi);
     if (options.quality) options.quality = parseInt(options.quality);
     if (options.grayscale) options.grayscale = options.grayscale === 'true';
+    if (options.printBackground) options.printBackground = options.printBackground === 'true';
     if (options.pages) options.pages = options.pages;
     if (options.mode) options.mode = options.mode;
 
@@ -631,15 +632,16 @@ async function handleConversion(req, res, conversionKey) {
       options,
     });
 
-    // Detect if result is a ZIP file (PK header)
-    const isZip = outputBuffer.length >= 4 && 
+    // Detect if result is a ZIP file (PK header) - but exclude Office formats which are ZIP-based
+    const isZipFormat = ['xlsx', 'docx', 'pptx'].includes(outputFormat);
+    const isZip = !isZipFormat && outputBuffer.length >= 4 && 
       outputBuffer[0] === 0x50 && outputBuffer[1] === 0x4B && 
       (outputBuffer[2] === 0x03 || outputBuffer[2] === 0x05 || outputBuffer[2] === 0x07);
 
     let filename, mimeType;
     
     if (isZip) {
-      // Multi-page PDF converted to ZIP
+      // Multi-file output (e.g., HTML with assets, multiple CSV sheets)
       const baseName = req.file.originalname.replace(
         new RegExp(`\\.${inputFormat}$`, 'i'),
         ''
@@ -647,7 +649,7 @@ async function handleConversion(req, res, conversionKey) {
       filename = `${baseName}_${outputFormat}.zip`;
       mimeType = 'application/zip';
     } else {
-      // Single page - return image directly
+      // Single file output
       filename = req.file.originalname.replace(
         new RegExp(`\\.${inputFormat}$`, 'i'),
         `.${outputFormat}`
@@ -747,6 +749,26 @@ app.post("/convert/word-to-html", upload.single("file"), async (req, res) => {
 // Excel to CSV
 app.post("/convert/excel-to-csv", upload.single("file"), async (req, res) => {
   await handleConversion(req, res, 'xlsx-to-csv');
+});
+
+// Text to PDF
+app.post("/convert/text-to-pdf", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'txt-to-pdf');
+});
+
+// HTML to PDF
+app.post("/convert/html-to-pdf", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'html-to-pdf');
+});
+
+// CSV to Excel
+app.post("/convert/csv-to-excel", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'csv-to-xlsx');
+});
+
+// RTF to Word
+app.post("/convert/rtf-to-word", upload.single("file"), async (req, res) => {
+  await handleConversion(req, res, 'rtf-to-docx');
 });
 
 // JPG to PDF

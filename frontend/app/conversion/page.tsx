@@ -88,10 +88,10 @@ const CONVERSION_CATEGORIES = [
     color: "var(--text-secondary)",
     bg: "var(--editor-workspace)",
     tools: [
-      { id: "txt-to-pdf", name: "Text to PDF", description: "Convert plain text files to PDF", from: "TXT", to: "PDF", comingSoon: true },
-      { id: "html-to-pdf", name: "HTML to PDF", description: "Convert HTML pages to PDF documents", from: "HTML", to: "PDF", comingSoon: true },
-      { id: "csv-to-excel", name: "CSV to Excel", description: "Convert CSV data to XLSX spreadsheets", from: "CSV", to: "XLSX", comingSoon: true },
-      { id: "rtf-to-docx", name: "RTF to Word", description: "Convert Rich Text Format to DOCX", from: "RTF", to: "DOCX", comingSoon: true },
+      { id: "txt-to-pdf", name: "Text to PDF", description: "Convert plain text files to PDF", from: "TXT", to: "PDF" },
+      { id: "html-to-pdf", name: "HTML to PDF", description: "Convert HTML pages to PDF documents", from: "HTML", to: "PDF" },
+      { id: "csv-to-excel", name: "CSV to Excel", description: "Convert CSV data to XLSX spreadsheets", from: "CSV", to: "XLSX" },
+      { id: "rtf-to-docx", name: "RTF to Word", description: "Convert Rich Text Format to DOCX", from: "RTF", to: "DOCX" },
     ],
   },
 ];
@@ -450,7 +450,7 @@ export default function ConversionToolsPage() {
             </div>
           </div>
           <p style={{ fontSize: "12px", color: "var(--text-muted)", margin: 0 }}>
-            Phase 1 includes: PDF→Word/Excel/PPT/Text/HTML/PDF/A, PDF→JPG/PNG, Images→PDF, and all 7 Image Conversion tools (JPG↔PNG, JPG↔WEBP, PNG↔WEBP, WEBP→JPG, SVG→PNG).
+            Phase 1 includes: PDF→Word/Excel/PPT/Text/HTML/PDF/A, PDF→JPG/PNG, Images→PDF, Office→PDF/Text/HTML/CSV, Text→PDF, HTML→PDF, CSV→Excel, RTF→Word, and all 7 Image Conversion tools (JPG↔PNG, JPG↔WEBP, PNG↔WEBP, WEBP→JPG, SVG→PNG).
           </p>
         </div>
       </div>

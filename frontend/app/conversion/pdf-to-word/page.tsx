@@ -134,9 +134,34 @@ export default function PdfToWordPage() {
     "visual-fidelity": "Preserves exact page appearance using positioned elements. Best for complex layouts where visual accuracy matters most.",
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "PDF to Word Converter",
+    url: "https://zip-drop.vercel.app/conversion/pdf-to-word",
+    applicationCategory: "FileConverter",
+    operatingSystem: "Web",
+    description: "Free online PDF to Word converter with Editable and Visual Fidelity modes. Convert PDF to editable DOCX without an account.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
+    creator: {
+      "@type": "Organization",
+      name: "ZipDrop",
+      url: "https://zip-drop.vercel.app",
+    },
+  };
+
   return (
     <>
       <Navbar />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <div style={{ minHeight: "100vh", background: "var(--bg-main)", padding: "clamp(24px, 4vh, 48px) 24px" }}>
         <div style={{ maxWidth: "720px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "24px" }}>
           {/* Header */}

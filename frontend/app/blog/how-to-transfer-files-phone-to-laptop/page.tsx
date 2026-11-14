@@ -55,7 +55,7 @@ export default function Page() {
         <li>No USB cable required</li>
         <li>No login or registration</li>
         <li>Works across devices</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
         <li>Simple user experience</li>
       </ul>
 

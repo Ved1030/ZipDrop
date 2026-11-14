@@ -6,7 +6,7 @@ const meta = {
   description:
     "Looking for an online clipboard alternative? Compare ZipDrop, Online Clipboard, Snapdrop, WeTransfer and clipboard-sync tools on files, expiry, login and editing — with facts, not hype.",
   published: "2026-11-13",
-  modified: "2026-11-13",
+  modified: "2026-11-14",
   sections: [
     "How to choose an online clipboard alternative",
     "Quick comparison",
@@ -73,7 +73,7 @@ export default function Page() {
       <Table
         head={["Tool", "Best for", "Retrieval", "Files", "Login", "Notes"]}
         rows={[
-          ["ZipDrop", "Text + files, phone ↔ PC", "4-digit code", "10 × 1 GB", "No", "Browser editor on supported docs; 48-hour expiry"],
+          ["ZipDrop", "Text + files, phone ↔ PC", "4-digit code", "Up to 10 per transfer", "No", "Browser editor on supported docs; 48-hour expiry timestamp (cleanup not enforced)"],
           ["Online Clipboard", "Fast text/screenshot snippets", "6-digit code", "Small files", "No", "~17-minute expiry; ad-supported"],
           ["Snapdrop", "Same-Wi-Fi quick sends", "Both devices on same network", "Yes", "No", "Open source; browser device pairing"],
           ["WeTransfer", "Sending work to people", "Email or link", "Yes", "Optional/account-based", "Built around email delivery; not instant clipboard"],
@@ -85,9 +85,9 @@ export default function Page() {
       <h2>ZipDrop</h2>
       <p>
         ZipDrop is a browser-based file and text sharing platform. Paste text or
-        choose up to 10 files (1 GB each), get a{" "}
+        choose up to 10 files, get a{" "}
         <strong>4-digit code</strong>, and enter it on any other device. No
-        account is required. Content links expire after 48 hours.
+        account is required. Content links have a 48-hour expiry timestamp (automatic deletion not yet enforced).
         Supported documents can be opened in a browser-based editor; the edited
         copy can be shared with a new code. Read more about{" "}
         <a className="zd-blog-link" href="/blog/zipdrop-vs-online-clipboard">

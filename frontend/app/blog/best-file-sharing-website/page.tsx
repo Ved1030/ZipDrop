@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Best File Sharing Website in 2026",
   description:
-    "Looking for the best file sharing website? Learn what to check and how ZipDrop works: no account, up to 10 files at 1 GB each, and a 4-digit code.",
+    "Looking for the best file sharing website? Learn what to check and how ZipDrop works: no account, up to 10 files per transfer, and a 4-digit code.",
 };
 
 export default function Page() {
@@ -38,7 +38,7 @@ export default function Page() {
       <ul>
         <li>No login required</li>
         <li>Works on phones, tablets, and computers</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
         <li>Cross-platform compatibility</li>
       </ul>
 

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "How to Transfer Files from Android to PC Wirelessly Without Apps",
   description:
-    "Learn how to transfer files from Android to PC wirelessly without USB cables or apps. ZipDrop takes up to 10 files and 1 GB per file, using a 4-digit code.",
+    "Learn how to transfer files from Android to PC wirelessly without USB cables or apps. ZipDrop takes up to 10 files, using a 4-digit code.",
 };
 
 export default function Page() {
@@ -213,8 +213,7 @@ export default function Page() {
 
       <h3>Can I send multiple files at once from Android to PC?</h3>
       <p>
-        Yes. You can select up to 10 files at once, with a maximum of 1 GB per
-        file.
+        Yes. You can select up to 10 files at once.
       </p>
 
       <h3>What if the code does not work?</h3>

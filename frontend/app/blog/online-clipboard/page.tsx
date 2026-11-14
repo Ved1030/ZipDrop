@@ -7,7 +7,7 @@ const meta = {
   description:
     "An online clipboard lets you move copied text and files from your phone to your PC without messaging yourself. Learn how it works and how to use ZipDrop's free 4-digit code clipboard.",
   published: "2026-11-13",
-  modified: "2026-11-13",
+  modified: "2026-11-14",
   sections: [
     "What is an online clipboard?",
     "How an online clipboard works",
@@ -21,11 +21,11 @@ const meta = {
   faqs: [
     {
       q: "Is an online clipboard safe to use?",
-      a: "It is as safe as the service you choose. Prefer tools that send data over HTTPS, expire content automatically, and do not require an account. ZipDrop links expire after 48 hours; the retrieval code is the only credential, so do not post it publicly while you still need to retrieve the content.",
+      a: "It is as safe as the service you choose. Prefer tools that send data over HTTPS, expire content automatically, and do not require an account. ZipDrop sets a 48-hour expiry timestamp on each transfer, but automatic deletion is not yet enforced; the retrieval code is the only credential, so do not post it publicly while you still need to retrieve the content.",
     },
     {
       q: "What is the best free online clipboard?",
-      a: "If you need quick text between your own devices, short-lived tools like Online Clipboard (1000-second expiry) can be enough. If you regularly move files, need larger transfers, or want to edit documents in the browser, ZipDrop is a better fit: 4-digit code, 10 files per transfer, 1 GB per file, 48-hour expiry.",
+      a: "If you need quick text between your own devices, short-lived tools like Online Clipboard (1000-second expiry) can be enough. If you regularly move files, need larger transfers, or want to edit documents in the browser, ZipDrop is a better fit: 4-digit code, 10 files per transfer, 48-hour expiry timestamp (cleanup not yet enforced).",
     },
   ],
 };
@@ -94,8 +94,8 @@ export default function Page() {
         </a>{" "}
         offer a 6-digit code with text, images and small files that expire in
         about 17 minutes. ZipDrop is built for a slightly wider job: a 4-digit
-        code, up to 10 files of 1 GB each, text, and a browser-based editor that
-        keeps this window open for 48 hours.
+        code, up to 10 files per transfer, text, and a browser-based editor that
+        keeps this window open with a 48-hour expiry timestamp (cleanup not yet enforced).
       </p>
       <Note>
         Note: ZipDrop is not an operating-system clipboard sync service. It does
@@ -131,8 +131,7 @@ export default function Page() {
           ZipDrop homepage
         </Link>
         , use the Share panel. Paste text into the text tab or choose up to 10
-        files, each up to 1 GB. Images, audio, video and common document types
-        all work.
+        files. Images, audio, video and common document types all work.
       </p>
       <h3>Step 2 — Get your 4-digit code</h3>
       <p>
@@ -168,7 +167,7 @@ export default function Page() {
 
       <h2>Security and privacy</h2>
       <p>
-        ZipDrop content is served over HTTPS and expires after 48 hours. Avoid
+        ZipDrop content is served over HTTPS and each transfer has a 48-hour expiry timestamp (automatic deletion not yet enforced). Avoid
         sending passwords or account credentials to other people, and do not
         post your code in public chat while it is still active. Check the{" "}
         <a className="zd-blog-link" href="/privacy">
@@ -181,8 +180,8 @@ export default function Page() {
         rows={[
           ["Retrieval code", "4-digit number", "6-digit number"],
           ["Text", "Yes", "Yes"],
-          ["Files", "Up to 10 files, 1 GB per file", "Small files (no published size limit)"],
-          ["Expiry", "48 hours", "1000 seconds (~17 minutes)"],
+          ["Files", "Up to 10 files per transfer", "Small files (no published size limit)"],
+          ["Expiry", "48-hour timestamp (cleanup not enforced)", "1000 seconds (~17 minutes)"],
           ["Transport security", "HTTPS", "HTTPS; site states content is encrypted in transit"],
           ["Document editing", "Browser editor, share edited copy", "Not offered"],
           ["Account required", "No", "No"],

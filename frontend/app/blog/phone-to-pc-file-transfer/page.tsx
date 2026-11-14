@@ -206,7 +206,7 @@ export default function Page() {
 
       <h3>How many files can I send in one transfer?</h3>
       <p>
-        You can send up to 10 files in a single transfer, with a 1 GB limit per file.
+        You can send up to 10 files in a single transfer.
       </p>
 
       <h3>Do I need to keep the browser tab open during transfer?</h3>

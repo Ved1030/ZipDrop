@@ -1,7 +1,7 @@
 export const metadata = {
   title: "Best AirDrop Alternative for Windows in 2026",
   description:
-    "Looking for an AirDrop alternative for Windows? ZipDrop works in any browser: share up to 10 files of 1 GB each with a 4-digit code.",
+    "Looking for an AirDrop alternative for Windows? ZipDrop works in any browser: share up to 10 files with a 4-digit code.",
 };
 
 export default function Page() {
@@ -47,7 +47,7 @@ export default function Page() {
       <ul>
         <li>No login required</li>
         <li>Works on Windows, Android, Mac, and iPhone</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
         <li>No software installation needed</li>
         <li>Files keep their original quality</li>
       </ul>

@@ -10,6 +10,9 @@ numpy>=1.26.4
 opencv-python-headless>=4.10.0.84
 fire>=0.6.0
 
+# PDF Compression (pikepdf + qpdf system package)
+pikepdf>=8.0.0
+
 # PDF to Image conversion (PyMuPDF/fitz - no Poppler required)
 pillow>=10.0.0
 
@@ -42,8 +45,15 @@ chardet>=5.0.0
 
 # RTF to Word - uses LibreOffice (system package)
 
+# Image Compression - uses Pillow (already installed)
+# oxipng for lossless PNG optimization (system package, not pip installable)
+
 # Note: LibreOffice must be installed system-wide for Word/Excel/PPT to PDF and RTF to Word
 # On Render/Nixpacks: add 'libreoffice' to nixPkgs
 # Note: Ghostscript must be installed system-wide for PDF/A conversion
 # On Render/Nixpacks: add 'ghostscript' to nixPkgs
+# Note: qpdf must be installed system-wide for PDF compression
+# On Render/Nixpacks: add 'qpdf' to nixPkgs
+# Note: oxipng must be installed system-wide for PNG lossless optimization
+# On Render/Nixpacks: add 'oxipng' to nixPkgs
 # Note: Playwright requires chromium - installed via playwright install-deps

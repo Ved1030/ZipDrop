@@ -3,7 +3,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "How to Share Files Without Login or Registration",
   description:
-    "Learn how to share files without creating an account, installing software, or logging in. ZipDrop uses a 4-digit code, up to 1 GB per file.",
+    "Learn how to share files without creating an account, installing software, or logging in. ZipDrop uses a 4-digit code.",
 };
 
 export default function Page() {
@@ -60,7 +60,7 @@ export default function Page() {
         <li>No login required</li>
         <li>No software installation</li>
         <li>Works across devices</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
         <li>No compression, so quality is preserved</li>
       </ul>
 

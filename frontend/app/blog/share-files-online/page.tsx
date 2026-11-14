@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "How to Share Files Online Easily in 2026",
   description:
-    "Learn how to share files online between any devices. No registration and no software: ZipDrop takes up to 10 files, 1 GB per file, and a 4-digit code.",
+    "Learn how to share files online between any devices. No registration and no software: ZipDrop takes up to 10 files and a 4-digit code.",
 };
 
 export default function Page() {
@@ -91,7 +91,7 @@ export default function Page() {
       </p>
 
       <p>
-        With ZipDrop, you can share files online from any device with a browser. There is no app to download, no account to create, and no configuration to worry about. You upload up to 10 files of up to 1 GB each, get a 4-digit code, and the recipient enters that code to download. Files travel over HTTPS and are stored on ZipDrop's server; there is no end-to-end encryption.
+        With ZipDrop, you can share files online from any device with a browser. There is no app to download, no account to create, and no configuration to worry about. You upload up to 10 files, get a 4-digit code, and the recipient enters that code to download. Files travel over HTTPS and are stored on ZipDrop's server; there is no end-to-end encryption.
       </p>
 
       <p>
@@ -139,7 +139,7 @@ export default function Page() {
       <p>Each transfer is created with a 48-hour expiry timestamp, but automatic deletion is not yet enforced. Files may stay on the server until cleanup ships, so treat the code as the only protection.</p>
 
       <h3>Is there a limit on how many files I can share?</h3>
-      <p>Yes. Each transfer can include up to 10 files, with a maximum of 1 GB per file.</p>
+      <p>Yes. Each transfer can include up to 10 files.</p>
 
       <h3>Can I share files with multiple people?</h3>
       <p>Yes. The same 4-digit code can be given to more than one person, and each of them can open the transfer.</p>

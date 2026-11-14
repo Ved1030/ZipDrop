@@ -47,7 +47,7 @@ export default function Page() {
       <ul>
         <li>No app installation required</li>
         <li>Works across Android, Windows, Mac, and iPhone</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
         <li>No login needed</li>
         <li>Files keep their original quality</li>
       </ul>

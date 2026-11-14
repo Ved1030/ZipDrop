@@ -21,8 +21,7 @@ export default function TermsPage() {
       <ul>
         <li>ZipDrop is free to use and requires no account.</li>
         <li>
-          You can upload up to 10 files per transfer, with a maximum of 1 GB per
-          file.
+          You can upload up to 10 files per transfer.
         </li>
         <li>
           Each upload produces a 4-digit code. Anyone who enters that code can

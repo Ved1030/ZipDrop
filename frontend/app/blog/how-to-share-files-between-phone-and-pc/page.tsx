@@ -61,7 +61,7 @@ export default function Page() {
         <li>No cables required</li>
         <li>No login needed</li>
         <li>Works on modern browsers</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
         <li>Cross-platform compatibility</li>
       </ul>
 

@@ -9,12 +9,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
   title: {
-    default: "ZipDrop – File & Text Sharing",
+    default: "ZipDrop – Share, Convert & Edit Files Online Free",
     template: "%s | ZipDrop",
   },
 
   description:
-    "ZipDrop is a free file and text sharing site. Upload up to 10 files of up to 1 GB each and share them with a 4-digit code — no account needed. Built by Ved Mehta and Virti Panchamia, engineering students at DJ Sanghvi College of Engineering.",
+    "Share files, images, videos and text between devices with ZipDrop. Edit supported documents and convert files online without signing up.",
 
   keywords: [
     "ZipDrop",
@@ -23,11 +23,11 @@ export const metadata: Metadata = {
     "file transfer",
     "share files online",
     "4 digit code sharing",
-    "upload and share files",
-    "send files by code",
+    "online file converter",
+    "edit documents online",
+    "convert PDF to Word",
     "Ved Mehta",
     "Virti Panchamia",
-    "DJ Sanghvi College of Engineering",
   ],
 
   authors: [
@@ -50,14 +50,21 @@ export const metadata: Metadata = {
     },
   },
 
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+  },
+
   icons: {
     icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 
   openGraph: {
-    title: "ZipDrop – File & Text Sharing",
+    title: "ZipDrop – Share, Convert & Edit Files Online Free",
     description:
-      "Share files and text with a 4-digit code. Up to 10 files, 1 GB per file, no account needed. Built by Ved Mehta and Virti Panchamia from DJ Sanghvi College of Engineering.",
+      "Share files, images, videos and text between devices with a 4-digit code. Edit supported documents and convert files online — no account needed.",
     url: SITE_URL,
     siteName: "ZipDrop",
     images: [
@@ -65,7 +72,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "ZipDrop File and Text Sharing",
+        alt: "ZipDrop – Share, Convert & Edit Files Online",
       },
     ],
     locale: "en_US",
@@ -74,9 +81,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "ZipDrop – File & Text Sharing",
+    title: "ZipDrop – Share, Convert & Edit Files Online Free",
     description:
-      "Share files and text with a 4-digit code, up to 1 GB per file. Built by Ved Mehta and Virti Panchamia.",
+      "Share files, images, videos and text between devices with a 4-digit code. Edit supported documents and convert files online — no account needed.",
     images: ["/og-image.png"],
   },
 
@@ -97,7 +104,7 @@ export default function RootLayout({
     applicationCategory: "FileSharingApplication",
     operatingSystem: "Web",
     description:
-      "ZipDrop is a free file and text sharing site that uses a 4-digit code.",
+      "ZipDrop is a free file and text sharing site that uses a 4-digit code. Convert files and edit documents in the browser without signing up.",
     creator: [
       {
         "@type": "Person",

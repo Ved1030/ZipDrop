@@ -174,8 +174,7 @@ export default function Page() {
 
       <h3>Is there a file size limit for wireless transfers?</h3>
       <p>
-        Yes. ZipDrop accepts up to 10 files per transfer, with a maximum of 1 GB
-        per file. Larger files take longer to upload depending on your connection
+        Yes. ZipDrop accepts up to 10 files per transfer. Larger files take longer to upload depending on your connection
         speed.
       </p>
 

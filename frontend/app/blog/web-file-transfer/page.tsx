@@ -50,7 +50,7 @@ export default function Page() {
       </p>
 
       <p>
-        What sets ZipDrop apart is its simplicity. The 4-digit code system is intuitive enough for anyone to use, regardless of technical background. Files keep their original quality, and there is nothing to configure. Because ZipDrop runs in the browser, it works identically on Windows, macOS, Android, and iOS. Uploads are limited to 1 GB per file and 10 files per transfer.
+        What sets ZipDrop apart is its simplicity. The 4-digit code system is intuitive enough for anyone to use, regardless of technical background. Files keep their original quality, and there is nothing to configure. Because ZipDrop runs in the browser, it works identically on Windows, macOS, Android, and iOS. Uploads are limited to 10 files per transfer.
       </p>
 
       <h2>Step-by-Step Guide to Using ZipDrop for Web File Transfer</h2>
@@ -89,7 +89,7 @@ export default function Page() {
       <p>Files are stored on ZipDrop's server. Each transfer gets a 48-hour expiry timestamp, but automatic deletion is not yet enforced, so files may remain until cleanup is added. Treat the 4-digit code as the only protection for the files.</p>
 
       <h3>Is there a limit on how many files I can transfer?</h3>
-      <p>You can transfer up to 10 files at once, with a maximum of 1 GB per file.</p>
+      <p>You can transfer up to 10 files at once.</p>
 
       <h3>Do I need to share any personal information?</h3>
       <p>No. ZipDrop does not require any personal details, email addresses, or phone numbers to complete a transfer.</p>
@@ -97,7 +97,7 @@ export default function Page() {
       <h2>Conclusion</h2>
 
       <p>
-        Web file transfer has made it easier than ever to share digital content across devices and distances. ZipDrop offers a browser-based experience with no app and no account: upload up to 10 files of up to 1 GB each, share a 4-digit code, and the recipient downloads from the site. Whether you are sharing files for work, school, or personal reasons, it is a free option that works across platforms.
+        Web file transfer has made it easier than ever to share digital content across devices and distances. ZipDrop offers a browser-based experience with no app and no account: upload up to 10 files per transfer, share a 4-digit code, and the recipient downloads from the site. Whether you are sharing files for work, school, or personal reasons, it is a free option that works across platforms.
       </p>
 
       <div className="mt-10">

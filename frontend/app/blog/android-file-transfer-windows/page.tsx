@@ -141,7 +141,7 @@ export default function Page() {
           compatibility issues.
         </li>
         <li>
-          Up to 1 GB per file means you can send 4K videos and large document
+          Large file support means you can send 4K videos and large document
           packs within a clear limit.
         </li>
       </ul>
@@ -232,7 +232,7 @@ export default function Page() {
 
       <h3>How many files can I send in a single transfer?</h3>
       <p>
-        You can send up to 10 files at once, with a 1 GB limit per file.
+        You can send up to 10 files at once.
       </p>
 
       <h2>Conclusion</h2>

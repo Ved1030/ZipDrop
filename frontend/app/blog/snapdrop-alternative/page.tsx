@@ -14,7 +14,7 @@ export default function Page() {
         <li>No login required</li>
         <li>Works across devices</li>
         <li>Simple 4-digit code system</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
         <li>No compression, so quality is preserved</li>
       </ul>
 

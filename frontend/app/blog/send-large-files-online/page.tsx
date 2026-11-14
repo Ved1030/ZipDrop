@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Best Way to Send Large Files Online",
   description:
-    "Learn how to send large files online. ZipDrop takes up to 10 files of 1 GB each, with no compression and no account needed.",
+    "Learn how to send large files online. ZipDrop takes up to 10 files per transfer, with no compression and no account needed.",
 };
 
 export default function Page() {
@@ -44,7 +44,7 @@ export default function Page() {
 
       <p>
         ZipDrop offers a simple way to transfer files online using a unique
-        4-digit code. Users can upload up to 10 files of up to 1 GB each and
+        4-digit code. Users can upload up to 10 files per transfer and
         access them from another device.
       </p>
 
@@ -60,7 +60,7 @@ export default function Page() {
 
       <ul>
         <li>No login required</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
         <li>Works across platforms</li>
         <li>No compression, so quality is preserved</li>
         <li>No account needed</li>

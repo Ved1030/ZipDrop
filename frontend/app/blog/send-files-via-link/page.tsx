@@ -65,7 +65,7 @@ export default function Page() {
 
       <ol>
         <li>Visit ZipDrop from any device with a browser.</li>
-        <li>Select up to 10 files (up to 1 GB each) and upload them.</li>
+        <li>Select up to 10 files and upload them.</li>
         <li>Receive your unique 4-digit code once the upload finishes.</li>
         <li>Share the code with your recipient through whatever channel works best.</li>
         <li>Your recipient opens ZipDrop, enters the code, and downloads the files.</li>
@@ -101,7 +101,7 @@ export default function Page() {
       <p>Every transfer is created with a 48-hour expiry timestamp, but automatic deletion is not yet enforced. Until cleanup ships, files remain stored on our server, so do not upload anything you would not want kept there.</p>
 
       <h3>Can I send multiple files in one transfer?</h3>
-      <p>Yes. You can upload up to 10 files at once, up to 1 GB per file, and all of them become accessible through the same 4-digit code.</p>
+      <p>Yes. You can upload up to 10 files at once, and all of them become accessible through the same 4-digit code.</p>
 
       <h3>Is there any risk of someone intercepting the code?</h3>
       <p>The code is shared through your chosen communication channel, so you control who receives it. Files travel over HTTPS and are stored on ZipDrop's server while the code is active. Automatic deletion after 48 hours is not yet enforced.</p>

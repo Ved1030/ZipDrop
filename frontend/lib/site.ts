@@ -14,4 +14,3 @@ export const AUTHORS = [
 ];
 
 export const MAX_FILES_PER_TRANSFER = 10;
-export const MAX_FILE_SIZE = "1 GB";

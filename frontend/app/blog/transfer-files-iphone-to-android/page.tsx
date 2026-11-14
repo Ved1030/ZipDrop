@@ -52,7 +52,7 @@ export default function Page() {
         <li>No apps required</li>
         <li>No login needed</li>
         <li>Works across devices</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
       </ul>
 
       <p>

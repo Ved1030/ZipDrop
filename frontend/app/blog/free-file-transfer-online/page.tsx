@@ -96,7 +96,7 @@ export default function Page() {
       </p>
 
       <ul>
-        <li>It is completely free, with no paid tiers and a clear 1 GB per-file limit.</li>
+        <li>It is completely free, with no paid tiers.</li>
         <li>There is no account creation process whatsoever.</li>
         <li>It works in any modern browser on any device.</li>
         <li>Transfers are accessed with a unique 4-digit code.</li>
@@ -128,10 +128,10 @@ export default function Page() {
       <h2>Frequently Asked Questions</h2>
 
       <h3>Is free file transfer online really free?</h3>
-      <p>Yes, when you use a service like ZipDrop that does not charge fees. Each transfer supports up to 10 files and 1 GB per file.</p>
+      <p>Yes, when you use a service like ZipDrop that does not charge fees. Each transfer supports up to 10 files.</p>
 
       <h3>Can I send large files for free?</h3>
-      <p>ZipDrop supports files up to 1 GB each, with up to 10 files per transfer.</p>
+      <p>ZipDrop supports large files, with up to 10 files per transfer.</p>
 
       <h3>Do I need to install software?</h3>
       <p>No. ZipDrop works entirely in your browser. There is nothing to download or install.</p>
@@ -149,7 +149,7 @@ export default function Page() {
       </p>
 
       <p>
-        ZipDrop delivers on this promise. It is fast, completely free, and straightforward. Whether you need to transfer a single document or a large video file, ZipDrop can handle it within its 1 GB per-file limit.
+        ZipDrop delivers on this promise. It is fast, completely free, and straightforward. Whether you need to transfer a single document or a large video file, ZipDrop can handle it within its clear file limits.
       </p>
 
       <div className="mt-10">

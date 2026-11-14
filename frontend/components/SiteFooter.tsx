@@ -7,6 +7,7 @@ import {
   CONTACT_EMAIL,
   GITHUB_URL,
 } from "@/lib/site";
+import { BrandLogo } from "./BrandLogo";
 
 const linkStyle: CSSProperties = {
   color: "var(--text-secondary)",
@@ -20,13 +21,13 @@ const headingStyle: CSSProperties = {
   fontWeight: 600,
   letterSpacing: "0.1em",
   textTransform: "uppercase",
-  marginBottom: "12px",
+  marginBottom: "16px",
 };
 
 const columnStyle: CSSProperties = {
   display: "flex",
   flexDirection: "column",
-  gap: "10px",
+  gap: "12px",
 };
 
 export default function SiteFooter() {
@@ -37,58 +38,76 @@ export default function SiteFooter() {
   return (
     <footer
       style={{
-        borderTop: "1px solid var(--border-soft)",
+        borderTop: "1px solid var(--border)",
         background: "var(--bg-main)",
+        marginTop: "auto",
       }}
     >
       <div
         style={{
-          maxWidth: "1000px",
+          maxWidth: "1280px",
           margin: "0 auto",
-          padding: "40px 24px 32px",
+          padding: "48px 24px 32px",
           display: "flex",
           flexDirection: "column",
-          gap: "28px",
+          gap: "40px",
         }}
       >
+        {/* Main footer grid */}
         <div
           style={{
-            display: "flex",
-            flexWrap: "wrap",
+            display: "grid",
+            gridTemplateColumns: "2fr repeat(3, 1fr)",
             gap: "40px",
-            justifyContent: "space-between",
           }}
         >
-          <div style={{ maxWidth: "300px" }}>
-            <p style={{ fontSize: "16px", fontWeight: 700, letterSpacing: "-0.02em" }}>
-              ZipDrop
-            </p>
+          {/* Left section - Brand */}
+          <div style={{ maxWidth: "320px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
+              <BrandLogo size={40} showText={false} />
+              <span style={{ fontSize: "22px", fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
+                ZipDrop
+              </span>
+            </div>
             <p
               style={{
-                marginTop: "8px",
-                fontSize: "13px",
-                lineHeight: 1.6,
+                fontSize: "14px",
+                lineHeight: 1.7,
                 color: "var(--text-secondary)",
               }}
             >
-              Free file and text sharing with a 4-digit code. Up to 10 files,
-              1 GB per file, no account needed.
+              Your all-in-one file utility platform. Share, convert, edit, compress and manage files securely.
             </p>
             <a
               href={`mailto:${CONTACT_EMAIL}?subject=ZipDrop%20feedback`}
-              style={{ ...linkStyle, display: "inline-block", marginTop: "12px", color: "var(--primary-teal)" }}
+              style={{ ...linkStyle, display: "inline-block", marginTop: "20px", color: "var(--primary-teal)", fontWeight: 500 }}
             >
               Send feedback
             </a>
           </div>
 
-          <nav aria-label="Site" style={columnStyle}>
-            <p style={headingStyle}>Site</p>
-            <a href="/" style={linkStyle}>Home</a>
-            <a href="/about" style={linkStyle}>About</a>
-            <a href="/contact" style={linkStyle}>Contact</a>
+          {/* Tools section */}
+          <nav aria-label="Tools" style={columnStyle}>
+            <p style={headingStyle}>Tools</p>
+            <a href="/conversion?category=pdf-tools" style={linkStyle}>PDF Tools</a>
+            <a href="/conversion?category=document-tools" style={linkStyle}>Document Tools</a>
+            <a href="/conversion?category=image-tools" style={linkStyle}>Image Tools</a>
+            <a href="/conversion?category=compression-tools" style={linkStyle}>Compression Tools</a>
+            <a href="/conversion" style={linkStyle}>Conversion Tools</a>
+            <a href="/conversion?category=text-tools" style={linkStyle}>Text Tools</a>
+            <a href="/conversion?category=utility-tools" style={linkStyle}>Utility Tools</a>
+            <a href="/editor" style={linkStyle}>Online Editor</a>
           </nav>
 
+          {/* Company section */}
+          <nav aria-label="Company" style={columnStyle}>
+            <p style={headingStyle}>Company</p>
+            <a href="/about" style={linkStyle}>About</a>
+            <a href="/contact" style={linkStyle}>Contact</a>
+            <a href={`mailto:${CONTACT_EMAIL}?subject=ZipDrop%20feedback`} style={linkStyle}>Send Feedback</a>
+          </nav>
+
+          {/* Legal section */}
           <nav aria-label="Legal" style={columnStyle}>
             <p style={headingStyle}>Legal</p>
             <a href="/privacy" style={linkStyle}>Privacy Policy</a>
@@ -96,13 +115,14 @@ export default function SiteFooter() {
           </nav>
         </div>
 
+        {/* Bottom section */}
         <div
           style={{
-            borderTop: "1px solid var(--border-soft)",
-            paddingTop: "20px",
+            borderTop: "1px solid var(--border)",
+            paddingTop: "24px",
             display: "flex",
             flexWrap: "wrap",
-            gap: "12px",
+            gap: "16px",
             justifyContent: "space-between",
             alignItems: "center",
           }}
@@ -113,21 +133,21 @@ export default function SiteFooter() {
               href={AUTHORS[0].linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ ...linkStyle, fontSize: "12px" }}
+              style={{ ...linkStyle, fontSize: "12px", color: "var(--text-secondary)" }}
             >
               Ved Mehta
             </a>{" "}
-            &amp;{" "}
+            &{" "}
             <a
               href={AUTHORS[1].linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ ...linkStyle, fontSize: "12px" }}
+              style={{ ...linkStyle, fontSize: "12px", color: "var(--text-secondary)" }}
             >
               Virti Panchamia
             </a>
           </p>
-          <p style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+          <p style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
             <a
               href={GITHUB_URL}
               target="_blank"
@@ -145,7 +165,7 @@ export default function SiteFooter() {
           </p>
         </div>
 
-        <p style={{ fontSize: "11px", color: "var(--text-muted)", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "11px", color: "var(--text-muted)", lineHeight: 1.6, marginTop: "8px" }}>
           ZipDrop is an independent project and is not affiliated with Apple,
           Google, Microsoft, Snapdrop, or WeTransfer.
         </p>

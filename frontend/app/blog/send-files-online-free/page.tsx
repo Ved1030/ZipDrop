@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "How to Send Files Online Free in 2026",
   description:
-    "Learn how to send files online free with no account, no software, and no hidden fees. ZipDrop supports up to 10 files and 1 GB per file.",
+    "Learn how to send files online free with no account, no software, and no hidden fees. ZipDrop supports up to 10 files per transfer.",
 };
 
 export default function Page() {
@@ -91,7 +91,7 @@ export default function Page() {
       </p>
 
       <p>
-        With ZipDrop, you can send up to 10 files per transfer, with a 1 GB limit per file. There is no registration, no subscription, and no hidden costs. You simply upload your file, receive a 4-digit code, and share it with the recipient. They enter the code and download the file.
+        With ZipDrop, you can send up to 10 files per transfer. There is no registration, no subscription, and no hidden costs. You simply upload your file, receive a 4-digit code, and share it with the recipient. They enter the code and download the file.
       </p>
 
       <p>
@@ -133,7 +133,7 @@ export default function Page() {
       <p>Yes. ZipDrop is completely free to use. There are no subscription plans or hidden charges.</p>
 
       <h3>Are there any file size limits?</h3>
-      <p>ZipDrop supports files up to 1 GB each, with up to 10 files per transfer.</p>
+      <p>ZipDrop supports large files, with up to 10 files per transfer.</p>
 
       <h3>Do I need to create an account?</h3>
       <p>No account or registration is required. You can start sending files immediately.</p>

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Upload and Share Files Online (2026 Guide)",
   description:
-    "Learn how to upload and share files online with ZipDrop: up to 10 files, 1 GB per file, no account, and a 4-digit code the recipient enters on the site.",
+    "Learn how to upload and share files online with ZipDrop: up to 10 files, no account, and a 4-digit code the recipient enters on the site.",
 };
 
 export default function Page() {
@@ -72,7 +72,7 @@ export default function Page() {
       <ul>
         <li><strong>No account needed:</strong> Upload and download without creating a profile.</li>
         <li><strong>Short codes:</strong> 4-digit codes are easier to type and share than long URLs.</li>
-        <li><strong>Up to 1 GB per file:</strong> Large videos and project files are supported.</li>
+        <li><strong>Large file support:</strong> Videos and project files are supported.</li>
         <li><strong>Multi-file support:</strong> Upload up to 10 files at once in a single transfer.</li>
         <li><strong>Original quality:</strong> Files are not compressed, resized, or converted.</li>
       </ul>
@@ -97,7 +97,7 @@ export default function Page() {
       <h2>Conclusion</h2>
 
       <p>
-        Uploading and sharing files online should not require a manual. ZipDrop keeps the process short: upload up to 10 files of up to 1 GB each, share a 4-digit code, and the recipient downloads from the site. No account, no app, and no fee.
+        Uploading and sharing files online should not require a manual. ZipDrop keeps the process short: upload up to 10 files per transfer, share a 4-digit code, and the recipient downloads from the site. No account, no app, and no fee.
       </p>
 
       <div className="mt-10">

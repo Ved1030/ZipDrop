@@ -27,7 +27,7 @@ export default function AboutPage() {
 
       <h2>How it works</h2>
       <ol>
-        <li>Upload up to 10 files, with a maximum of 1 GB per file.</li>
+        <li>Upload up to 10 files per transfer.</li>
         <li>ZipDrop uploads them and gives you a 4-digit code.</li>
         <li>You send the code to the person who needs the files.</li>
         <li>They open ZipDrop, enter the code, and download.</li>

@@ -5,9 +5,9 @@ const meta = {
   slug: "zipdrop-vs-online-clipboard",
   title: "ZipDrop vs Online Clipboard: An Honest Comparison",
   description:
-    "ZipDrop uses a 4-digit code and 48-hour file links; Online Clipboard uses a 6-digit code and ~17-minute expiry. A factual side-by-side of features, limits and security.",
+    "ZipDrop uses a 4-digit code and 48-hour expiry timestamp; Online Clipboard uses a 6-digit code and ~17-minute expiry. A factual side-by-side of features, limits and security.",
   published: "2026-11-13",
-  modified: "2026-11-13",
+  modified: "2026-11-14",
   sections: [
     "The short answer",
     "At a glance",
@@ -25,7 +25,7 @@ const meta = {
   faqs: [
     {
       q: "Is ZipDrop the same as Online Clipboard?",
-      a: "No. Both let you send content with a numeric code and retrieve it on another device without an account, but ZipDrop focuses on larger file transfers (up to 10 files, 1 GB each, 48-hour expiry) plus a browser document editor, while Online Clipboard focuses on fast, short-lived text and image snippets (~17-minute expiry).",
+      a: "No. Both let you send content with a numeric code and retrieve it on another device without an account, but ZipDrop focuses on larger file transfers (up to 10 files per transfer, 48-hour expiry timestamp with cleanup not yet enforced) plus a browser document editor, while Online Clipboard focuses on fast, short-lived text and image snippets (~17-minute expiry).",
     },
     {
       q: "Which has the shorter code, ZipDrop or Online Clipboard?",
@@ -80,12 +80,12 @@ export default function Page() {
           ["Retrieval code", "4 digits", "6 digits"],
           ["Plain text", "Yes", "Yes"],
           ["Images", "Yes (as files)", "Yes"],
-          ["Files", "Up to 10 per transfer, 1 GB per file", "Small files — no published size limit"],
+          ["Files", "Up to 10 per transfer", "Small files — no published size limit"],
           ["Account", "Not required", "Not required"],
           ["Cost", "Free", "Free, ad-supported"],
           ["Document editing", "Browser-based editor (supported docs)", "Not offered"],
           ["Share edited copy", "Yes, with a new code", "No"],
-          ["Expiry", "48 hours", "1000 seconds (~17 minutes)"],
+          ["Expiry", "48-hour timestamp (cleanup not enforced)", "1000 seconds (~17 minutes)"],
           ["Transport", "HTTPS", "HTTPS; site states encryption in transit"],
         ]}
       />
@@ -106,8 +106,7 @@ export default function Page() {
 
       <h2>Image and file sharing</h2>
       <p>
-        ZipDrop accepts up to 10 files of up to 1 GB each in a single transfer,
-        covering images, audio, video and document files. Online Clipboard
+        ZipDrop accepts up to 10 files per transfer, covering images, audio, video and document files. Online Clipboard
         supports images and &ldquo;small files&rdquo; — the site does not publish a maximum
         size, so treat it as suitable for lightweight files only. For a video
         clip or an audio recording, ZipDrop is the safer choice.
@@ -123,7 +122,7 @@ export default function Page() {
 
       <h2>Maximum file size</h2>
       <p>
-        ZipDrop: 1 GB per file, 10 files per transfer. Online Clipboard: not
+        ZipDrop: 10 files per transfer (size limits apply per upload); Online Clipboard: not
         publicly specified beyond &ldquo;small files&rdquo;. If your transfer is larger than
         a lightweight attachment, verify the limit before relying on it.
       </p>
@@ -156,7 +155,7 @@ export default function Page() {
         Online Clipboard content auto-expires 1000 seconds after sending —
         excellent if you want the content to vanish almost immediately, awkward
         if you are setting up a second device ten minutes later. ZipDrop links
-        expire after 48 hours, so it is more forgiving but holds data longer.
+        have a 48-hour expiry timestamp (cleanup not yet enforced), so it is more forgiving but holds data longer.
         Both serve pages over HTTPS.
       </p>
 
@@ -179,7 +178,7 @@ export default function Page() {
         <Link className="zd-blog-link" href="/">
           the ZipDrop Share panel
         </Link>
-        : paste text or a file, get a code, and see whether the 48-hour,
+        : paste text or a file, get a code, and see whether the 48-hour timestamp (cleanup not enforced),
         file-first workflow matches what you actually do.
       </p>
     </BlogArticle>

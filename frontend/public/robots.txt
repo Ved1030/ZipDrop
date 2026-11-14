@@ -1,0 +1,16 @@
+# ZipDrop robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://zip-drop.vercel.app/sitemap.xml
+
+# Disallow admin/api paths
+Disallow: /api/
+Disallow: /editor/
+Disallow: /_next/
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# Crawl-delay for polite crawling
+Crawl-delay: 10

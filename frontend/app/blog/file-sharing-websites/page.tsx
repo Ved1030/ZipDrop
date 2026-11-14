@@ -73,7 +73,7 @@ export default function Page() {
         <li><strong>Completely free:</strong> ZipDrop does not charge for transfers or require a subscription.</li>
         <li><strong>No registration:</strong> You never need to create an account or provide personal information.</li>
         <li><strong>No compression:</strong> Files keep their original quality.</li>
-        <li><strong>Up to 10 files, 1 GB each:</strong> Limits are stated up front, not buried in a pricing page.</li>
+        <li><strong>Up to 10 files per transfer:</strong> Limits are stated up front, not buried in a pricing page.</li>
         <li><strong>Code-based access:</strong> Each transfer is opened with a 4-digit code that the sender passes to the recipient.</li>
       </ul>
 
@@ -83,7 +83,7 @@ export default function Page() {
       <p>Yes. ZipDrop is a website, not an app. Anyone with a browser and internet connection can receive files you share.</p>
 
       <h3>Are there limits on how often I can share files?</h3>
-      <p>There is no daily or monthly quota built into ZipDrop. Each transfer can contain up to 10 files of up to 1 GB each.</p>
+      <p>There is no daily or monthly quota built into ZipDrop. Each transfer can contain up to 10 files.</p>
 
       <h3>What types of files can I share?</h3>
       <p>Any file type is supported. ZipDrop does not restrict formats, so you can share documents, images, videos, archives, and more.</p>

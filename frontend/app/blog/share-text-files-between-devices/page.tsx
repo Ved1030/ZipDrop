@@ -7,7 +7,7 @@ const meta = {
   description:
     "A step-by-step guide to moving text, photos and documents between phone, tablet and PC using an online clipboard. Compare code-based transfer with messaging yourself, USB and AirDrop.",
   published: "2026-11-13",
-  modified: "2026-11-13",
+  modified: "2026-11-14",
   sections: [
     "The fastest method, in one minute",
     "Step-by-step with ZipDrop",
@@ -24,7 +24,7 @@ const meta = {
     },
     {
       q: "How do I send large files between devices without email?",
-      a: "Use a code-based transfer: in ZipDrop, choose up to 10 files of up to 1 GB each and send them. Enter the 4-digit code on the other device and download. Email works, but many providers cap attachments well below 1 GB.",
+      a: "Use a code-based transfer: in ZipDrop, choose up to 10 files per transfer and send them. Enter the 4-digit code on the other device and download. Email works, but many providers cap attachments well below that.",
     },
     {
       q: "Do both devices need to be on the same Wi-Fi?",
@@ -76,7 +76,7 @@ export default function Page() {
           </Link>{" "}
           on the device that has the content.
         </li>
-        <li>Paste text into the text tab, or choose up to 10 files (1 GB each).</li>
+        <li>Paste text into the text tab, or choose up to 10 files.</li>
         <li>Send and copy the 4-digit code.</li>
         <li>On the other device, type the code in the Receive panel and tap Receive.</li>
         <li>Text opens in the panel; files download to that device.</li>
@@ -90,7 +90,7 @@ export default function Page() {
       <Table
         head={["Method", "Works across OS", "Account", "Limit", "Best for"]}
         rows={[
-          ["ZipDrop (code)", "Yes", "No", "10 files × 1 GB", "Text + files, any direction"],
+          ["ZipDrop (code)", "Yes", "No", "10 files per transfer", "Text + files, any direction"],
           ["Messaging yourself", "Yes", "Yes", "App limits", "Very occasional use"],
           ["Email yourself", "Yes", "Yes", "Attachment caps, often small", "Files you want to keep"],
           ["USB cable", "Yes", "No", "Storage-bound", "Bulk transfers when a cable is handy"],
@@ -131,7 +131,7 @@ export default function Page() {
         <li>Check that the sending device finished uploading before you enter the code.</li>
         <li>Re-copy the code — a single mistyped digit retrieves nothing.</li>
         <li>Use a different network if a corporate firewall blocks the transfer site.</li>
-        <li>Retry the upload rather than leaving the tab open for hours; content expires after 48 hours.</li>
+        <li>Retry the upload rather than leaving the tab open for hours; content has a 48-hour expiry timestamp (cleanup not yet enforced).</li>
       </ul>
     </BlogArticle>
   );

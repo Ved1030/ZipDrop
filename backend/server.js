@@ -99,10 +99,37 @@ const supabase = createClient(
 
 /* --------------------------------
    Middleware
--------------------------------- */
+------------------------------ */
 
 
-app.use(cors());
+const corsOptions = {
+  origin: true,
+  credentials: true,
+  exposedHeaders: [
+    "X-Original-Size",
+    "X-Compressed-Size", 
+    "X-Bytes-Saved",
+    "X-Reduction-Percent",
+    "X-Page-Count",
+    "X-Width",
+    "X-Height",
+    "X-Compression-Level",
+    "X-Compression-Mode",
+    "X-Quality",
+    "X-Compression-Method",
+    "X-Warning",
+    "X-Total-Files",
+    "X-Successful",
+    "X-Failed",
+    "X-Total-Original-Size",
+    "X-Total-Compressed-Size",
+    "X-Total-Bytes-Saved",
+    "X-Total-Reduction-Percent",
+    "Content-Disposition"
+  ]
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
@@ -860,8 +887,213 @@ app.post("/convert/svg-to-png", upload.single("file"), async (req, res) => {
 });
 
 /* --------------------------------
+   Compression Router & Endpoints
+------------------------------ */
+
+const { getCompressionRouter } = require("./compression");
+const compressionRouter = getCompressionRouter();
+
+/* Compression health check */
+app.get("/health/compression", async (req, res) => {
+  try {
+    // Check PDF compressor
+    const pdfCompressor = compressionRouter.getCompressor('pdf');
+    await pdfCompressor.checkPDFCompressorTooling();
+    
+    // Check image compressor
+    const jpgCompressor = compressionRouter.getCompressor('jpg');
+    await jpgCompressor.checkImageCompressorTooling();
+
+    res.json({
+      ok: true,
+      pdf: { ok: true },
+      image: { ok: true },
+      bulk: { ok: true },
+    });
+  } catch (error) {
+    res.status(503).json({
+      ok: false,
+      error: error.message,
+    });
+  }
+});
+
+/* Generic compression endpoint */
+async function handleCompression(req, res, format) {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    const options = { ...req.body };
+    
+    // Convert string options to proper types
+    if (options.quality) options.quality = options.quality; // Keep as string for preset handling
+    if (options.level) options.level = options.level;
+    if (options.mode) options.mode = options.mode;
+    if (options.progressive) options.progressive = options.progressive === 'true';
+    if (options.useOxipng) options.useOxipng = options.useOxipng === 'true';
+    if (options.allowAnimated) options.allowAnimated = options.allowAnimated === 'true';
+    if (options.width) options.width = parseInt(options.width);
+    if (options.height) options.height = parseInt(options.height);
+
+    const result = await compressionRouter.compress({
+      inputBuffer: req.file.buffer,
+      inputFormat: format,
+      options,
+    });
+
+    // Determine filename
+    const baseName = req.file.originalname.replace(
+      new RegExp(`\\.${format}$`, 'i'),
+      ''
+    );
+    const filename = `${baseName}_compressed.${format === 'jpeg' ? 'jpg' : format}`;
+    const mimeType = compressionRouter.getCompressor(format).getMimeType(format);
+
+    // Send compressed file with stats in headers
+    res.set({
+      "Content-Type": mimeType,
+      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Content-Length": result.buffer.length,
+      "X-Original-Size": result.stats.originalSize,
+      "X-Compressed-Size": result.stats.compressedSize,
+      "X-Bytes-Saved": result.stats.bytesSaved,
+      "X-Reduction-Percent": result.stats.reductionPercent,
+    });
+
+    // Add format-specific headers
+    if (result.stats.pageCount) {
+      res.set("X-Page-Count", result.stats.pageCount);
+    }
+    if (result.stats.width && result.stats.height) {
+      res.set("X-Width", result.stats.width);
+      res.set("X-Height", result.stats.height);
+    }
+    if (result.stats.level) {
+      res.set("X-Compression-Level", result.stats.level);
+    }
+    if (result.stats.mode) {
+      res.set("X-Compression-Mode", result.stats.mode);
+    }
+    if (result.stats.quality) {
+      res.set("X-Quality", result.stats.quality);
+    }
+    if (result.stats.method) {
+      res.set("X-Compression-Method", result.stats.method);
+    }
+    if (result.stats.warning) {
+      res.set("X-Warning", result.stats.warning);
+    }
+
+    res.send(result.buffer);
+  } catch (error) {
+    console.error(`[compress/${format}] Error:`, error.message);
+    const status = error.code === 'INVALID_INPUT' || error.code === 'UNSUPPORTED_FORMAT' ? 400 :
+                   error.code === 'FILE_TOO_LARGE' ? 413 :
+                   error.code === 'PASSWORD_PROTECTED' ? 400 :
+                   error.code === 'CORRUPTED_FILE' ? 400 :
+                   error.code === 'MISSING_DEPENDENCY' ? 503 : 500;
+    res.status(status).json({ 
+      error: error.message || "Compression failed",
+      code: error.code,
+      ...(error.details && { detail: error.details })
+    });
+  }
+}
+
+/* Compression Endpoints */
+
+// PDF Compression
+app.post("/compress/pdf", upload.single("file"), async (req, res) => {
+  await handleCompression(req, res, 'pdf');
+});
+
+// JPG Compression
+app.post("/compress/jpg", upload.single("file"), async (req, res) => {
+  await handleCompression(req, res, 'jpg');
+});
+
+// PNG Compression
+app.post("/compress/png", upload.single("file"), async (req, res) => {
+  await handleCompression(req, res, 'png');
+});
+
+// WEBP Compression
+app.post("/compress/webp", upload.single("file"), async (req, res) => {
+  await handleCompression(req, res, 'webp');
+});
+
+/* Bulk Image Compression */
+app.post("/compress/images/bulk", upload.array("files", 50), async (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: "No files uploaded" });
+    }
+
+    const options = { ...req.body };
+    if (options.quality) options.quality = options.quality;
+    if (options.mode) options.mode = options.mode;
+    if (options.progressive) options.progressive = options.progressive === 'true';
+    if (options.useOxipng) options.useOxipng = options.useOxipng === 'true';
+    if (options.allowAnimated) options.allowAnimated = options.allowAnimated === 'true';
+
+    // Prepare files array for bulk compressor
+    const files = req.files.map(f => {
+      const ext = f.originalname.split('.').pop().toLowerCase();
+      const format = ext === 'jpeg' ? 'jpg' : ext;
+      return {
+        buffer: f.buffer,
+        originalName: f.originalname,
+        format,
+      };
+    });
+
+    // Validate formats
+    const supportedFormats = compressionRouter.getBulkSupportedFormats();
+    const invalidFiles = files.filter(f => !supportedFormats.includes(f.format));
+    if (invalidFiles.length > 0) {
+      return res.status(400).json({
+        error: `Unsupported file formats: ${invalidFiles.map(f => f.originalName).join(', ')}`,
+        code: 'UNSUPPORTED_FORMAT',
+        unsupportedFiles: invalidFiles.map(f => f.originalName),
+      });
+    }
+
+    const result = await compressionRouter.compressBulk({ files, options });
+
+    // Send ZIP file with stats in headers
+    res.set({
+      "Content-Type": "application/zip",
+      "Content-Disposition": `attachment; filename="compressed_images.zip"`,
+      "Content-Length": result.zipBuffer.length,
+      "X-Total-Files": result.stats.totalFiles,
+      "X-Successful": result.stats.successful,
+      "X-Failed": result.stats.failed,
+      "X-Total-Original-Size": result.stats.totalOriginalSize,
+      "X-Total-Compressed-Size": result.stats.totalCompressedSize,
+      "X-Total-Bytes-Saved": result.stats.totalBytesSaved,
+      "X-Total-Reduction-Percent": result.stats.totalReductionPercent,
+    });
+
+    res.send(result.zipBuffer);
+  } catch (error) {
+    console.error("[compress/images/bulk] Error:", error.message);
+    const status = error.code === 'INVALID_INPUT' || error.code === 'UNSUPPORTED_FORMAT' ? 400 :
+                   error.code === 'FILE_TOO_LARGE' ? 413 :
+                   error.code === 'MISSING_DEPENDENCY' ? 503 :
+                   error.code === 'ZIP_CREATION_FAILED' ? 500 : 500;
+    res.status(status).json({ 
+      error: error.message || "Bulk compression failed",
+      code: error.code,
+      ...(error.details && { detail: error.details })
+    });
+  }
+});
+
+/* --------------------------------
    Receive Data
-------------------------------- */
+------------------------------ */
 
 app.get("/receive/:code", async (req, res) => {
   try {

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Best File Transfer Website: What to Look For in 2026",
   description:
-    "Looking for a reliable file transfer website? Learn what to check and how ZipDrop works: up to 10 files, 1 GB per file, and a 4-digit code. No login required.",
+    "Looking for a reliable file transfer website? Learn what to check and how ZipDrop works: up to 10 files and a 4-digit code. No login required.",
 };
 
 export default function Page() {
@@ -46,7 +46,7 @@ export default function Page() {
       <h2>Why ZipDrop Is the Best File Transfer Website</h2>
 
       <p>
-        ZipDrop removes the unnecessary steps. There is no account creation, no software download, and no confusing dashboard. You upload up to 10 files of up to 1 GB each, receive a unique 4-digit code, and share that code with your recipient. They open ZipDrop on any device, enter the code, and download the files.
+        ZipDrop removes the unnecessary steps. There is no account creation, no software download, and no confusing dashboard. You upload up to 10 files, receive a unique 4-digit code, and share that code with your recipient. They open ZipDrop on any device, enter the code, and download the files.
       </p>
 
       <p>
@@ -74,7 +74,7 @@ export default function Page() {
         <li><strong>Cross-platform support:</strong> Works in any modern browser on any operating system.</li>
         <li><strong>No file compression:</strong> Files are transferred in their original quality.</li>
         <li><strong>Simple 4-digit code system:</strong> Easy to share and type on any device.</li>
-        <li><strong>Clear limits:</strong> Up to 10 files, 1 GB per file, stated up front.</li>
+        <li><strong>Clear limits:</strong> Up to 10 files per transfer, stated up front.</li>
       </ul>
 
       <h2>Frequently Asked Questions</h2>
@@ -86,7 +86,7 @@ export default function Page() {
       <p>No. ZipDrop works entirely in your browser. There is nothing to download or install on any device.</p>
 
       <h3>How large can my files be?</h3>
-      <p>ZipDrop supports up to 10 files per transfer, with a maximum of 1 GB per file. That covers most videos, project files, and high-resolution images.</p>
+      <p>ZipDrop supports up to 10 files per transfer. That covers most videos, project files, and high-resolution images.</p>
 
       <h3>How long are files available?</h3>
       <p>Each transfer is created with a 48-hour expiry timestamp, but automatic deletion is not yet enforced. Until cleanup is added, files remain stored on our server. Do not upload anything you would not want kept there.</p>
@@ -97,7 +97,7 @@ export default function Page() {
       <h2>Conclusion</h2>
 
       <p>
-        A good file transfer website should prioritize speed, simplicity, and honesty about its limits. ZipDrop removes barriers like account creation and software installation, and it states its limits plainly: up to 10 files, 1 GB per file, and a 4-digit code. Whether you are sharing videos, documents, or family photos, it is a free way to get your files where they need to go.
+        A good file transfer website should prioritize speed, simplicity, and honesty about its limits. ZipDrop removes barriers like account creation and software installation, and it states its limits plainly: up to 10 files per transfer and a 4-digit code. Whether you are sharing videos, documents, or family photos, it is a free way to get your files where they need to go.
       </p>
 
       <div className="mt-10">

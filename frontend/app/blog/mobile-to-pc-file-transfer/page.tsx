@@ -123,8 +123,8 @@ export default function Page() {
           and downloaded on your PC.
         </li>
         <li>
-          <strong>Up to 1 GB per file:</strong> Send large videos, high-res
-          photo albums, and documents within a clear limit.
+          <strong>Large file support:</strong> Send videos, high-res
+          photo albums, and documents within clear limits.
         </li>
       </ul>
 
@@ -178,7 +178,7 @@ export default function Page() {
 
       <p>
         Speed depends on your internet connection. The file is uploaded once
-        and downloaded once, so a 1 GB video can take longer than a local cable
+        and downloaded once, so a large video can take longer than a local cable
         transfer. You avoid drivers, cables, and account setup, but upload and
         download speeds still set the pace.
       </p>
@@ -200,8 +200,7 @@ export default function Page() {
 
       <h3>Is there a limit on how many files I can transfer?</h3>
       <p>
-        Each transfer supports up to 10 files, with a 1 GB limit per file.
-        There is no daily cap on the number of transfers.
+        Each transfer supports up to 10 files. There is no daily cap on the number of transfers.
       </p>
 
       <h3>How long does the 4-digit code stay active?</h3>

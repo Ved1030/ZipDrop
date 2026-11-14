@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "How to Share Large Files Online Without Compression",
   description:
-    "Learn how to share large files online without compression or accounts. ZipDrop takes up to 10 files at 1 GB each, sent through our server with a 4-digit code.",
+    "Learn how to share large files online without compression or accounts. ZipDrop takes up to 10 files per transfer, sent through our server with a 4-digit code.",
 };
 
 export default function Page() {
@@ -112,7 +112,7 @@ export default function Page() {
       </p>
 
       <ul>
-        <li>Up to 10 files per transfer, with a maximum of 1 GB per file.</li>
+        <li>Up to 10 files per transfer.</li>
         <li>Files are transferred without compression, preserving original quality.</li>
         <li>No account is needed, so there is no barrier to starting a transfer.</li>
         <li>The interface is clean and focused, making it easy to use even under pressure.</li>
@@ -151,7 +151,7 @@ export default function Page() {
       <h2>Frequently Asked Questions</h2>
 
       <h3>What is considered a large file?</h3>
-      <p>Generally, files over 100 MB are considered large for online transfer. ZipDrop accepts files up to 1 GB each, with up to 10 files per transfer.</p>
+      <p>Generally, files over 100 MB are considered large for online transfer. ZipDrop accepts large files, with up to 10 files per transfer.</p>
 
       <h3>Will my file be compressed?</h3>
       <p>No. ZipDrop transfers your file as-is, without any compression or quality loss.</p>
@@ -163,7 +163,7 @@ export default function Page() {
       <p>Yes. ZipDrop works on any device with a browser, regardless of the operating system.</p>
 
       <h3>Is there a limit on how many large files I can send?</h3>
-      <p>Each transfer can contain up to 10 files of up to 1 GB each. Large files near the limit will take longer to upload.</p>
+      <p>Each transfer can contain up to 10 files. Large files near the limit will take longer to upload.</p>
 
       <h2>Conclusion</h2>
 
@@ -172,7 +172,7 @@ export default function Page() {
       </p>
 
       <p>
-        ZipDrop lets you share up to 10 files of up to 1 GB each, in their original quality, without accounts or fees. Whether you are a creative professional, a researcher, or anyone who works with big files, it is a straightforward option when your files fit within those limits.
+        ZipDrop lets you share up to 10 files per transfer, in their original quality, without accounts or fees. Whether you are a creative professional, a researcher, or anyone who works with big files, it is a straightforward option when your files fit within those limits.
       </p>
 
       <div className="mt-10">

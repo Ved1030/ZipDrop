@@ -50,7 +50,7 @@ export default function Page() {
       <ul>
         <li>No account or registration needed.</li>
         <li>Works on any device with a browser.</li>
-        <li>Supports files up to 1 GB each.</li>
+        <li>Supports large files.</li>
         <li>Transfers are fast and reliable.</li>
         <li>No software or app installation required.</li>
         <li>Access is controlled by a 4-digit code.</li>
@@ -142,7 +142,7 @@ export default function Page() {
       <h2>Frequently Asked Questions</h2>
 
       <h3>Is there a file size limit?</h3>
-      <p>ZipDrop supports files up to 1 GB each. Larger files take longer to upload and download.</p>
+      <p>ZipDrop supports large files. Larger files take longer to upload and download.</p>
 
       <h3>Do I need to install anything?</h3>
       <p>No installation is required. Everything runs directly in your browser.</p>

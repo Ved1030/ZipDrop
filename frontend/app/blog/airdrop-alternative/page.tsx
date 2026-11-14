@@ -1,7 +1,7 @@
 export const metadata = {
   title: "Best AirDrop Alternative",
   description:
-    "Looking for an AirDrop alternative? ZipDrop works in any browser: upload up to 10 files of 1 GB each and share a 4-digit code.",
+    "Looking for an AirDrop alternative? ZipDrop works in any browser: upload up to 10 files and share a 4-digit code.",
 };
 
 export default function Page() {
@@ -20,7 +20,7 @@ export default function Page() {
       <ul>
         <li>No login required</li>
         <li>Works on any device with a browser</li>
-        <li>Up to 10 files per transfer, 1 GB per file</li>
+        <li>Up to 10 files per transfer</li>
         <li>Files keep their original quality</li>
       </ul>
 

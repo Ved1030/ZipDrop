@@ -7,7 +7,7 @@ const meta = {
   description:
     "Use a free online clipboard with no account or sign-up. Learn how ZipDrop's 4-digit code moves text and files between phone and PC, and when no-login tools are the right choice.",
   published: "2026-11-13",
-  modified: "2026-11-13",
+  modified: "2026-11-14",
   sections: [
     "What no-login means in practice",
     "How to use ZipDrop without creating an account",
@@ -23,7 +23,7 @@ const meta = {
     },
     {
       q: "Is a no-login online clipboard private?",
-      a: "No-login does not mean invisible. Content passes through the service's servers, so use a service that serves pages over HTTPS and expires content automatically. ZipDrop links expire after 48 hours; do not share the code publicly while the content is active.",
+      a: "No-login does not mean invisible. Content passes through the service's servers, so use a service that serves pages over HTTPS and expires content automatically. ZipDrop sets a 48-hour expiry timestamp on each transfer (automatic deletion not yet enforced); do not share the code publicly while the content is active.",
     },
     {
       q: "Can I use a no-login clipboard on a work computer?",
@@ -75,7 +75,7 @@ export default function Page() {
           </Link>{" "}
           in any modern browser.
         </li>
-        <li>Paste text in the text tab, or choose up to 10 files (1 GB each).</li>
+        <li>Paste text in the text tab, or choose up to 10 files.</li>
         <li>Send and note the 4-digit code.</li>
         <li>On the other device, enter the code in the Receive panel.</li>
       </ol>
@@ -95,7 +95,7 @@ export default function Page() {
       <p>Be clear about the limits so you choose the right tool:</p>
       <ul>
         <li><strong>No recovery.</strong> If you lose the code, the transfer is gone.</li>
-        <li><strong>Expiry.</strong> ZipDrop links expire after 48 hours.</li>
+        <li><strong>Expiry.</strong> ZipDrop links have a 48-hour expiry timestamp (automatic deletion not yet enforced).</li>
         <li><strong>Not for secrets over public chat.</strong> Treat the code like a temporary password.</li>
         <li><strong>Not a backup.</strong> Do not use any clipboard service to store things you need to keep.</li>
       </ul>
@@ -114,8 +114,7 @@ export default function Page() {
       <h3>Sending photos from a friend&rsquo;s phone to your laptop</h3>
       <p>
         Upload the photos as files and enter the code on your laptop. No need to
-        sign in on your friend&rsquo;s device. ZipDrop holds the content for up to 48
-        hours, but you can download it immediately.
+        sign in on your friend&rsquo;s device. ZipDrop holds the content with a 48-hour expiry timestamp (cleanup not yet enforced), but you can download it immediately.
       </p>
       <h3>Sharing a form with a colleague on another OS</h3>
       <p>
